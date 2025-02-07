@@ -30,4 +30,9 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Commons\" />
+      <Folder Include="Utils\" />
+    </ItemGroup>
+
 </Project>

@@ -1,6 +1,18 @@
-var builder = WebApplication.CreateBuilder(args);
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using ArWoh.API.Architechture;
 
-builder.Services.AddControllers(); 
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.SetupIOCContainer();
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -15,6 +27,21 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = string.Empty;
     });
 }
+
+
+app.UseRouting();
+try
+{
+    app.ApplyMigrations(app.Logger);
+}
+catch (Exception e)
+{
+    app.Logger.LogError(e, "An problem occurred during migration!");
+}
+
+app.UseStaticFiles();
+
+app.UseSwagger();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();

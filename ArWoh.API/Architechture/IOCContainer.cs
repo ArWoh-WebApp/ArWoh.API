@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using VaccinaCare.Application.Ultils;
 
 namespace ArWoh.API.Architechture;
 
@@ -52,6 +53,8 @@ public static class IOCContainer
 
             // Add application services
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IAuthService, AuthService>();
+            
             services.AddScoped<ILoggerService, LoggerService>();
             services.AddHttpContextAccessor();
 

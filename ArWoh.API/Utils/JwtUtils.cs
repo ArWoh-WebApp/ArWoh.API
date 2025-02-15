@@ -8,7 +8,7 @@ namespace VaccinaCare.Application.Ultils
 {
     public static class JwtUtils
     {
-        public static string GenerateJwtToken(Guid userId, string email, string role, IConfiguration configuration, TimeSpan validityPeriod)
+        public static string GenerateJwtToken(int userId, string email, string role, IConfiguration configuration, TimeSpan validityPeriod)
         {
             // Kiểm tra và lấy secret key từ cấu hình
             var secretKey = configuration["JWT:SecretKey"];

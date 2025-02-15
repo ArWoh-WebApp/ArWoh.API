@@ -18,6 +18,11 @@ public class ArWohDbContext : DbContext
         modelBuilder.Entity<User>()
             .HasIndex(u => u.Email)
             .IsUnique();
+            
+        
+        modelBuilder.Entity<User>()
+            .Property(u => u.Role)
+            .HasConversion<string>(); // Lưu dưới dạng chuỗi
 
         // Transaction -> User relationship (Prevent cascade delete)
         modelBuilder.Entity<Transaction>()

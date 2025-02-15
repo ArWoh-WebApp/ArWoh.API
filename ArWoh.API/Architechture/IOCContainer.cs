@@ -28,7 +28,7 @@ public static class IOCContainer
             services.SetupBusinessServicesLayer();
 
             services.SetupCORS();
-            // services.SetupJWT();
+            services.SetupJWT();
 
             services.SetupThirdParty();
             return services;
@@ -166,17 +166,11 @@ public static class IOCContainer
                 });
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("CustomerPolicy", policy =>
-                    policy.RequireRole("Customer"));
+                options.AddPolicy("UserPolicy", policy =>
+                    policy.RequireRole("User"));
 
                 options.AddPolicy("AdminPolicy", policy =>
                     policy.RequireRole("Admin"));
-
-                options.AddPolicy("StaffPolicy", policy =>
-                    policy.RequireRole("Staff"));
-
-                options.AddPolicy("AdminOrStaffPolicy", policy =>
-                    policy.RequireRole("Admin", "Staff"));
             });
 
 

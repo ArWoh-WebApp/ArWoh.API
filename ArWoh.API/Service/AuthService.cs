@@ -1,5 +1,6 @@
 using ArWoh.API.DTOs.UserDTOs;
 using ArWoh.API.Entities;
+using ArWoh.API.Enums;
 using ArWoh.API.Interface;
 using Microsoft.AspNetCore.Identity;
 using VaccinaCare.Application.Ultils;
@@ -40,7 +41,8 @@ public class AuthService : IAuthService
             {
                 Username = username, 
                 Email = registrationDto.Email,
-                PasswordHash = passwordHash
+                PasswordHash = passwordHash,
+                Role = UserRole.User
             };
 
             await _unitOfWork.Users.AddAsync(user);
@@ -54,6 +56,44 @@ public class AuthService : IAuthService
             return null;
         }
     }
+    
+    public async Task<string> Login(UserLoginDto loginDto, IConfiguration configuration)
+    {
+        try
+        {
+            // Find the user by email
+            var user = await _unitOfWork.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email);
+            if (user == null)
+            {
+                return null; // User does not exist
+            }
+
+            var passwordHasher = new PasswordHasher();
+            bool isPasswordValid = passwordHasher.VerifyPassword(loginDto.Password, user.PasswordHash);
+        
+            if (!isPasswordValid)
+            {
+                return null; // Incorrect password
+            }
+
+            // Generate JWT token
+            string token = JwtUtils.GenerateJwtToken(
+                user.Id, 
+                user.Email, 
+                user.Role.ToString(), 
+                configuration, 
+                TimeSpan.FromHours(2) // Token validity (2 hours)
+            );
+
+            return token;
+        }
+        catch (Exception ex)
+        {
+            _loggerService.Error($"Login failed: {ex.Message}");
+            return null;
+        }
+    }
+
 
     
     

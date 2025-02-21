@@ -54,13 +54,12 @@ public static class IOCContainer
             // Add application services
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAuthService, AuthService>();
-            
+            services.AddScoped<IBlobService, BlobService>();
             services.AddScoped<ILoggerService, LoggerService>();
             services.AddHttpContextAccessor();
 
             return services;
         }
-
 
         private static IServiceCollection SetupDBContext(this IServiceCollection services)
         {

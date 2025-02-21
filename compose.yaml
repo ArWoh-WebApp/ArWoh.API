@@ -5,8 +5,8 @@
       context: .
       dockerfile: ArWoh.API/Dockerfile
     ports:
-      - "8080:8080"
-      - "8081:8081"
+      - "9090:8080"
+      - "9091:8081"
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: "http://+:8080;http://+:8081"
@@ -14,6 +14,9 @@
       JWT__SecretKey: "YourSuperStrongJWTSecretKeyWithAtLeast32Chars"
       JWT__Issuer: "ArWoh"
       JWT__Audience: "ArWohUsers"
+      MINIO_ENDPOINT: "minio.ae-tao-fullstack-api.site:9000"
+      MINIO_ACCESS_KEY: "103.211.201.162"
+      MINIO_SECRET_KEY: "Ccubin2003@"
     depends_on:
       - arwoh.db
 
@@ -26,3 +29,9 @@
       SA_PASSWORD: "YourStrong!Passw0rd"
       ACCEPT_EULA: "Y"
     restart: always
+
+  arwoh.api-1:
+    image: arwoh.api-1
+    build:
+      context: .
+      dockerfile: ArWoh.API/Dockerfile

@@ -55,7 +55,9 @@ public static class IOCContainer
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IBlobService, BlobService>();
+            services.AddScoped<IImageService, ImageService>();
             services.AddScoped<ILoggerService, LoggerService>();
+            services.AddScoped<IClaimService, ClaimService>();
             services.AddHttpContextAccessor();
 
             return services;
@@ -165,9 +167,12 @@ public static class IOCContainer
                 });
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("UserPolicy", policy =>
-                    policy.RequireRole("User"));
-
+                options.AddPolicy("CustomerPolicy", policy =>
+                    policy.RequireRole("Customer"));
+                
+                options.AddPolicy("PhotographerPolicy", policy =>
+                    policy.RequireRole("Photographer"));
+                
                 options.AddPolicy("AdminPolicy", policy =>
                     policy.RequireRole("Admin"));
             });

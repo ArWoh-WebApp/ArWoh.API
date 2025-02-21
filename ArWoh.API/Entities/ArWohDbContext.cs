@@ -18,30 +18,29 @@ public class ArWohDbContext : DbContext
         modelBuilder.Entity<User>()
             .HasIndex(u => u.Email)
             .IsUnique();
-            
-        
-        modelBuilder.Entity<User>()
-            .Property(u => u.Role)
-            .HasConversion<string>(); // Lưu dưới dạng chuỗi
 
-        // Transaction -> User relationship (Prevent cascade delete)
         modelBuilder.Entity<Transaction>()
-            .HasOne(t => t.User)
+            .HasOne(t => t.Customer)
             .WithMany(u => u.Transactions)
-            .HasForeignKey(t => t.UserId)
-            .OnDelete(DeleteBehavior.Restrict);  // FIX: Change cascade delete to Restrict
+            .HasForeignKey(t => t.CustomerId)
+            .OnDelete(DeleteBehavior.Restrict);
 
-        // Transaction -> Image relationship (Allow cascade delete)
         modelBuilder.Entity<Transaction>()
             .HasOne(t => t.Image)
             .WithMany(i => i.Transactions)
             .HasForeignKey(t => t.ImageId)
-            .OnDelete(DeleteBehavior.Cascade);  // Image deletion should still remove transactions
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Order>()
+            .HasOne(o => o.Transaction)
+            .WithOne()
+            .HasForeignKey<Order>(o => o.TransactionId);
 
         modelBuilder.Entity<AdminAction>()
             .HasOne(a => a.Admin)
             .WithMany()
             .HasForeignKey(a => a.AdminId);
     }
-
 }
+
+

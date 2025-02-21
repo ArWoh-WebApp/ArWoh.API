@@ -1,4 +1,6 @@
-﻿namespace ArWoh.API.Interface
+﻿using ArWoh.API.Entities;
+
+namespace ArWoh.API.Interface
 {
     public interface IBlobService
     {

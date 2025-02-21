@@ -1,4 +1,5 @@
-﻿using ArWoh.API.Interface;
+﻿using ArWoh.API.Entities;
+using ArWoh.API.Interface;
 using Minio;
 using Minio.DataModel.Args;
 using Minio.Exceptions;
@@ -10,10 +11,12 @@ namespace ArWoh.API.Service
         private readonly IMinioClient _minioClient;
         private readonly string _bucketName = "arwoh-bucket";
         private readonly ILoggerService _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public BlobService(ILoggerService logger)
+        public BlobService(ILoggerService logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
+            _unitOfWork = unitOfWork;
 
             var endpoint = Environment.GetEnvironmentVariable("MINIO_ENDPOINT") ??
                            "minio.ae-tao-fullstack-api.site:9000";
@@ -97,7 +100,8 @@ namespace ArWoh.API.Service
 
         public async Task<string> GetPreviewUrlAsync(string fileName)
         {
-            var minioHost = Environment.GetEnvironmentVariable("MINIO_HOST") ?? "https://minio.ae-tao-fullstack-api.site";
+            var minioHost = Environment.GetEnvironmentVariable("MINIO_HOST") ??
+                            "https://minio.ae-tao-fullstack-api.site";
             _logger.Info($"Generating preview URL for file: {fileName}");
 
             string previewUrl =

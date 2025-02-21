@@ -4,10 +4,14 @@ public class Image : BaseEntity
 {
     public string Title { get; set; }
     public string Description { get; set; }
-    public string Url { get; set; }
     public decimal Price { get; set; }
-    public int UserId { get; set; } // Foreign key
+    public string StoryOfArt { get; set; } // Câu chuyện của ảnh
+    public string FileName { get; set; } // Tên file lưu trên MinIO
+    public string Url { get; set; } // URL lấy từ GetFileUrlAsync()
 
-    public User User { get; set; }
+    public int PhotographerId { get; set; }
+    public User Photographer { get; set; }
+
     public ICollection<Transaction> Transactions { get; set; }
 }
+

@@ -26,21 +26,37 @@ public class AuthController : ControllerBase
     [ProducesResponseType(typeof(ApiResult<User>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]
     [ProducesResponseType(typeof(ApiResult<object>), 500)]
-    public async Task<IActionResult> Register([FromBody] UserRegistrationDto registerDTO)
+    public async Task<IActionResult> RegisterCustomer([FromBody] UserRegistrationDto registerDTO)
     {
         try
         {
-            if (registerDTO == null || string.IsNullOrWhiteSpace(registerDTO.Email) ||
-                string.IsNullOrWhiteSpace(registerDTO.Password))
+            if (registerDTO == null)
             {
-                return BadRequest(new ApiResult<object> { IsSuccess = false, Message = "Invalid registration data." });
+                return BadRequest(new ApiResult<object>
+                {
+                    IsSuccess = false,
+                    Message = "Registration data is missing."
+                });
             }
 
-            var user = await _authService.Register(registerDTO);
+            if (string.IsNullOrWhiteSpace(registerDTO.Email) || string.IsNullOrWhiteSpace(registerDTO.Password))
+            {
+                return BadRequest(new ApiResult<object>
+                {
+                    IsSuccess = false,
+                    Message = "Email and password are required."
+                });
+            }
 
+            // Kiểm tra xem email đã tồn tại chưa
+            var user = await _authService.RegisterCustomer(registerDTO);
             if (user == null)
             {
-                return BadRequest(new ApiResult<object> { IsSuccess = false, Message = "Email is already in use." });
+                return BadRequest(new ApiResult<object>
+                {
+                    IsSuccess = false,
+                    Message = "Email is already in use."
+                });
             }
 
             return Ok(new ApiResult<User>
@@ -53,14 +69,14 @@ public class AuthController : ControllerBase
         catch (Exception ex)
         {
             _loggerService.Error($"Registration error: {ex.Message}");
-            return StatusCode(500,
-                new ApiResult<object>
-                {
-                    IsSuccess = false,
-                    Message = "An error occurred while processing the request."
-                });
+            return StatusCode(500, new ApiResult<object>
+            {
+                IsSuccess = false,
+                Message = "An error occurred while processing the request."
+            });
         }
     }
+
 
     [HttpPost("login")]
     [ProducesResponseType(typeof(ApiResult<string>), 200)]
@@ -102,8 +118,8 @@ public class AuthController : ControllerBase
             });
         }
     }
-    
-    
+
+
     [HttpGet("check-role")]
     [Authorize] // Requires authentication
     public IActionResult CheckUserRole()
@@ -138,7 +154,7 @@ public class AuthController : ControllerBase
             });
         }
     }
-    
+
     [HttpGet("User-access")]
     [Authorize(Policy = "UserPolicy")]
     public IActionResult CustomerAccess()
@@ -150,8 +166,4 @@ public class AuthController : ControllerBase
             Data = "This is a protected customer-only route."
         });
     }
-
-    
-
-
 }

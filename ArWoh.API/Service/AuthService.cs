@@ -17,38 +17,47 @@ public class AuthService : IAuthService
         _loggerService = loggerService;
         _unitOfWork = unitOfWork;
     }
-    
-    
-    public async Task<User> Register(UserRegistrationDto registrationDto)
+
+    /// <summary>
+    /// Tạo tài khoản cho customer
+    /// </summary>
+    /// <param name="registrationDto"></param>
+    /// <returns></returns>
+    public async Task<User> RegisterCustomer(UserRegistrationDto registrationDto)
     {
         try
         {
-            // Check if the email is already in use
+            // Kiểm tra xem email đã tồn tại chưa
             var existingUser = await _unitOfWork.Users.FirstOrDefaultAsync(u => u.Email == registrationDto.Email);
             if (existingUser != null)
             {
-                return null; // Email already exists
+                return null; // Email đã được sử dụng
             }
 
+            // Băm mật khẩu
             var passwordHasher = new PasswordHasher();
             string passwordHash = passwordHasher.HashPassword(registrationDto.Password);
 
+            // Tạo username từ email nếu không có username được cung cấp
             string username = string.IsNullOrWhiteSpace(registrationDto.Username)
-                ? registrationDto.Email.Split('@')[0] 
+                ? registrationDto.Email.Split('@')[0]
                 : registrationDto.Username;
 
             var user = new User
             {
-                Username = username, 
+                Username = username,
                 Email = registrationDto.Email,
                 PasswordHash = passwordHash,
-                Role = UserRole.User
+                Role = UserRole.Customer, // Đăng ký với vai trò Customer
+                Bio = registrationDto.Bio, // Mô tả ngắn (có thể null)
+                ProfilePictureUrl = registrationDto.ProfilePictureUrl // Ảnh đại diện (có thể null)
             };
 
+            // Thêm user vào database
             await _unitOfWork.Users.AddAsync(user);
-            await _unitOfWork.CompleteAsync(); 
+            await _unitOfWork.CompleteAsync();
 
-            return user; 
+            return user;
         }
         catch (Exception ex)
         {
@@ -56,7 +65,14 @@ public class AuthService : IAuthService
             return null;
         }
     }
-    
+
+
+    /// <summary>
+    /// Đăng nhập cho customer
+    /// </summary>
+    /// <param name="loginDto"></param>
+    /// <param name="configuration"></param>
+    /// <returns></returns>
     public async Task<string> Login(UserLoginDto loginDto, IConfiguration configuration)
     {
         try
@@ -70,7 +86,7 @@ public class AuthService : IAuthService
 
             var passwordHasher = new PasswordHasher();
             bool isPasswordValid = passwordHasher.VerifyPassword(loginDto.Password, user.PasswordHash);
-        
+
             if (!isPasswordValid)
             {
                 return null; // Incorrect password
@@ -78,10 +94,10 @@ public class AuthService : IAuthService
 
             // Generate JWT token
             string token = JwtUtils.GenerateJwtToken(
-                user.Id, 
-                user.Email, 
-                user.Role.ToString(), 
-                configuration, 
+                user.Id,
+                user.Email,
+                user.Role.ToString(),
+                configuration,
                 TimeSpan.FromHours(2) // Token validity (2 hours)
             );
 
@@ -93,8 +109,4 @@ public class AuthService : IAuthService
             return null;
         }
     }
-
-
-    
-    
 }

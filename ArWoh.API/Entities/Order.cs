@@ -3,8 +3,9 @@ namespace ArWoh.API.Entities;
 public class Order : BaseEntity
 {
     public int TransactionId { get; set; }
-    public string DownloadUrl { get; set; }
-    public DateTime ExpiryDate { get; set; }
+    public bool IsPhysicalPrint { get; set; } // Nếu true, là đơn hàng in
+    public string ShippingAddress { get; set; } // Địa chỉ giao hàng
+    public string ShippingStatus { get; set; } // "Processing", "Shipped", "Delivered"
 
     public Transaction Transaction { get; set; }
 }

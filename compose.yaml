@@ -29,9 +29,3 @@
       SA_PASSWORD: "YourStrong!Passw0rd"
       ACCEPT_EULA: "Y"
     restart: always
-
-  arwoh.api-1:
-    image: arwoh.api-1
-    build:
-      context: .
-      dockerfile: ArWoh.API/Dockerfile

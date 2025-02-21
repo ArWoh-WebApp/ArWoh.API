@@ -4,7 +4,7 @@ using ArWoh.API.Architechture;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.SetupIOCContainer();
-
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {

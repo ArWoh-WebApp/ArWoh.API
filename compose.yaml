@@ -1,6 +1,4 @@
-﻿version: '3.8'
-
-services:
+﻿services:
   arwoh.api:
     image: arwoh.api
     build:
@@ -12,7 +10,10 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: "http://+:8080;http://+:8081"
-      ConnectionStrings__DefaultConnection: "Server=arwoh.db;Database=ArWohDb;User Id=sa;Password=YourStrong!Passw0rd"
+      ConnectionStrings__DefaultConnection: "Server=103.211.201.162,1433;Database=ArWohDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=True"
+      JWT__SecretKey: "YourSuperStrongJWTSecretKeyWithAtLeast32Chars"
+      JWT__Issuer: "ArWoh"
+      JWT__Audience: "ArWohUsers"
     depends_on:
       - arwoh.db
 
@@ -20,7 +21,7 @@ services:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: arwoh.db
     ports:
-      - "1433:1433"
+      - "1434:1433"
     environment:
       SA_PASSWORD: "YourStrong!Passw0rd"
       ACCEPT_EULA: "Y"

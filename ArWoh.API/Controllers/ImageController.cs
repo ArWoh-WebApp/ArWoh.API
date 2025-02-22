@@ -12,17 +12,70 @@ namespace ArWoh.API.Controllers;
 public class ImageController : ControllerBase
 {
     private readonly IImageService _imageService;
+    private readonly ILoggerService _loggerService;
     private readonly IClaimService _claimService;
 
-    public ImageController(IImageService imageService, IClaimService claimService)
+    public ImageController(IImageService imageService, IClaimService claimService, ILoggerService loggerService)
     {
         _imageService = imageService;
         _claimService = claimService;
+        _loggerService = loggerService;
     }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(ApiResult<IEnumerable<ImageDto>>), 200)]
+    [ProducesResponseType(typeof(ApiResult<object>), 400)]
+    [ProducesResponseType(typeof(ApiResult<object>), 500)]
+    public async Task<IActionResult> GetAllImages()
+    {
+        try
+        {
+            _loggerService.Info("Fetching all images via API.");
+
+            var images = await _imageService.GetAllImages();
+
+            if (!images.Any())
+            {
+                _loggerService.Warn("No images found.");
+                return Ok(ApiResult<IEnumerable<ImageDto>>.Success(new List<ImageDto>()));
+            }
+
+            _loggerService.Success($"Successfully retrieved {images.Count()} images.");
+            return Ok(ApiResult<IEnumerable<ImageDto>>.Success(images));
+        }
+        catch (Exception ex)
+        {
+            _loggerService.Error($"Unexpected error in GetAllImages: {ex.Message}");
+            return StatusCode(500, ApiResult<object>.Error("An unexpected error occurred"));
+        }
+    }
+
+
+    [HttpGet("details/{id}")]
+    [ProducesResponseType(typeof(ApiResult<ImageDto>), 200)]
+    [ProducesResponseType(typeof(ApiResult<object>), 400)]
+    [ProducesResponseType(typeof(ApiResult<object>), 500)]
+    public async Task<IActionResult> GetImageDetails(int id)
+    {
+        try
+        {
+            var imageDetails = await _imageService.GetImageById(id);
+            return Ok(ApiResult<ImageDto>.Success(imageDetails));
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ApiResult<object>.Error("Image not found"));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ApiResult<object>.Error("An unexpected error occurred"));
+        }
+    }
+
 
     [HttpPost("upload")]
     [Authorize(Policy = "PhotographerPolicy")]
-    [ProducesResponseType(typeof(ApiResult<Image>), 200)]
+    [ProducesResponseType(typeof(ApiResult<ImageDto>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]
     [ProducesResponseType(typeof(ApiResult<object>), 500)]
     public async Task<IActionResult> UploadImage([FromForm] UploadImageDto uploadDto)
@@ -50,7 +103,7 @@ public class ImageController : ControllerBase
 
             var image = await _imageService.UploadImageAsync(uploadDto, photographerId);
 
-            return Ok(new ApiResult<Image>
+            return Ok(new ApiResult<ImageDto>
             {
                 IsSuccess = true,
                 Message = "Image uploaded successfully.",
@@ -74,4 +127,57 @@ public class ImageController : ControllerBase
             });
         }
     }
+    
+    [HttpPut("{id}")]
+    [Authorize(Policy = "PhotographerPolicy")]
+    [ProducesResponseType(typeof(ApiResult<ImageDto>), 200)]
+    [ProducesResponseType(typeof(ApiResult<object>), 400)]
+    [ProducesResponseType(typeof(ApiResult<object>), 404)]
+    [ProducesResponseType(typeof(ApiResult<object>), 500)]
+    public async Task<IActionResult> UpdateImage(int id, [FromBody] UpdateImageDto updateDto)
+    {
+        try
+        {
+            var updatedImage = await _imageService.UpdateImageAsync(id, updateDto);
+            return Ok(ApiResult<ImageDto>.Success(updatedImage));
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ApiResult<object>.Error("Image not found"));
+        }
+        catch (Exception ex)
+        {
+            _loggerService.Error($"Unexpected error in UpdateImage: {ex.Message}");
+            return StatusCode(500, ApiResult<object>.Error("An unexpected error occurred"));
+        }
+    }
+
+    [HttpDelete("{id}")]
+    [Authorize(Policy = "PhotographerPolicy")]
+    [ProducesResponseType(typeof(ApiResult<bool>), 200)]
+    [ProducesResponseType(typeof(ApiResult<object>), 400)]
+    [ProducesResponseType(typeof(ApiResult<object>), 404)]
+    [ProducesResponseType(typeof(ApiResult<object>), 500)]
+    public async Task<IActionResult> DeleteImage(int id)
+    {
+        try
+        {
+            var result = await _imageService.DeleteImageAsync(id);
+            return Ok(ApiResult<bool>.Success(result));
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ApiResult<object>.Error("Image not found"));
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ApiResult<object>.Error(ex.Message));
+        }
+        catch (Exception ex)
+        {
+            _loggerService.Error($"Unexpected error in DeleteImage: {ex.Message}");
+            return StatusCode(500, ApiResult<object>.Error("An unexpected error occurred"));
+        }
+    }
+
 }

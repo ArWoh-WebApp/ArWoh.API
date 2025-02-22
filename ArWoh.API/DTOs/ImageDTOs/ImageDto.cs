@@ -1,22 +1,16 @@
-using System.ComponentModel.DataAnnotations;
 using ArWoh.API.Enums;
 
 namespace ArWoh.API.DTOs.ImageDTOs;
 
-public class UploadImageDto
+public class ImageDto
 {
-    [Required]
+    public int Id { get; set; }
     public string Title { get; set; }
-    [Required]
     public string Description { get; set; }
-    [Required]
     public decimal Price { get; set; }
-    
+    public string? StoryOfArt { get; set; }
     public OrientationType? Orientation { get; set; }
-    
     public string? Tags { get; set; }
-    public string StoryOfArt { get; set; } // Không bắt buộc, có thể null
-
-    [Required]
-    public IFormFile File { get; set; }
+    public string FileName { get; set; }
+    public string Url { get; set; }
 }

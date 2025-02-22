@@ -18,13 +18,14 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public async Task<T> GetByIdAsync(int id)
     {
-        return await _dbSet.FindAsync(id);
+        return await _dbSet.FirstOrDefaultAsync(entity => entity.Id == id && !entity.IsDeleted);
     }
 
     public async Task<IEnumerable<T>> GetAllAsync()
     {
-        return await _dbSet.ToListAsync();
+        return await _dbSet.Where(entity => !entity.IsDeleted).ToListAsync();
     }
+
 
     public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
     {
@@ -63,12 +64,23 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public void Delete(T entity)
     {
-        _dbSet.Remove(entity);
+        entity.IsDeleted = true;
+        entity.DeletedAt = DateTime.UtcNow;
+        entity.UpdatedAt = DateTime.UtcNow;
+        _dbSet.Update(entity);
     }
+
 
     public void DeleteRange(IEnumerable<T> entities)
     {
-        _dbSet.RemoveRange(entities);
+        foreach (var entity in entities)
+        {
+            entity.IsDeleted = true;
+            entity.DeletedAt = DateTime.UtcNow;
+            entity.UpdatedAt = DateTime.UtcNow;
+        }
+
+        _dbSet.UpdateRange(entities);
     }
 
     public async Task<int> CountAsync()
@@ -86,4 +98,3 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         return await _context.SaveChangesAsync();
     }
 }
-

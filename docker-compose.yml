@@ -35,4 +35,3 @@ services:
 volumes:
   sqlserver-data:
     driver: local
-

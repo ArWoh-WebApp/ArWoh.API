@@ -66,13 +66,51 @@ public class AuthService : IAuthService
         }
     }
 
+    public async Task<User> RegisterPhotographer(UserRegistrationDto registrationDto)
+    {
+        try
+        {
+            // Kiểm tra xem email đã tồn tại chưa
+            var existingUser = await _unitOfWork.Users.FirstOrDefaultAsync(u => u.Email == registrationDto.Email);
+            if (existingUser != null)
+            {
+                return null; // Email đã được sử dụng
+            }
 
-    /// <summary>
-    /// Đăng nhập cho customer
-    /// </summary>
-    /// <param name="loginDto"></param>
-    /// <param name="configuration"></param>
-    /// <returns></returns>
+            // Băm mật khẩu
+            var passwordHasher = new PasswordHasher();
+            string passwordHash = passwordHasher.HashPassword(registrationDto.Password);
+
+            // Tạo username từ email nếu không có username được cung cấp
+            string username = string.IsNullOrWhiteSpace(registrationDto.Username)
+                ? registrationDto.Email.Split('@')[0]
+                : registrationDto.Username;
+
+            var user = new User
+            {
+                Username = username,
+                Email = registrationDto.Email,
+                PasswordHash = passwordHash,
+                Role = UserRole.Photographer, // Đăng ký với vai trò Photographer
+                Bio = registrationDto.Bio, // Mô tả ngắn (có thể null)
+                ProfilePictureUrl = registrationDto.ProfilePictureUrl // Ảnh đại diện (có thể null)
+            };
+
+            // Thêm user vào database
+            await _unitOfWork.Users.AddAsync(user);
+            await _unitOfWork.CompleteAsync();
+
+            return user;
+        }
+        catch (Exception ex)
+        {
+            _loggerService.Error($"Registration failed: {ex.Message}");
+            return null;
+        }
+    }
+
+
+
     public async Task<string> Login(UserLoginDto loginDto, IConfiguration configuration)
     {
         try

@@ -22,7 +22,7 @@ public class AuthController : ControllerBase
         _loggerService = loggerService;
     }
 
-    [HttpPost("register")]
+    [HttpPost("register/customer")]
     [ProducesResponseType(typeof(ApiResult<User>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]
     [ProducesResponseType(typeof(ApiResult<object>), 500)]
@@ -50,6 +50,61 @@ public class AuthController : ControllerBase
 
             // Kiểm tra xem email đã tồn tại chưa
             var user = await _authService.RegisterCustomer(registerDTO);
+            if (user == null)
+            {
+                return BadRequest(new ApiResult<object>
+                {
+                    IsSuccess = false,
+                    Message = "Email is already in use."
+                });
+            }
+
+            return Ok(new ApiResult<User>
+            {
+                IsSuccess = true,
+                Message = "User registered successfully.",
+                Data = user
+            });
+        }
+        catch (Exception ex)
+        {
+            _loggerService.Error($"Registration error: {ex.Message}");
+            return StatusCode(500, new ApiResult<object>
+            {
+                IsSuccess = false,
+                Message = "An error occurred while processing the request."
+            });
+        }
+    }
+    
+    [HttpPost("register/photographer")]
+    [ProducesResponseType(typeof(ApiResult<User>), 200)]
+    [ProducesResponseType(typeof(ApiResult<object>), 400)]
+    [ProducesResponseType(typeof(ApiResult<object>), 500)]
+    public async Task<IActionResult> RegisterPhotographer([FromBody] UserRegistrationDto registerDTO)
+    {
+        try
+        {
+            if (registerDTO == null)
+            {
+                return BadRequest(new ApiResult<object>
+                {
+                    IsSuccess = false,
+                    Message = "Registration data is missing."
+                });
+            }
+
+            if (string.IsNullOrWhiteSpace(registerDTO.Email) || string.IsNullOrWhiteSpace(registerDTO.Password))
+            {
+                return BadRequest(new ApiResult<object>
+                {
+                    IsSuccess = false,
+                    Message = "Email and password are required."
+                });
+            }
+
+            // Kiểm tra xem email đã tồn tại chưa
+            var user = await _authService.RegisterPhotographer(registerDTO);
             if (user == null)
             {
                 return BadRequest(new ApiResult<object>
@@ -117,53 +172,5 @@ public class AuthController : ControllerBase
                 Message = "An error occurred while processing the request."
             });
         }
-    }
-
-
-    [HttpGet("check-role")]
-    [Authorize] // Requires authentication
-    public IActionResult CheckUserRole()
-    {
-        try
-        {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-
-            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(userRole))
-            {
-                return Unauthorized(new ApiResult<object>
-                {
-                    IsSuccess = false,
-                    Message = "Invalid token or user information."
-                });
-            }
-
-            return Ok(new ApiResult<object>
-            {
-                IsSuccess = true,
-                Message = "User role retrieved successfully.",
-                Data = new { UserId = userId, Role = userRole }
-            });
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new ApiResult<object>
-            {
-                IsSuccess = false,
-                Message = "An error occurred while processing the request."
-            });
-        }
-    }
-
-    [HttpGet("User-access")]
-    [Authorize(Policy = "UserPolicy")]
-    public IActionResult CustomerAccess()
-    {
-        return Ok(new ApiResult<object>
-        {
-            IsSuccess = true,
-            Message = "Welcome, Customer!",
-            Data = "This is a protected customer-only route."
-        });
     }
 }

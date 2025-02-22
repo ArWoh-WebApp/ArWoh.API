@@ -19,6 +19,10 @@ public class ArWohDbContext : DbContext
             .HasIndex(u => u.Email)
             .IsUnique();
 
+        modelBuilder.Entity<Image>()
+            .Property(i => i.Orientation)
+            .HasConversion<string>();
+        
         modelBuilder.Entity<Transaction>()
             .HasOne(t => t.Customer)
             .WithMany(u => u.Transactions)

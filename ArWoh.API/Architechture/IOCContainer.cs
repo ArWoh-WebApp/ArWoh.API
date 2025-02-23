@@ -83,8 +83,14 @@ public static class IOCContainer
         {
             services.AddCors(opt =>
             {
-                opt.AddPolicy("CorsPolicy",
-                    policy => { policy.WithOrigins("*").AllowAnyHeader().AllowAnyMethod(); });
+                opt.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.WithOrigins("https://arwoh-fe.vercel.app/") 
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+
             });
 
             return services;

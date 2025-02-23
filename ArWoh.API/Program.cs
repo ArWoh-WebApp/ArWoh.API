@@ -43,8 +43,7 @@ catch (Exception e)
 app.UseStaticFiles();
 
 app.UseSwagger();
-
-// app.UseHttpsRedirection();
+app.UseCors("CorsPolicy");
 app.UseAuthorization();
 app.MapControllers();
 

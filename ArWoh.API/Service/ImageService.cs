@@ -45,6 +45,7 @@ public class ImageService : IImageService
                 Price = image.Price,
                 StoryOfArt = image.StoryOfArt,
                 Orientation = image.Orientation,
+                Location = image.Location,
                 Tags = image.Tags,
                 FileName = image.FileName,
                 Url = image.Url
@@ -90,6 +91,7 @@ public class ImageService : IImageService
                 Price = image.Price,
                 StoryOfArt = image.StoryOfArt,
                 Orientation = image.Orientation,
+                Location = image.Location,
                 Tags = image.Tags,
                 FileName = image.FileName,
                 Url = image.Url
@@ -146,6 +148,7 @@ public class ImageService : IImageService
                 Price = uploadDto.Price,
                 StoryOfArt = uploadDto.StoryOfArt,
                 Orientation = uploadDto.Orientation,
+                Location = uploadDto.Location,
                 Tags = uploadDto.Tags,
                 FileName = fileName,
                 Url = fileUrl,
@@ -179,9 +182,9 @@ public class ImageService : IImageService
             throw new Exception("Failed to upload image.", ex);
         }
     }
-    
+
     /// <summary>
-    /// 
+    /// Cập nhật thông tin của 1 tấm ảnh
     /// </summary>
     /// <param name="imageId"></param>
     /// <param name="updateDto"></param>
@@ -201,13 +204,27 @@ public class ImageService : IImageService
                 throw new KeyNotFoundException("Image not found.");
             }
 
-            // Cập nhật thông tin mới
-            image.Title = updateDto.Title ?? image.Title;
-            image.Description = updateDto.Description ?? image.Description;
-            image.Price = updateDto.Price ?? image.Price;
-            image.StoryOfArt = updateDto.StoryOfArt ?? image.StoryOfArt;
-            image.Orientation = updateDto.Orientation ?? image.Orientation;
-            image.Tags = updateDto.Tags ?? image.Tags;
+            // ✅ Chỉ update field nếu `updateDto` có giá trị
+            if (!string.IsNullOrEmpty(updateDto.Title))
+                image.Title = updateDto.Title;
+
+            if (!string.IsNullOrEmpty(updateDto.Description))
+                image.Description = updateDto.Description;
+
+            if (updateDto.Price.HasValue) // Giá trị số có thể null
+                image.Price = updateDto.Price.Value;
+
+            if (!string.IsNullOrEmpty(updateDto.StoryOfArt))
+                image.StoryOfArt = updateDto.StoryOfArt;
+
+            if (!string.IsNullOrEmpty(updateDto.Location))
+                image.Location = updateDto.Location;
+
+            if (updateDto.Orientation.HasValue) // Enum có thể null
+                image.Orientation = updateDto.Orientation.Value;
+
+            if (updateDto.Tags != null && updateDto.Tags.Any()) // Đảm bảo tags không phải null hoặc rỗng
+                image.Tags = updateDto.Tags;
 
             _unitOfWork.Images.Update(image);
             await _unitOfWork.CompleteAsync();
@@ -221,6 +238,7 @@ public class ImageService : IImageService
                 Description = image.Description,
                 Price = image.Price,
                 StoryOfArt = image.StoryOfArt,
+                Location = image.Location,
                 Orientation = image.Orientation,
                 Tags = image.Tags,
                 FileName = image.FileName,
@@ -238,9 +256,9 @@ public class ImageService : IImageService
             throw new Exception("An error occurred while updating the image.", ex);
         }
     }
-    
+
     /// <summary>
-    /// 
+    /// Xóa mềm 1 tấm ảnh trong DB
     /// </summary>
     /// <param name="imageId"></param>
     /// <returns></returns>
@@ -291,10 +309,4 @@ public class ImageService : IImageService
             throw new Exception("An error occurred while deleting the image.", ex);
         }
     }
-
-
-
-
-    
-    
 }

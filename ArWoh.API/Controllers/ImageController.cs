@@ -51,7 +51,7 @@ public class ImageController : ControllerBase
     }
 
 
-    [HttpGet("details/{id}")]
+    [HttpGet("{id}")]
     [ProducesResponseType(typeof(ApiResult<ImageDto>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]
     [ProducesResponseType(typeof(ApiResult<object>), 500)]

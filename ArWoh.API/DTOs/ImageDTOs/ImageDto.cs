@@ -5,12 +5,13 @@ namespace ArWoh.API.DTOs.ImageDTOs;
 public class ImageDto
 {
     public int Id { get; set; }
-    public string Title { get; set; }
-    public string Description { get; set; }
+    public string? Title { get; set; }
+    public string? Description { get; set; }
     public decimal Price { get; set; }
     public string? StoryOfArt { get; set; }
     public OrientationType? Orientation { get; set; }
-    public string? Tags { get; set; }
-    public string FileName { get; set; }
-    public string Url { get; set; }
+    public List<string>? Tags { get; set; }      
+    public string? Location { get; set; }
+    public string? FileName { get; set; }
+    public string? Url { get; set; }
 }

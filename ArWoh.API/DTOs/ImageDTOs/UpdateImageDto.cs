@@ -9,5 +9,6 @@ public class UpdateImageDto
     public decimal? Price { get; set; }
     public string? StoryOfArt { get; set; }
     public OrientationType? Orientation { get; set; }
-    public string? Tags { get; set; }
+    public List<string>? Tags { get; set; }  
+    public string? Location { get; set; }
 }

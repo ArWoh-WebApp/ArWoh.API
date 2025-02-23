@@ -3,6 +3,8 @@ using System.Text.Json.Serialization;
 using ArWoh.API.Architechture;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.UseUrls("http://0.0.0.0:8080");
+
 builder.Services.SetupIOCContainer();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers()

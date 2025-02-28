@@ -1,6 +1,6 @@
 services:
   arwoh.api:
-    image: arwoh.api
+    image: phuctran362003/arwoh:latest
     build:
       context: .
       dockerfile: ArWoh.API/Dockerfile

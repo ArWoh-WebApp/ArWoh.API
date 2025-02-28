@@ -2,7 +2,6 @@ using ArWoh.API.DTOs.UserDTOs;
 using ArWoh.API.Entities;
 using ArWoh.API.Enums;
 using ArWoh.API.Interface;
-using Microsoft.AspNetCore.Identity;
 using VaccinaCare.Application.Ultils;
 
 namespace ArWoh.API.Service;
@@ -66,6 +65,11 @@ public class AuthService : IAuthService
         }
     }
 
+    /// <summary>
+    /// Tạo tài khoản cho photographer
+    /// </summary>
+    /// <param name="registrationDto"></param>
+    /// <returns></returns>
     public async Task<User> RegisterPhotographer(UserRegistrationDto registrationDto)
     {
         try
@@ -108,8 +112,6 @@ public class AuthService : IAuthService
             return null;
         }
     }
-
-
 
     public async Task<string> Login(UserLoginDto loginDto, IConfiguration configuration)
     {

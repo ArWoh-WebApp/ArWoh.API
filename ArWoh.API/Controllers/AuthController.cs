@@ -1,8 +1,6 @@
-using System.Security.Claims;
 using ArWoh.API.DTOs.UserDTOs;
 using ArWoh.API.Entities;
 using ArWoh.API.Interface;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VaccinaCare.Application.Ultils;
 
@@ -76,7 +74,7 @@ public class AuthController : ControllerBase
             });
         }
     }
-    
+
     [HttpPost("register/photographer")]
     [ProducesResponseType(typeof(ApiResult<User>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]
@@ -153,7 +151,7 @@ public class AuthController : ControllerBase
             if (string.IsNullOrEmpty(token))
             {
                 return Unauthorized(new ApiResult<object>
-                    { IsSuccess = false, Message = "Invalid email or password." });
+                { IsSuccess = false, Message = "Invalid email or password." });
             }
 
             return Ok(new ApiResult<string>
@@ -173,4 +171,5 @@ public class AuthController : ControllerBase
             });
         }
     }
+
 }

@@ -1,6 +1,6 @@
+using ArWoh.API.Architechture;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using ArWoh.API.Architechture;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseUrls("http://0.0.0.0:8080");
@@ -43,7 +43,7 @@ catch (Exception e)
 app.UseStaticFiles();
 
 app.UseSwagger();
-app.UseCors("CorsPolicy");
+app.UseCors("AllowAll");
 app.UseAuthorization();
 app.MapControllers();
 

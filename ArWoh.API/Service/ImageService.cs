@@ -17,40 +17,6 @@ public class ImageService : IImageService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<IEnumerable<ImageDto>> GetImagesByPhotographer(int photographerId)
-    {
-        try
-        {
-            _loggerService.Info($"Fetching all images uploaded by photographer with ID: {photographerId}");
-
-            var images = await _unitOfWork.Images
-                .FirstOrDefaultAsync(i => i.PhotographerId == photographerId)
-                .Select(i => new ImageDto
-                {
-                    Id = i.Id,
-                    Title = i.Title,
-                    Description = i.Description,
-                    Price = i.Price,
-                    Orientation = i.Orientation,
-                    Tags = i.Tags,
-                    Location = i.Location,
-                    StoryOfArt = i.StoryOfArt,
-                    FileName = i.FileName,
-                    Url = i.Url,
-                    PhotographerId = i.PhotographerId
-                })
-                .ToListAsync();
-
-            return images;
-        }
-        catch (Exception ex)
-        {
-            _loggerService.Error($"Error fetching images by photographer ID {photographerId}: {ex.Message}");
-            throw;
-        }
-    }
-
-
     /// <summary>
     /// Lấy list tất cả các images lên
     /// </summary>

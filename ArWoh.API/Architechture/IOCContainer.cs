@@ -26,7 +26,6 @@ public static class IOCContainer
         //Add business services
         services.SetupBusinessServicesLayer();
 
-        services.SetupCORS();
         services.SetupJWT();
 
         services.SetupThirdParty();
@@ -78,24 +77,6 @@ public static class IOCContainer
 
         return services;
     }
-
-    private static IServiceCollection SetupCORS(this IServiceCollection services)
-    {
-        services.AddCors(opt =>
-        {
-            opt.AddPolicy("AllowAll",
-        builder =>
-        {
-            builder.AllowAnyOrigin()
-                   .AllowAnyMethod()
-                   .AllowAnyHeader();
-        });
-
-        });
-
-        return services;
-    }
-
 
     private static IServiceCollection SetupSwagger(this IServiceCollection services)
     {

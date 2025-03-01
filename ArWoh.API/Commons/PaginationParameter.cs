@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 
-namespace VaccinaCare.Repository.Commons
+namespace ArWoh.API.Commons
 {
     public class PaginationParameter
     {

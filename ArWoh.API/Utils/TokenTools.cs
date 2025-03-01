@@ -9,7 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VaccinaCare.Repository.Utils
+namespace ArWoh.API.Utils
 {
     public static class TokenTools // NHỚ XEM LẠI CÁI BUỒI NÀY
     {

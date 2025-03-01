@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace VaccinaCare.Repository.Utils
+namespace ArWoh.API.Utils
 {
     public static class StringExtensions
     {

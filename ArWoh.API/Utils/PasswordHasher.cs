@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace VaccinaCare.Application.Ultils;
+namespace ArWoh.API.Utils;
 
 public class PasswordHasher
 {

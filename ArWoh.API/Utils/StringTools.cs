@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace VaccinaCare.Repository.Utils
+namespace ArWoh.API.Utils
 {
     public static class StringTools
     {

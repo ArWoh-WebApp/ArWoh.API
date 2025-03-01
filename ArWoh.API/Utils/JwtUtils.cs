@@ -4,7 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace VaccinaCare.Application.Ultils
+namespace ArWoh.API.Utils
 {
     public static class JwtUtils
     {

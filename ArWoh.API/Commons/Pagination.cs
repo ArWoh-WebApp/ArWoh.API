@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VaccinaCare.Repository.Commons
+namespace ArWoh.API.Commons
 {
     public class Pagination<T> : List<T>
     {

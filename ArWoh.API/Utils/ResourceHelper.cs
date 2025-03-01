@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace VaccinaCare.Repository.Utils
+namespace ArWoh.API.Utils
 {
     public static class ResourceHelper
     {

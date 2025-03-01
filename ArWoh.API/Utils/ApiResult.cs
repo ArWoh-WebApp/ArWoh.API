@@ -1,4 +1,4 @@
-﻿namespace VaccinaCare.Application.Ultils
+﻿namespace ArWoh.API.Utils
 {
     public class ApiResult<T>
     {

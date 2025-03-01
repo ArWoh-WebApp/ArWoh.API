@@ -1,4 +1,5 @@
 ﻿using ArWoh.API.DTOs.UserDTOs;
+using ArWoh.API.Entities;
 using ArWoh.API.Interface;
 
 namespace ArWoh.API.Service
@@ -58,6 +59,37 @@ namespace ArWoh.API.Service
             }
 
         }
+
+
+        public async Task<List<UserProfileDto>> GetAllUsers()
+        {
+            try
+            {
+                var users = await _unitOfWork.Users.GetAllAsync();
+
+                if (users == null || !users.Any())
+                {
+                    _logger.Warn("No users found in the database.");
+                    return new List<UserProfileDto>();
+                }
+
+                _logger.Info($"Successfully retrieved {users.Count()} users.");
+
+                return users.Select(user => new UserProfileDto
+                {
+                    Username = user.Username,
+                    Email = user.Email,
+                    Bio = user.Bio,
+                    ProfilePictureUrl = user.ProfilePictureUrl
+                }).ToList();
+            }
+            catch (Exception e)
+            {
+                _logger.Error($"An error occurred while fetching all users: {e.Message}");
+                throw;
+            }
+        }
+
 
 
     }

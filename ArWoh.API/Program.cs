@@ -18,15 +18,15 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var frontendOrigin = "https://arwoh-fe.vercel.app";
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("FrontendPolicy", builder =>
-    {
-        builder.WithOrigins(frontendOrigin)
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-    });
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
 });
 
 var app = builder.Build();
@@ -54,7 +54,8 @@ catch (Exception e)
 app.UseStaticFiles();
 
 app.UseSwagger();
-app.UseCors("FrontendPolicy");
+
+app.UseCors("AllowAll");
 app.UseAuthorization();
 app.MapControllers();
 

@@ -62,6 +62,7 @@ public class CartService : ICartService
                     Price = image.Price,
                     CartId = cart.Id
                 };
+
                 await _unitOfWork.CartItems.AddAsync(newCartItem);
             }
 

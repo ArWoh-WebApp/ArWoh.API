@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArWoh.API.Migrations
 {
     [DbContext(typeof(ArWohDbContext))]
-    [Migration("20250301135247_update-db")]
-    partial class updatedb
+    [Migration("20250301173425_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

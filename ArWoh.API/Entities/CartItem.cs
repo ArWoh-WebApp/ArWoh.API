@@ -17,7 +17,8 @@ public class CartItem : BaseEntity
 
     [Required] public int CartId { get; set; } // Liên kết với giỏ hàng
 
-    [ForeignKey("CartId")] public Cart Cart { get; set; }
+    [ForeignKey("CartId")] 
+    public Cart Cart { get; set; }
 
     [ForeignKey("ImageId")] public Image Image { get; set; }
 }

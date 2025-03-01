@@ -12,11 +12,13 @@ namespace ArWoh.API.Controllers
     {
         private readonly IUserService _userService;
         private readonly IClaimService _claimService;
+        private readonly ILoggerService _logger;
 
-        public UserController(IUserService userService, IClaimService claimService)
+        public UserController(IUserService userService, IClaimService claimService, ILoggerService logger)
         {
             _userService = userService;
             _claimService = claimService;
+            _logger = logger;
         }
 
 
@@ -54,6 +56,37 @@ namespace ArWoh.API.Controllers
                 return StatusCode(500, ApiResult<object>.Error($"An error occurred while retrieving user profile: {ex.Message}"));
             }
         }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(ApiResult<List<UserProfileDto>>), 200)]
+        [ProducesResponseType(typeof(ApiResult<object>), 400)]
+        [ProducesResponseType(typeof(ApiResult<object>), 401)]
+        [ProducesResponseType(typeof(ApiResult<object>), 500)]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            try
+            {
+                var users = await _userService.GetAllUsers();
+
+                return Ok(new ApiResult<List<UserProfileDto>>
+                {
+                    IsSuccess = true,
+                    Message = "Users retrieved successfully",
+                    Data = users
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error while fetching users: {ex.Message}");
+                return StatusCode(500, new ApiResult<object>
+                {
+                    IsSuccess = false,
+                    Message = "An internal server error occurred",
+                    Data = null
+                });
+            }
+        }
+
 
 
     }

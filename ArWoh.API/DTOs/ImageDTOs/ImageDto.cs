@@ -10,7 +10,7 @@ public class ImageDto
     public decimal Price { get; set; }
     public string? StoryOfArt { get; set; }
     public OrientationType? Orientation { get; set; }
-    public List<string>? Tags { get; set; }      
+    public List<string>? Tags { get; set; }
     public string? Location { get; set; }
     public string? FileName { get; set; }
     public string? Url { get; set; }

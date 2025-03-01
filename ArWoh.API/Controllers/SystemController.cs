@@ -69,7 +69,7 @@ public class SystemController : ControllerBase
 
         var users = new List<User>
         {
-            new User
+            new()
             {
                 Username = "customer_user",
                 Email = "customer@gmail.com",
@@ -78,7 +78,7 @@ public class SystemController : ControllerBase
                 Bio = "A passionate art lover.",
                 ProfilePictureUrl = "https://example.com/images/customer.png"
             },
-            new User
+            new()
             {
                 Username = "photographer_user",
                 Email = "photographer@gmail.com",
@@ -87,7 +87,7 @@ public class SystemController : ControllerBase
                 Bio = "Professional nature photographer.",
                 ProfilePictureUrl = "https://example.com/images/photographer.png"
             },
-            new User
+            new()
             {
                 Username = "admin_user",
                 Email = "admin@gmail.com",
@@ -110,7 +110,7 @@ public class SystemController : ControllerBase
     {
         var images = new List<Image>
         {
-            new Image
+            new()
             {
                 Title = "Mountain Stream at Dawn",
                 Description =
@@ -123,7 +123,7 @@ public class SystemController : ControllerBase
                 FileName = "mountain_stream_dawn.jpg",
                 StoryOfArt = "A peaceful moment captured during dawn, highlighting nature’s untouched beauty."
             },
-            new Image
+            new()
             {
                 Title = "City Skyline at Dusk",
                 Description =
@@ -137,9 +137,9 @@ public class SystemController : ControllerBase
                 Price = 2500000,
                 FileName = "mountain_stream_dawn.jpg",
                 StoryOfArt =
-                    "As daylight fades, the city transforms into a vibrant canvas of twinkling lights and urban silhouettes. The dusk creates a dramatic contrast between the illuminated skyscrapers and the darkening sky.",
+                    "As daylight fades, the city transforms into a vibrant canvas of twinkling lights and urban silhouettes. The dusk creates a dramatic contrast between the illuminated skyscrapers and the darkening sky."
             },
-            new Image
+            new()
             {
                 Title = "Forest Trail in Autumn",
                 Description =
@@ -153,7 +153,7 @@ public class SystemController : ControllerBase
                 StoryOfArt =
                     "The forest comes alive with vibrant hues of red, orange, and yellow. A winding trail invites wanderers to explore the crisp, refreshing atmosphere of autumn."
             },
-            new Image
+            new()
             {
                 Title = "Desert Mirage",
                 Description =
@@ -166,9 +166,9 @@ public class SystemController : ControllerBase
                 Price = 1000000,
                 FileName = "desert_mirage.jpg",
                 StoryOfArt =
-                    "The illusionary effect of heat waves in the vast desert creates an ethereal scene, mesmerizing travelers.",
+                    "The illusionary effect of heat waves in the vast desert creates an ethereal scene, mesmerizing travelers."
             },
-            new Image
+            new()
             {
                 Title = "Ocean Waves Crashing",
                 Description =
@@ -180,9 +180,9 @@ public class SystemController : ControllerBase
                 Location = "Big Sur, California",
                 Price = 1500000,
                 FileName = "ocean_waves_crashing.jpg",
-                StoryOfArt = "A moment capturing the fierce yet graceful power of ocean waves.",
+                StoryOfArt = "A moment capturing the fierce yet graceful power of ocean waves."
             },
-            new Image
+            new()
             {
                 Title = "Snowy Mountain Peaks",
                 Description =
@@ -194,9 +194,9 @@ public class SystemController : ControllerBase
                 Location = "Swiss Alps, Switzerland",
                 Price = 2000000,
                 FileName = "snowy_mountain_peaks.jpg",
-                StoryOfArt = "A breathtaking view of snowy peaks, symbolizing the raw and untouched beauty of nature.",
+                StoryOfArt = "A breathtaking view of snowy peaks, symbolizing the raw and untouched beauty of nature."
             },
-            new Image
+            new()
             {
                 Title = "Vibrant Flower Garden",
                 Description =
@@ -208,9 +208,9 @@ public class SystemController : ControllerBase
                 Location = "Provence, France",
                 Price = 2300000,
                 FileName = "vibrant_flower_garden.jpg",
-                StoryOfArt = "An explosion of colors and life captured in a vibrant flower garden.",
+                StoryOfArt = "An explosion of colors and life captured in a vibrant flower garden."
             },
-            new Image
+            new()
             {
                 Title = "Rainy City Street",
                 Description =
@@ -223,9 +223,9 @@ public class SystemController : ControllerBase
                 Price = 5000000,
                 FileName = "rainy_city_street.jpg",
                 StoryOfArt =
-                    "An urban dreamscape, where neon lights and rain create an artistic blend of colors and reflections.",
+                    "An urban dreamscape, where neon lights and rain create an artistic blend of colors and reflections."
             },
-            new Image
+            new()
             {
                 Title = "Sunset Over the Lake",
                 Description =
@@ -237,9 +237,9 @@ public class SystemController : ControllerBase
                 Location = "Lake Tahoe, USA",
                 Price = 2400000,
                 FileName = "sunset_over_the_lake.jpg",
-                StoryOfArt = "A peaceful moment reflecting the golden hues of the setting sun over a tranquil lake.",
+                StoryOfArt = "A peaceful moment reflecting the golden hues of the setting sun over a tranquil lake."
             },
-            new Image
+            new()
             {
                 Title = "Starry Night Sky",
                 Description =
@@ -251,9 +251,9 @@ public class SystemController : ControllerBase
                 Location = "Atacama Desert, Chile",
                 Price = 4000000,
                 FileName = "starry_night_sky.jpg",
-                StoryOfArt = "A gateway to the cosmos, capturing the mesmerizing beauty of the night sky.",
+                StoryOfArt = "A gateway to the cosmos, capturing the mesmerizing beauty of the night sky."
             },
-            new Image
+            new()
             {
                 Title = "Countryside Road",
                 Description =
@@ -265,9 +265,9 @@ public class SystemController : ControllerBase
                 Location = "Tuscany, Italy",
                 Price = 4000000,
                 FileName = "countryside_road.jpg",
-                StoryOfArt = "A journey through rolling hills, where time slows down and nature takes center stage.",
+                StoryOfArt = "A journey through rolling hills, where time slows down and nature takes center stage."
             },
-            new Image
+            new()
             {
                 Title = "Ancient Castle Ruins",
                 Description =
@@ -280,9 +280,9 @@ public class SystemController : ControllerBase
                 Price = 4000000,
                 FileName = "ancient_castle_ruins.jpg",
                 StoryOfArt =
-                    "A glimpse into the past, where the echoes of history whisper through the crumbling stones.",
+                    "A glimpse into the past, where the echoes of history whisper through the crumbling stones."
             },
-            new Image
+            new()
             {
                 Title = "Lush Tropical Forest",
                 Description =
@@ -294,9 +294,9 @@ public class SystemController : ControllerBase
                 Location = "Costa Rica",
                 Price = 4000000,
                 FileName = "lush_tropical_forest.jpg",
-                StoryOfArt = "A hidden paradise, where nature flourishes in an explosion of green.",
+                StoryOfArt = "A hidden paradise, where nature flourishes in an explosion of green."
             },
-            new Image
+            new()
             {
                 Title = "Calm River Bend",
                 Description =
@@ -308,9 +308,9 @@ public class SystemController : ControllerBase
                 Location = "Loire Valley, France",
                 Price = 4000000,
                 FileName = "calm_river_bend.jpg",
-                StoryOfArt = "A peaceful waterway winding through nature’s quiet embrace.",
+                StoryOfArt = "A peaceful waterway winding through nature’s quiet embrace."
             },
-            new Image
+            new()
             {
                 Title = "Modern Architecture",
                 Description =
@@ -322,9 +322,9 @@ public class SystemController : ControllerBase
                 Location = "Dubai, UAE",
                 Price = 4000000,
                 FileName = "modern_architecture.jpg",
-                StoryOfArt = "A vision of the future, where form meets function in architectural brilliance.",
+                StoryOfArt = "A vision of the future, where form meets function in architectural brilliance."
             },
-            new Image
+            new()
             {
                 Title = "Misty Morning in the Valley",
                 Description =
@@ -336,7 +336,7 @@ public class SystemController : ControllerBase
                 Location = "Yosemite Valley, USA",
                 Price = 4000000,
                 FileName = "misty_morning_valley.jpg",
-                StoryOfArt = "A magical morning where mist dances over the rolling hills.",
+                StoryOfArt = "A magical morning where mist dances over the rolling hills."
             }
         };
 
@@ -365,10 +365,7 @@ public class SystemController : ControllerBase
             };
 
             // Xóa dữ liệu từng bảng theo thứ tự
-            foreach (var deleteFunc in tablesToDelete)
-            {
-                await deleteFunc();
-            }
+            foreach (var deleteFunc in tablesToDelete) await deleteFunc();
 
             await transaction.CommitAsync();
             _logger.Success("Xóa sạch dữ liệu trong database thành công.");

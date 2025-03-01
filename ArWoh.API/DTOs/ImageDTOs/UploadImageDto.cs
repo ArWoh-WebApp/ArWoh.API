@@ -11,24 +11,18 @@ public class UploadImageDto
     public string Title { get; set; }
 
     [Required]
-    [DefaultValue("No Description")] 
+    [DefaultValue("No Description")]
     public string Description { get; set; }
 
-    [Required]
-    [DefaultValue(0.0)]
-    public decimal Price { get; set; }
+    [Required] [DefaultValue(0.0)] public decimal Price { get; set; }
 
-    [DefaultValue(null)] 
-    public string? Location { get; set; }
+    [DefaultValue(null)] public string? Location { get; set; }
 
-    [DefaultValue(OrientationType.Landscape)] 
+    [DefaultValue(OrientationType.Landscape)]
     public OrientationType? Orientation { get; set; }
 
-    [DefaultValue(null)] 
-    public List<string>? Tags { get; set; }  
-    [DefaultValue("No story provided")]
-    public string StoryOfArt { get; set; } = "No story provided"; 
+    [DefaultValue(null)] public List<string>? Tags { get; set; }
+    [DefaultValue("No story provided")] public string StoryOfArt { get; set; } = "No story provided";
 
-    [Required]
-    public IFormFile File { get; set; }
+    [Required] public IFormFile File { get; set; }
 }

@@ -1,8 +1,7 @@
-﻿namespace ArWoh.API.Enums
+﻿namespace ArWoh.API.Enums;
+
+public enum PaymentStatusEnum
 {
-    public enum PaymentStatusEnum
-    {
-        PENDING,
-        COMPLETED
-    }
+    PENDING,
+    COMPLETED
 }

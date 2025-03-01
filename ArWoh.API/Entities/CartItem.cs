@@ -5,8 +5,7 @@ namespace ArWoh.API.Entities;
 
 public class CartItem : BaseEntity
 {
-    [Required]
-    public int ImageId { get; set; } // Ảnh được thêm vào giỏ
+    [Required] public int ImageId { get; set; } // Ảnh được thêm vào giỏ
 
     [Required]
     [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]
@@ -16,12 +15,9 @@ public class CartItem : BaseEntity
     [Column(TypeName = "decimal(18,2)")]
     public decimal Price { get; set; } // Giá của ảnh tại thời điểm thêm vào giỏ
 
-    [Required]
-    public int CartId { get; set; } // Liên kết với giỏ hàng
+    [Required] public int CartId { get; set; } // Liên kết với giỏ hàng
 
-    [ForeignKey("CartId")]
-    public Cart Cart { get; set; }
+    [ForeignKey("CartId")] public Cart Cart { get; set; }
 
-    [ForeignKey("ImageId")]
-    public Image Image { get; set; }
+    [ForeignKey("ImageId")] public Image Image { get; set; }
 }

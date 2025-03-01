@@ -81,25 +81,21 @@ public class ImageController : ControllerBase
     public async Task<IActionResult> UploadImage([FromForm] UploadImageDto uploadDto)
     {
         if (uploadDto == null || uploadDto.File == null || uploadDto.File.Length == 0)
-        {
             return BadRequest(new ApiResult<object>
             {
                 IsSuccess = false,
                 Message = "No file uploaded."
             });
-        }
 
         try
         {
             var photographerId = _claimService.GetCurrentUserId();
             if (photographerId == 0)
-            {
                 return Unauthorized(new ApiResult<object>
                 {
                     IsSuccess = false,
                     Message = "User authentication failed."
                 });
-            }
 
             var image = await _imageService.UploadImageAsync(uploadDto, photographerId);
 
@@ -127,7 +123,7 @@ public class ImageController : ControllerBase
             });
         }
     }
-    
+
     [HttpPut("{id}")]
     [Authorize(Policy = "PhotographerPolicy")]
     [ProducesResponseType(typeof(ApiResult<ImageDto>), 200)]
@@ -179,5 +175,4 @@ public class ImageController : ControllerBase
             return StatusCode(500, ApiResult<object>.Error("An unexpected error occurred"));
         }
     }
-
 }

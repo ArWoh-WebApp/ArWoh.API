@@ -1,8 +1,7 @@
-﻿namespace ArWoh.API.DTOs.CartItemDTOs
+﻿namespace ArWoh.API.DTOs.CartItemDTOs;
+
+public class UpdateCartItemDto
 {
-    public class UpdateCartItemDto
-    {
-        public int CartItemId { get; set; }
-        public int Quantity { get; set; }
-    }
+    public int CartItemId { get; set; }
+    public int Quantity { get; set; }
 }

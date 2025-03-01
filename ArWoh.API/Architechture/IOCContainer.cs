@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using ArWoh.API.Service.ThirdPartyService.Interfaces;
+using ArWoh.API.Service.ThirdPartyService.Services;
+using Net.payOS;
 
 namespace ArWoh.API.Architechture;
 
@@ -41,7 +44,17 @@ public static class IOCContainer
             .AddEnvironmentVariables()
             .Build();
 
-        //ĐỂ TRỐNG, SAU NÀY SẼ SETUP FIRE BASE, VNPAY, PAYOS SAU
+        //PayOS
+        services.AddSingleton<PayOS>(provider =>
+        {
+            var clientId = configuration["Payment:PayOS:ClientId"] ??
+                           throw new Exception("Cannot find PAYOS_CLIENT_ID");
+            var apiKey = configuration["Payment:PayOS:ApiKey"] ?? throw new Exception("Cannot find PAYOS_API_KEY");
+            var checksumKey = configuration["Payment:PayOS:ChecksumKey"] ??
+                              throw new Exception("Cannot find PAYOS_CHECKSUM_KEY");
+
+            return new PayOS(clientId, apiKey, checksumKey);
+        });
         return services;
     }
 
@@ -57,6 +70,9 @@ public static class IOCContainer
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ILoggerService, LoggerService>();
         services.AddScoped<IClaimService, ClaimService>();
+        services.AddScoped<IPaymentService, PaymentService>();
+        services.AddScoped<IPayOSService, PayOSService>();
+
         services.AddScoped<ICartService, CartService>();
         services.AddHttpContextAccessor();
 
@@ -86,7 +102,7 @@ public static class IOCContainer
             c.UseInlineDefinitionsForEnums();
 
             c.SwaggerDoc("v1",
-                new Microsoft.OpenApi.Models.OpenApiInfo { Title = "VaccinaCareAPI", Version = "v1" });
+                new OpenApiInfo { Title = "VaccinaCareAPI", Version = "v1" });
             var jwtSecurityScheme = new OpenApiSecurityScheme
             {
                 Name = "JWT Authentication",
@@ -101,17 +117,17 @@ public static class IOCContainer
 
             var securityRequirement = new OpenApiSecurityRequirement
             {
+                {
+                    new OpenApiSecurityScheme
                     {
-                        new OpenApiSecurityScheme
+                        Reference = new OpenApiReference
                         {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        new string[] { }
-                    }
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] { }
+                }
             };
 
             c.AddSecurityRequirement(securityRequirement);

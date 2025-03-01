@@ -28,17 +28,14 @@ public class AuthService : IAuthService
         {
             // Kiểm tra xem email đã tồn tại chưa
             var existingUser = await _unitOfWork.Users.FirstOrDefaultAsync(u => u.Email == registrationDto.Email);
-            if (existingUser != null)
-            {
-                return null; // Email đã được sử dụng
-            }
+            if (existingUser != null) return null; // Email đã được sử dụng
 
             // Băm mật khẩu
             var passwordHasher = new PasswordHasher();
-            string passwordHash = passwordHasher.HashPassword(registrationDto.Password);
+            var passwordHash = passwordHasher.HashPassword(registrationDto.Password);
 
             // Tạo username từ email nếu không có username được cung cấp
-            string username = string.IsNullOrWhiteSpace(registrationDto.Username)
+            var username = string.IsNullOrWhiteSpace(registrationDto.Username)
                 ? registrationDto.Email.Split('@')[0]
                 : registrationDto.Username;
 
@@ -76,17 +73,14 @@ public class AuthService : IAuthService
         {
             // Kiểm tra xem email đã tồn tại chưa
             var existingUser = await _unitOfWork.Users.FirstOrDefaultAsync(u => u.Email == registrationDto.Email);
-            if (existingUser != null)
-            {
-                return null; // Email đã được sử dụng
-            }
+            if (existingUser != null) return null; // Email đã được sử dụng
 
             // Băm mật khẩu
             var passwordHasher = new PasswordHasher();
-            string passwordHash = passwordHasher.HashPassword(registrationDto.Password);
+            var passwordHash = passwordHasher.HashPassword(registrationDto.Password);
 
             // Tạo username từ email nếu không có username được cung cấp
-            string username = string.IsNullOrWhiteSpace(registrationDto.Username)
+            var username = string.IsNullOrWhiteSpace(registrationDto.Username)
                 ? registrationDto.Email.Split('@')[0]
                 : registrationDto.Username;
 
@@ -119,21 +113,15 @@ public class AuthService : IAuthService
         {
             // Find the user by email
             var user = await _unitOfWork.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email);
-            if (user == null)
-            {
-                return null; // User does not exist
-            }
+            if (user == null) return null; // User does not exist
 
             var passwordHasher = new PasswordHasher();
-            bool isPasswordValid = passwordHasher.VerifyPassword(loginDto.Password, user.PasswordHash);
+            var isPasswordValid = passwordHasher.VerifyPassword(loginDto.Password, user.PasswordHash);
 
-            if (!isPasswordValid)
-            {
-                return null; // Incorrect password
-            }
+            if (!isPasswordValid) return null; // Incorrect password
 
             // Generate JWT token
-            string token = JwtUtils.GenerateJwtToken(
+            var token = JwtUtils.GenerateJwtToken(
                 user.Id,
                 user.Email,
                 user.Role.ToString(),

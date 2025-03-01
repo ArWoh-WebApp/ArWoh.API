@@ -14,4 +14,3 @@ public class User : BaseEntity
     public ICollection<Image> Images { get; set; }
     public ICollection<PaymentTransaction> Transactions { get; set; }
 }
-

@@ -1,10 +1,14 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace ArWoh.API.Utils
+namespace ArWoh.API.Utils;
+
+public static class StringExtensions
 {
-    public static class StringExtensions
+    private static readonly Regex _stripJsonWhitespaceRegex =
+        new("(\"(?:[^\"\\\\]|\\\\.)*\")|\\s+", RegexOptions.Compiled);
+
+    public static string StripJsonWhitespace(this string json)
     {
-        private static readonly Regex _stripJsonWhitespaceRegex = new Regex("(\"(?:[^\"\\\\]|\\\\.)*\")|\\s+", RegexOptions.Compiled);
-        public static string StripJsonWhitespace(this string json) => _stripJsonWhitespaceRegex.Replace(json, "$1");
+        return _stripJsonWhitespaceRegex.Replace(json, "$1");
     }
 }

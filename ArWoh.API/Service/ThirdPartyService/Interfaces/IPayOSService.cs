@@ -2,13 +2,10 @@
 using ArWoh.API.Service.ThirdPartyService.Types;
 using Net.payOS.Types;
 
-namespace ArWoh.API.Service.ThirdPartyService.Interfaces
+namespace ArWoh.API.Service.ThirdPartyService.Interfaces;
+
+public interface IPayOSService
 {
-    public interface IPayOSService
-    {
-        Task<CreatePaymentResponse> CreatePaymentLink(CreatePaymentRequest request);
-        Task<WebhookResponse> HandleWebhook(WebhookType webhookData);
-    }
-
-
+    Task<CreatePaymentResponse> CreatePaymentLink(CreatePaymentRequest request);
+    Task<WebhookResponse> HandleWebhook(WebhookType webhookData);
 }

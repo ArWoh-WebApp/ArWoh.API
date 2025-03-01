@@ -1,8 +1,7 @@
-﻿namespace ArWoh.API.Enums
+﻿namespace ArWoh.API.Enums;
+
+public enum PaymentGatewayEnum
 {
-    public enum PaymentGatewayEnum
-    {
-        PAYOS = 0,
-        VNPAY = 1,
-    }
+    PAYOS = 0,
+    VNPAY = 1
 }

@@ -2,25 +2,19 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ArWoh.API.Entities
+namespace ArWoh.API.Entities;
+
+public class Payment : BaseEntity
 {
-    public class Payment : BaseEntity
-    {
-        [Required]
-        public int PaymentTransactionId { get; set; }
+    [Required] public int PaymentTransactionId { get; set; }
 
-        [Required]
-        public decimal Amount { get; set; }
+    [Required] public decimal Amount { get; set; }
 
-        [Required]
-        public PaymentGatewayEnum PaymentGateway { get; set; } // "PAYOS" hoặc "VNPAY"
+    [Required] public PaymentGatewayEnum PaymentGateway { get; set; } // "PAYOS" hoặc "VNPAY"
 
-        [Required]
-        public PaymentStatusEnum PaymentStatus { get; set; } = PaymentStatusEnum.PENDING;
+    [Required] public PaymentStatusEnum PaymentStatus { get; set; } = PaymentStatusEnum.PENDING;
 
-        public string? GatewayTransactionId { get; set; } // ID từ PAYOS/VNPAY nếu có
+    public string? GatewayTransactionId { get; set; } // ID từ PAYOS/VNPAY nếu có
 
-        [ForeignKey("PaymentTransactionId")]
-        public PaymentTransaction PaymentTransaction { get; set; }
-    }
+    [ForeignKey("PaymentTransactionId")] public PaymentTransaction PaymentTransaction { get; set; }
 }

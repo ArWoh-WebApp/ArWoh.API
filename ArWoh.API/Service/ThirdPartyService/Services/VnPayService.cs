@@ -1,8 +1,10 @@
 ﻿using ArWoh.API.Entities;
-using ArWoh.API.Enums;
 using ArWoh.API.Interface;
 using ArWoh.API.Service.ThirdPartyService.Interfaces;
 using ArWoh.API.Service.ThirdPartyService.Types;
+using VNPAY.NET;
+using VNPAY.NET.Enums;
+using VNPAY.NET.Models;
 
 namespace ArWoh.API.Service.ThirdPartyService.Services
 {
@@ -21,52 +23,69 @@ namespace ArWoh.API.Service.ThirdPartyService.Services
 
         public async Task<CreatePaymentResponse> CreateLink(CreatePaymentRequest createPaymentRequest)
         {
-            if (createPaymentRequest.PaymentId == Guid.Empty)
+            if (createPaymentRequest.PaymentId == null)
             {
                 throw new Exception("400 - PaymentId is required");
             }
-            Payment payment = await _context.Payments.FindAsync(createPaymentRequest.PaymentId);
 
+            // Lấy thông tin thanh toán từ DB
+            var payment = await _context.Payments.FindAsync(createPaymentRequest.PaymentId);
             if (payment == null)
             {
                 throw new Exception("404 - Payment not found");
             }
-            long orderCode = int.Parse(DateTimeOffset.Now.ToString("ffffff"));
-            //Create payment transaction
-            PaymentTransaction paymentTransaction = new PaymentTransaction
+
+            // Tạo mã đơn hàng dựa trên timestamp
+            long orderCode = long.Parse(DateTimeOffset.UtcNow.ToString("yyyyMMddHHmmssfff"));
+
+            // Tạo mới Transaction liên kết với Payment
+            Transaction transaction = new Transaction
             {
-                PaymentId = payment.Id,
-                CustomerId = payment.CustomerId,
-                PaymentGatewayTransactionId = orderCode,
+                CustomerId = payment.Transaction.CustomerId, // Lấy từ Transaction ban đầu
+                ImageId = payment.Transaction.ImageId, // Lấy từ Transaction ban đầu
                 Amount = payment.Amount,
-                Type = PaymentTransactionTypeEnum.PAY.ToString(),
-                PaymentMethod = PaymentGatewayEnum.VNPAY.ToString(),
-                Status = PaymentStatusEnum.PENDIMG.ToString(),
-                TransactionLog = ""
+                PaymentStatus = Enums.PaymentStatusEnum.PENDING,
+                IsPhysicalPrint = payment.Transaction.IsPhysicalPrint,
             };
 
-            //Add into DB
-            await _context.PaymentTransactions.AddAsync(paymentTransaction);
+            // Lưu transaction vào database
+            await _context.Transactions.AddAsync(transaction);
+            await _context.SaveChangesAsync();
 
-
-            var request = new PaymentRequest
+            // Tạo request cho VnPay
+            var paymentRequest = new PaymentRequest
             {
                 PaymentId = orderCode,
-                Money = (int)payment.Amount,
+                Money = (int)(payment.Amount * 100), // VnPay yêu cầu đơn vị là VND (đồng)
                 Description = "Thanh toán hóa đơn: " + orderCode,
                 IpAddress = "SAMPLE_IP_ADDRESS",
-                BankCode = BankCode.ANY, // Tùy chọn. Mặc định là tất cả phương thức giao dịch
-                CreatedDate = DateTime.UtcNow.AddHours(7), // Tùy chọn. Mặc định là thời điểm hiện tại
-                Currency = Currency.VND, // Tùy chọn. Mặc định là VND (Việt Nam đồng)
-                Language = DisplayLanguage.Vietnamese // Tùy chọn. Mặc định là tiếng Việt
+                BankCode = BankCode.ANY, // Mặc định cho tất cả ngân hàng
+                CreatedDate = DateTime.UtcNow.AddHours(7), // Giờ Việt Nam
+                Currency = Currency.VND, // Đơn vị tiền tệ
+                Language = DisplayLanguage.Vietnamese // Ngôn ngữ hiển thị
             };
 
-            var paymentUrl = _vnPay.GetPaymentUrl(request);
+            // Gọi VnPay để lấy URL thanh toán
+            string paymentUrl = _vnPay.GetPaymentUrl(paymentRequest);
 
-            return new CreatePaymentResponse
+            if (string.IsNullOrEmpty(paymentUrl))
             {
-                PaymentUrl = paymentUrl
-            };
+                throw new Exception("500 - Failed to generate payment link.");
+            }
+
+            // Cập nhật TransactionId vào Payment để theo dõi
+            payment.TransactionId = transaction.Id;
+            _context.Payments.Update(payment);
+            await _context.SaveChangesAsync();
+
+            // Ghi log
+            _logger.Info($"Created VnPay payment link for PaymentId: {payment.Id}, TransactionId: {transaction.Id}, URL: {paymentUrl}");
+
+            return new CreatePaymentResponse { PaymentUrl = paymentUrl };
         }
+
+
+
+
     }
 }

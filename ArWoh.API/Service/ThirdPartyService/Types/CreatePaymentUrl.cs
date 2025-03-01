@@ -8,8 +8,8 @@ namespace ArWoh.API.Service.ThirdPartyService.Types
     }
     public class CreatePaymentRequest
     {
-        public Guid PaymentId { get; set; }
-        public string? ReturnUrl { get; set; } = "https://uydev.id.vn/payment";
+        public int PaymentId { get; set; }
+        public string? ReturnUrl { get; set; }
         public string? PaymentMethod { get; set; } = PaymentGatewayEnum.VNPAY.ToString();
     }
 }

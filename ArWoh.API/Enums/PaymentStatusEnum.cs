@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ArWoh.API.Enums
+﻿namespace ArWoh.API.Enums
 {
     public enum PaymentStatusEnum
     {
-        PENDIMG,
+        PENDING,
         COMPLETED
     }
 }

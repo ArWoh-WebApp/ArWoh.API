@@ -6,5 +6,6 @@ namespace ArWoh.API.Interface
     {
         Task<UserProfileDto> GetUserDetailsById(int userId);
         Task<List<UserProfileDto>> GetAllUsers();
+        Task<List<UserProfileDto>> GetPhotographer();
     }
 }

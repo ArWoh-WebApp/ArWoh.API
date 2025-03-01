@@ -88,6 +88,27 @@ namespace ArWoh.API.Controllers
         }
 
 
+        [HttpGet("photographers")]
+        [ProducesResponseType(typeof(ApiResult<List<UserProfileDto>>), 200)]
+        [ProducesResponseType(typeof(ApiResult<object>), 400)]
+        [ProducesResponseType(typeof(ApiResult<object>), 500)]
+        public async Task<IActionResult> GetPhotographers()
+        {
+            try
+            {
+                var photographers = await _userService.GetPhotographer();
+                if (photographers == null || !photographers.Any())
+                {
+                    return NotFound(ApiResult<object>.Error("No photographers found."));
+                }
 
+                var result = ApiResult<List<UserProfileDto>>.Success(photographers, "Photographers retrieved successfully.");
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ApiResult<object>.Error($"An error occurred while retrieving photographers: {ex.Message}"));
+            }
+        }
     }
 }

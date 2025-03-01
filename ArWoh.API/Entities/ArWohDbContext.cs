@@ -2,10 +2,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ArWoh.API.Entities;
 
-
 public class ArWohDbContext : DbContext
 {
-    public ArWohDbContext(DbContextOptions<ArWohDbContext> options) : base(options) { }
+    public ArWohDbContext(DbContextOptions<ArWohDbContext> options) : base(options)
+    {
+    }
 
     public DbSet<User> Users { get; set; }
     public DbSet<Image> Images { get; set; }
@@ -39,9 +40,9 @@ public class ArWohDbContext : DbContext
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<PaymentTransaction>()
-             .HasOne(t => t.Payment)
-              .WithOne(p => p.Transaction)
-           .HasForeignKey<Payment>(p => p.TransactionId)
+            .HasOne(t => t.Payment)
+            .WithOne(p => p.PaymentTransaction)
+            .HasForeignKey<Payment>(p => p.Id)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Order>()
@@ -55,5 +56,3 @@ public class ArWohDbContext : DbContext
             .HasForeignKey(a => a.AdminId);
     }
 }
-
-

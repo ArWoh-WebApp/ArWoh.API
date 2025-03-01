@@ -10,7 +10,7 @@ public class UnitOfWork : IUnitOfWork
 
     public IGenericRepository<User> Users { get; }
     public IGenericRepository<Image> Images { get; }
-    public IGenericRepository<Transaction> Transactions { get; }
+    public IGenericRepository<PaymentTransaction> Transactions { get; }
     public IGenericRepository<Order> Orders { get; }
     public IGenericRepository<AdminAction> AdminActions { get; }
     public IGenericRepository<Cart> Carts { get; }
@@ -21,7 +21,7 @@ public class UnitOfWork : IUnitOfWork
         _context = context;
         Users = new GenericRepository<User>(_context);
         Images = new GenericRepository<Image>(_context);
-        Transactions = new GenericRepository<Transaction>(_context);
+        Transactions = new GenericRepository<PaymentTransaction>(_context);
         Orders = new GenericRepository<Order>(_context);
         AdminActions = new GenericRepository<AdminAction>(_context);
         Carts = new GenericRepository<Cart>(_context);

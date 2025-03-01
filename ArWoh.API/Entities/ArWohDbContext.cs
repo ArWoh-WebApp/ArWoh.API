@@ -9,7 +9,7 @@ public class ArWohDbContext : DbContext
 
     public DbSet<User> Users { get; set; }
     public DbSet<Image> Images { get; set; }
-    public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<PaymentTransaction> Transactions { get; set; }
     public DbSet<Payment> Payments { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<AdminAction> AdminActions { get; set; }
@@ -26,19 +26,19 @@ public class ArWohDbContext : DbContext
             .Property(i => i.Orientation)
             .HasConversion<string>();
 
-        modelBuilder.Entity<Transaction>()
+        modelBuilder.Entity<PaymentTransaction>()
             .HasOne(t => t.Customer)
             .WithMany(u => u.Transactions)
             .HasForeignKey(t => t.CustomerId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Transaction>()
+        modelBuilder.Entity<PaymentTransaction>()
             .HasOne(t => t.Image)
             .WithMany(i => i.Transactions)
             .HasForeignKey(t => t.ImageId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<Transaction>()
+        modelBuilder.Entity<PaymentTransaction>()
              .HasOne(t => t.Payment)
               .WithOne(p => p.Transaction)
            .HasForeignKey<Payment>(p => p.TransactionId)

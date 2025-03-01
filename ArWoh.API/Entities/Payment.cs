@@ -7,7 +7,7 @@ namespace ArWoh.API.Entities
     public class Payment : BaseEntity
     {
         [Required]
-        public int TransactionId { get; set; }
+        public int PaymentTransactionId { get; set; }
 
         [Required]
         public decimal Amount { get; set; }
@@ -20,7 +20,7 @@ namespace ArWoh.API.Entities
 
         public string? GatewayTransactionId { get; set; } // ID từ PAYOS/VNPAY nếu có
 
-        [ForeignKey("TransactionId")]
-        public Transaction Transaction { get; set; }
+        [ForeignKey("PaymentTransactionId")]
+        public PaymentTransaction PaymentTransaction { get; set; }
     }
 }

@@ -165,7 +165,7 @@ namespace ArWoh.API.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("ArWoh.API.Entities.Transaction", b =>
+            modelBuilder.Entity("ArWoh.API.Entities.PaymentTransaction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -287,16 +287,16 @@ namespace ArWoh.API.Migrations
 
             modelBuilder.Entity("ArWoh.API.Entities.Order", b =>
                 {
-                    b.HasOne("ArWoh.API.Entities.Transaction", "Transaction")
+                    b.HasOne("ArWoh.API.Entities.PaymentTransaction", "PaymentTransaction")
                         .WithOne()
                         .HasForeignKey("ArWoh.API.Entities.Order", "TransactionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Transaction");
+                    b.Navigation("PaymentTransaction");
                 });
 
-            modelBuilder.Entity("ArWoh.API.Entities.Transaction", b =>
+            modelBuilder.Entity("ArWoh.API.Entities.PaymentTransaction", b =>
                 {
                     b.HasOne("ArWoh.API.Entities.User", "Customer")
                         .WithMany("Transactions")

@@ -10,18 +10,15 @@ namespace ArWoh.API.Service.ThirdPartyService
     {
         // Tạo link truyền enum PaymentType[VnPay, PayOS] params: orderId, paymentType
 
-        // IPN callback từ VnPay, PayOS
+        // IPN callback từ PayOS
         //1. Webhook của PayOS (Gọi PayOS để update transaction)
-        //2. IPN Receiver của VnPay (Gọi VnPay để update transaction)
 
         private readonly ILoggerService _logger;
-        private readonly IVnPayService _vnPayService;
         private readonly IPayOSService _payOSService;
 
-        public PaymentService(ILoggerService logger, IVnPayService vnPayService, IPayOSService payOSService)
+        public PaymentService(ILoggerService logger, IPayOSService payOSService)
         {
             _logger = logger;
-            _vnPayService = vnPayService;
             _payOSService = payOSService;
         }
 
@@ -36,8 +33,7 @@ namespace ArWoh.API.Service.ThirdPartyService
             // Use switch to determine the appropriate payment gateway
             return paymentGatewayEnum switch
             {
-                PaymentGatewayEnum.VNPAY => await _vnPayService.CreateLink(createPaymentRequest),
-                //PaymentGatewayEnum.PAYOS => await _payOSService.CreateLink(createPaymentRequest),
+                PaymentGatewayEnum.PAYOS => await _payOSService.CreatePaymentLink(createPaymentRequest),
                 _ => throw new Exception("400 - PaymentType is invalid"),
             };
         }

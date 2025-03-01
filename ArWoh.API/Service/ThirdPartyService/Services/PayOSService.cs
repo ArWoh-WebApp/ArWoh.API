@@ -1,7 +1,13 @@
 ﻿using ArWoh.API.Entities;
+using ArWoh.API.Enums;
 using ArWoh.API.Interface;
 using ArWoh.API.Service.ThirdPartyService.Interfaces;
+using ArWoh.API.Service.ThirdPartyService.Types;
+using Microsoft.EntityFrameworkCore;
 using Net.payOS;
+using Net.payOS.Types;
+using Newtonsoft.Json;
+using PaymentTransaction = ArWoh.API.Entities.PaymentTransaction;
 
 namespace ArWoh.API.Service.ThirdPartyService.Services
 {
@@ -18,107 +24,153 @@ namespace ArWoh.API.Service.ThirdPartyService.Services
             _context = context;
         }
 
-        //public async Task<CreatePaymentResponse> CreateLink(CreatePaymentRequest createPaymentRequest)
-        //{
-        //    if (createPaymentRequest.PaymentId == null)
-        //    {
-        //        throw new Exception("400 - PaymentId is required");
-        //    }
-        //    Payment payment = await _context.Payments.FindAsync(createPaymentRequest.PaymentId);
+        // Tạo Payment Link
+        public async Task<CreatePaymentResponse> CreatePaymentLink(CreatePaymentRequest request)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
 
-        //    if (payment == null)
-        //    {
-        //        throw new Exception("404 - Payment not found");
-        //    }
-        //    long orderCode = int.Parse(DateTimeOffset.Now.ToString("ffffff"));
-        //    // Tạo mới Transaction liên kết với Payment
+            try
+            {
+                // 1. Lấy thông tin giỏ hàng của user
+                var cart = _context.Carts
+                    .Include(c => c.CartItems)
+                    .ThenInclude(ci => ci.Image)
+                    .FirstOrDefault(c => c.UserId == request.PaymentId);
 
-        //    Entities.Transaction transaction = new Entities.Transaction
-        //    {
-        //        CustomerId = payment.Transaction.CustomerId, // Lấy từ Transaction ban đầu
-        //        ImageId = payment.Transaction.ImageId, // Lấy từ Transaction ban đầu
-        //        Amount = payment.Amount,
-        //        PaymentStatus = Enums.PaymentStatusEnum.PENDING,
-        //        IsPhysicalPrint = payment.Transaction.IsPhysicalPrint,
-        //    };
+                if (cart == null || !cart.CartItems.Any())
+                    throw new Exception("Cart is empty");
 
-        //    //Add into DB
-        //    await _context.Transactions.AddAsync(transaction);
 
-        //    var paymentLinkRequest = new PaymentData(
-        //        orderCode: orderCode,
-        //        amount: (int)payment.Amount,
-        //        description: "Thanh toán hóa đơn: " + orderCode,
-        //        items: [new("Hóa đơn " + orderCode, 1, (int)payment.Amount)],
-        //        returnUrl: createPaymentRequest.ReturnUrl + "?success=true&paymentId=" + orderCode + "&amount=" + (int)payment.Amount,
-        //        cancelUrl: createPaymentRequest.ReturnUrl + "?canceled=true&paymentId=" + orderCode + "&amount=" + (int)payment.Amount
-        //    );
-        //    var response = await _payOS.createPaymentLink(paymentLinkRequest);
+                // 2. Tạo PaymentTransaction cho từng ảnh trong giỏ
+                var transactions = new List<Entities.PaymentTransaction>();
+                foreach (var item in cart.CartItems)
+                {
+                    var transactionEntity = new Entities.PaymentTransaction
+                    {
+                        CustomerId = cart.UserId,
+                        ImageId = item.ImageId,
+                        Amount = item.Price * item.Quantity,  // Tính tổng giá theo số lượng
+                        PaymentStatus = PaymentTransactionStatusEnum.PENDING,
+                        IsPhysicalPrint = false  // Vì đang chỉ xử lý ảnh số
+                    };
+                    transactions.Add(transactionEntity);
+                }
 
-        //    return new CreatePaymentResponse
-        //    {
-        //        PaymentUrl = response.paymentLinkId
-        //    };
-        //}
+                await _context.Transactions.AddRangeAsync(transactions);
+                await _context.SaveChangesAsync();
 
-        //public async Task<WebhookResponse> ReturnWebhook(WebhookType webhookType)
-        //{
-        //    try
-        //    {
-        //        // Log the receipt of the webhook
-        //        _logger.Info(JsonConvert.SerializeObject(webhookType));
 
-        //        WebhookData verifiedData = _payOS.verifyPaymentWebhookData(webhookType); //xác thực data from webhook
-        //        string responseCode = verifiedData.code;
-        //        long orderCode = verifiedData.orderCode;
+                // 3. Tạo Payment record cho toàn bộ giỏ hàng
+                var totalAmount = transactions.Sum(t => t.Amount);
+                var payment = new Payment
+                {
+                    PaymentTransactionId = transactions.First().Id,
+                    Amount = totalAmount,
+                    PaymentGateway = PaymentGatewayEnum.PAYOS,
+                    PaymentStatus = PaymentStatusEnum.PENDING
+                };
+                await _context.Payments.AddAsync(payment);
+                await _context.SaveChangesAsync();
 
-        //        Entities.Transaction paymentTransaction = await _context.Transactions.FirstOrDefaultAsync(x => x.Id == orderCode);
+                // 4. Tạo Payment Link từ PayOS
+                int orderCode = int.Parse(DateTimeOffset.Now.ToString("ffffff"));
+                List<ItemData> items = transactions.Select(t => new ItemData(
+                    $"Ảnh {t.ImageId}", 1, (int)t.Amount
+                )).ToList();
 
-        //        // Handle the webhook based on the transaction status
-        //        switch (verifiedData.code)
-        //        {
-        //            case "00":
-        //                // Update the transaction status
-        //                paymentTransaction.PaymentStatus = PaymentTransactionStatusEnum.COMPLETED;
-        //                paymentTransaction.TransactionLog = "Payment processed successfully";
-        //                await _context.SaveChangesAsync();
+                PaymentData paymentData = new PaymentData(
+                    orderCode,
+                    (int)totalAmount,
+                    "Thanh toán giỏ hàng",
+                    items,
+                    request.ReturnUrl,
+                    $"{request.ReturnUrl}/cancel"
+                );
 
-        //                return new WebhookResponse
-        //                {
-        //                    Success = true,
-        //                    Note = "Payment processed successfully"
-        //                };
+                var createPayment = await _payOS.createPaymentLink(paymentData);
 
-        //            case "01":
-        //                // Update the transaction status
-        //                paymentTransaction.Status = PaymentTransactionStatusEnum.FAILED.ToString();
-        //                paymentTransaction.TransactionLog = "Payment failed";
+                // 5. Commit transaction & return checkout URL
+                await transaction.CommitAsync();
 
-        //                return new WebhookResponse
-        //                {
-        //                    Success = false,
-        //                    Note = "Invalid parameters"
-        //                };
+                return new CreatePaymentResponse
+                {
+                    PaymentUrl = createPayment.checkoutUrl
+                };
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                _logger.Error($"Error creating payment link: {ex.Message}");
+                throw;
+            }
+        }
 
-        //            default:
-        //                paymentTransaction.Status = PaymentTransactionStatusEnum.FAILED.ToString();
-        //                paymentTransaction.TransactionLog = "Unhandled code";
+        // Xử lý Webhook khi thanh toán hoàn tất
+        public async Task<WebhookResponse> HandleWebhook(WebhookType webhookType)
+        {
+            try
+            {
+                // Log the receipt of the webhook
+                _logger.Info(JsonConvert.SerializeObject(webhookType));
 
-        //                return new WebhookResponse
-        //                {
-        //                    Success = false,
-        //                    Note = "Unhandled code"
-        //                };
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.Error(ex.Message);
-        //        throw ex;
-        //    }
-        //}
+                WebhookData verifiedData = _payOS.verifyPaymentWebhookData(webhookType); // Xác thực dữ liệu từ webhook
+                long orderCode = verifiedData.orderCode;
+
+                // Tìm PaymentTransaction dựa trên orderCode
+                PaymentTransaction paymentTransaction = await _context.Transactions.FirstOrDefaultAsync(x => x.Id == orderCode);
+
+                if (paymentTransaction == null)
+                {
+                    return new WebhookResponse
+                    {
+                        Success = false,
+                        Note = "Transaction not found"
+                    };
+                }
+
+                // Xử lý webhook dựa trên mã phản hồi từ PayOS
+                switch (verifiedData.code)
+                {
+                    case "00": // Thanh toán thành công
+                        paymentTransaction.PaymentStatus = PaymentTransactionStatusEnum.COMPLETED;
+                        await _context.SaveChangesAsync();
+
+                        return new WebhookResponse
+                        {
+                            Success = true,
+                            Note = "Payment processed successfully"
+                        };
+
+                    case "01": // Lỗi thanh toán
+                        paymentTransaction.PaymentStatus = PaymentTransactionStatusEnum.FAILED;
+                        await _context.SaveChangesAsync();
+
+                        return new WebhookResponse
+                        {
+                            Success = false,
+                            Note = "Invalid parameters"
+                        };
+
+                    default: // Trường hợp khác
+                        paymentTransaction.PaymentStatus = PaymentTransactionStatusEnum.FAILED;
+                        await _context.SaveChangesAsync();
+
+                        return new WebhookResponse
+                        {
+                            Success = false,
+                            Note = "Unhandled code"
+                        };
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Webhook error: {ex.Message}");
+                return new WebhookResponse { Success = false, Note = "Internal server error" };
+            }
+        }
 
     }
+
     public class WebhookResponse
     {
         public bool Success { get; set; }

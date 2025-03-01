@@ -1,6 +1,4 @@
-﻿using ArWoh.API.Enums;
-
-namespace ArWoh.API.Service.ThirdPartyService.Types
+﻿namespace ArWoh.API.Service.ThirdPartyService.Types
 {
     public class CreatePaymentResponse
     {
@@ -10,6 +8,6 @@ namespace ArWoh.API.Service.ThirdPartyService.Types
     {
         public int PaymentId { get; set; }
         public string? ReturnUrl { get; set; }
-        public string? PaymentMethod { get; set; } = PaymentGatewayEnum.VNPAY.ToString();
+        public string? PaymentMethod { get; set; }
     }
 }

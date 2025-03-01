@@ -6,7 +6,7 @@ public interface IUnitOfWork : IDisposable
 {
     IGenericRepository<User> Users { get; }
     IGenericRepository<Image> Images { get; }
-    IGenericRepository<Transaction> Transactions { get; }
+    IGenericRepository<PaymentTransaction> Transactions { get; }
     IGenericRepository<Order> Orders { get; }
     IGenericRepository<AdminAction> AdminActions { get; }
     IGenericRepository<CartItem> CartItems { get; }

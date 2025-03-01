@@ -16,7 +16,7 @@ public class Image : BaseEntity
     public int? PhotographerId { get; set; }
     
     public User? Photographer { get; set; }
-    public ICollection<Transaction>? Transactions { get; set; }
+    public ICollection<PaymentTransaction>? Transactions { get; set; }
 }
 
 

@@ -7,6 +7,7 @@ public class CreatePaymentResponse
 
 public class CreatePaymentRequest
 {
+    public int UserId { get; set; }
     public int PaymentId { get; set; }
     public string? ReturnUrl { get; set; }
     public string? PaymentMethod { get; set; }

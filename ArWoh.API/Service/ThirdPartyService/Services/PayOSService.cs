@@ -15,12 +15,14 @@ public class PayOSService : IPayOSService
 {
     private readonly ArWohDbContext _context;
     private readonly ILoggerService _logger;
+    private readonly ICartService _cartService;
     private readonly PayOS _payOS;
 
-    public PayOSService(ILoggerService logger, ArWohDbContext context, PayOS payOS)
+    public PayOSService(ILoggerService logger, ArWohDbContext context, PayOS payOS, ICartService cartService)
     {
         _logger = logger;
         _payOS = payOS;
+        _cartService = cartService;
         _context = context;
     }
 
@@ -31,12 +33,12 @@ public class PayOSService : IPayOSService
 
         try
         {
-            // 1. Lấy thông tin giỏ hàng của user
             var cart = _context.Carts
                 .Include(c => c.CartItems)
                 .ThenInclude(ci => ci.Image)
-                .FirstOrDefault(c => c.UserId == request.PaymentId);
+                .FirstOrDefault(c => c.UserId == request.UserId);
 
+            
             if (cart == null || !cart.CartItems.Any())
                 throw new Exception("Cart is empty");
 

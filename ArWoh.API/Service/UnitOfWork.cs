@@ -15,6 +15,7 @@ public class UnitOfWork : IUnitOfWork
     public IGenericRepository<AdminAction> AdminActions { get; }
     public IGenericRepository<Cart> Carts { get; }
     public IGenericRepository<CartItem> CartItems { get; }
+    public IGenericRepository<Payment> Payments { get; }
 
     public UnitOfWork(ArWohDbContext context)
     {
@@ -26,6 +27,7 @@ public class UnitOfWork : IUnitOfWork
         AdminActions = new GenericRepository<AdminAction>(_context);
         Carts = new GenericRepository<Cart>(_context);
         CartItems = new GenericRepository<CartItem>(_context);
+        Payments = new GenericRepository<Payment>(_context);
     }
 
     public async Task<int> CompleteAsync()

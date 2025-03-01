@@ -10,9 +10,9 @@ public static class MigrationExtensions
         try
         {
             _logger.LogInformation("Applying migrations...");
-            using IServiceScope scope = app.ApplicationServices.CreateScope();
+            using var scope = app.ApplicationServices.CreateScope();
 
-            using ArWohDbContext dbContext =
+            using var dbContext =
                 scope.ServiceProvider.GetRequiredService<ArWohDbContext>();
 
             dbContext.Database.Migrate();

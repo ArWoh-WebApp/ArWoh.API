@@ -2,14 +2,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ArWoh.API.Entities;
 
-
 public class ArWohDbContext : DbContext
 {
-    public ArWohDbContext(DbContextOptions<ArWohDbContext> options) : base(options) { }
+    public ArWohDbContext(DbContextOptions<ArWohDbContext> options) : base(options)
+    {
+    }
 
     public DbSet<User> Users { get; set; }
     public DbSet<Image> Images { get; set; }
-    public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<PaymentTransaction> Transactions { get; set; }
+    public DbSet<Payment> Payments { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<AdminAction> AdminActions { get; set; }
     public DbSet<Cart> Carts { get; set; }
@@ -24,17 +26,23 @@ public class ArWohDbContext : DbContext
         modelBuilder.Entity<Image>()
             .Property(i => i.Orientation)
             .HasConversion<string>();
-        
-        modelBuilder.Entity<Transaction>()
+
+        modelBuilder.Entity<PaymentTransaction>()
             .HasOne(t => t.Customer)
             .WithMany(u => u.Transactions)
             .HasForeignKey(t => t.CustomerId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Transaction>()
+        modelBuilder.Entity<PaymentTransaction>()
             .HasOne(t => t.Image)
             .WithMany(i => i.Transactions)
             .HasForeignKey(t => t.ImageId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<PaymentTransaction>()
+            .HasOne(t => t.Payment)
+            .WithOne(p => p.PaymentTransaction)
+            .HasForeignKey<Payment>(p => p.Id)
             .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<Order>()
@@ -48,5 +56,3 @@ public class ArWohDbContext : DbContext
             .HasForeignKey(a => a.AdminId);
     }
 }
-
-

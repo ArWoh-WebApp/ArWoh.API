@@ -236,7 +236,44 @@ namespace ArWoh.API.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("ArWoh.API.Entities.Transaction", b =>
+            modelBuilder.Entity("ArWoh.API.Entities.Payment", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("GatewayTransactionId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PaymentGateway")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentTransactionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("ArWoh.API.Entities.PaymentTransaction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -265,16 +302,11 @@ namespace ArWoh.API.Migrations
                     b.Property<bool>("IsPhysicalPrint")
                         .HasColumnType("bit");
 
-                    b.Property<string>("PaymentStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PaymentStatus")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("VnPayTransactionId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -388,7 +420,7 @@ namespace ArWoh.API.Migrations
 
             modelBuilder.Entity("ArWoh.API.Entities.Order", b =>
                 {
-                    b.HasOne("ArWoh.API.Entities.Transaction", "Transaction")
+                    b.HasOne("ArWoh.API.Entities.PaymentTransaction", "Transaction")
                         .WithOne()
                         .HasForeignKey("ArWoh.API.Entities.Order", "TransactionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -397,7 +429,18 @@ namespace ArWoh.API.Migrations
                     b.Navigation("Transaction");
                 });
 
-            modelBuilder.Entity("ArWoh.API.Entities.Transaction", b =>
+            modelBuilder.Entity("ArWoh.API.Entities.Payment", b =>
+                {
+                    b.HasOne("ArWoh.API.Entities.PaymentTransaction", "PaymentTransaction")
+                        .WithOne("Payment")
+                        .HasForeignKey("ArWoh.API.Entities.Payment", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PaymentTransaction");
+                });
+
+            modelBuilder.Entity("ArWoh.API.Entities.PaymentTransaction", b =>
                 {
                     b.HasOne("ArWoh.API.Entities.User", "Customer")
                         .WithMany("Transactions")
@@ -424,6 +467,12 @@ namespace ArWoh.API.Migrations
             modelBuilder.Entity("ArWoh.API.Entities.Image", b =>
                 {
                     b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("ArWoh.API.Entities.PaymentTransaction", b =>
+                {
+                    b.Navigation("Payment")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ArWoh.API.Entities.User", b =>

@@ -1,8 +1,8 @@
 using ArWoh.API.DTOs.UserDTOs;
 using ArWoh.API.Entities;
 using ArWoh.API.Interface;
+using ArWoh.API.Utils;
 using Microsoft.AspNetCore.Mvc;
-using VaccinaCare.Application.Ultils;
 
 namespace ArWoh.API.Controllers;
 
@@ -29,33 +29,27 @@ public class AuthController : ControllerBase
         try
         {
             if (registerDTO == null)
-            {
                 return BadRequest(new ApiResult<object>
                 {
                     IsSuccess = false,
                     Message = "Registration data is missing."
                 });
-            }
 
             if (string.IsNullOrWhiteSpace(registerDTO.Email) || string.IsNullOrWhiteSpace(registerDTO.Password))
-            {
                 return BadRequest(new ApiResult<object>
                 {
                     IsSuccess = false,
                     Message = "Email and password are required."
                 });
-            }
 
             // Kiểm tra xem email đã tồn tại chưa
             var user = await _authService.RegisterCustomer(registerDTO);
             if (user == null)
-            {
                 return BadRequest(new ApiResult<object>
                 {
                     IsSuccess = false,
                     Message = "Email is already in use."
                 });
-            }
 
             return Ok(new ApiResult<User>
             {
@@ -84,33 +78,27 @@ public class AuthController : ControllerBase
         try
         {
             if (registerDTO == null)
-            {
                 return BadRequest(new ApiResult<object>
                 {
                     IsSuccess = false,
                     Message = "Registration data is missing."
                 });
-            }
 
             if (string.IsNullOrWhiteSpace(registerDTO.Email) || string.IsNullOrWhiteSpace(registerDTO.Password))
-            {
                 return BadRequest(new ApiResult<object>
                 {
                     IsSuccess = false,
                     Message = "Email and password are required."
                 });
-            }
 
             // Kiểm tra xem email đã tồn tại chưa
             var user = await _authService.RegisterPhotographer(registerDTO);
             if (user == null)
-            {
                 return BadRequest(new ApiResult<object>
                 {
                     IsSuccess = false,
                     Message = "Email is already in use."
                 });
-            }
 
             return Ok(new ApiResult<User>
             {
@@ -142,17 +130,13 @@ public class AuthController : ControllerBase
         {
             if (loginDto == null || string.IsNullOrWhiteSpace(loginDto.Email) ||
                 string.IsNullOrWhiteSpace(loginDto.Password))
-            {
                 return BadRequest(new ApiResult<object> { IsSuccess = false, Message = "Invalid login data." });
-            }
 
             var token = await _authService.Login(loginDto, configuration);
 
             if (string.IsNullOrEmpty(token))
-            {
                 return Unauthorized(new ApiResult<object>
-                { IsSuccess = false, Message = "Invalid email or password." });
-            }
+                    { IsSuccess = false, Message = "Invalid email or password." });
 
             return Ok(new ApiResult<string>
             {
@@ -171,5 +155,4 @@ public class AuthController : ControllerBase
             });
         }
     }
-
 }

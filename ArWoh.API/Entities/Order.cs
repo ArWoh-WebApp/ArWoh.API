@@ -7,5 +7,5 @@ public class Order : BaseEntity
     public string ShippingAddress { get; set; } // Địa chỉ giao hàng
     public string ShippingStatus { get; set; } // "Processing", "Shipped", "Delivered"
 
-    public Transaction Transaction { get; set; }
+    public PaymentTransaction Transaction { get; set; }
 }

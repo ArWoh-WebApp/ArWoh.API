@@ -1,4 +1,5 @@
 ﻿using ArWoh.API.DTOs.UserDTOs;
+using ArWoh.API.Enums;
 using ArWoh.API.Interface;
 
 namespace ArWoh.API.Service
@@ -59,6 +60,33 @@ namespace ArWoh.API.Service
 
         }
 
+        public async Task<List<UserProfileDto>> GetPhotographer()
+        {
+            try
+            {
+                var users = await _unitOfWork.Users.FindAsync(u => u.Role == UserRole.Photographer);
 
+                if (users == null || !users.Any())
+                {
+                    _logger.Warn("No users found with the Photographer role.");
+                    return new List<UserProfileDto>();
+                }
+
+                _logger.Info($"Successfully fetched {users.Count()} photographers.");
+
+                return users.Select(user => new UserProfileDto
+                {
+                    Username = user.Username,
+                    Email = user.Email,
+                    Bio = user.Bio,
+                    ProfilePictureUrl = user.ProfilePictureUrl
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"An unexpected error occurred while fetching photographers: {ex.Message}");
+                throw;
+            }
+        }
     }
 }

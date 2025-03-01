@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using ArWoh.API.Entities;
+using Minio.DataModel.Notification;
 
 namespace ArWoh.API.Interface;
 
@@ -24,4 +25,5 @@ public interface IGenericRepository<T> where T : BaseEntity
     Task<int> CountAsync(Expression<Func<T, bool>> predicate);
     
     Task<int> SaveChangesAsync();
+    IQueryable<T> GetQueryable();
 }

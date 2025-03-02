@@ -17,7 +17,7 @@ public class PaymentController : ControllerBase
         _paymentService = paymentService;
         _claimService = claimService;
     }
-    
+
     [HttpPost("checkout")]
     [ProducesResponseType(typeof(ApiResult<string>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]
@@ -27,7 +27,7 @@ public class PaymentController : ControllerBase
         try
         {
             var userId = _claimService.GetCurrentUserId();
-            string paymentUrl = await _paymentService.ProcessPayment(userId);
+            var paymentUrl = await _paymentService.ProcessPayment(userId);
 
             return Ok(new { success = true, url = paymentUrl });
         }
@@ -36,7 +36,7 @@ public class PaymentController : ControllerBase
             return BadRequest(new { success = false, message = ex.Message });
         }
     }
-    
+
     [HttpPost("webhook")]
     public async Task<IActionResult> Webhook([FromBody] WebhookData webhookData)
     {

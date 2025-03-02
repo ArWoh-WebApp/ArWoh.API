@@ -242,7 +242,7 @@ public class CartService : ICartService
                     Price = ci.Price,
                     Quantity = ci.Quantity
                 }).ToList(),
-                
+
                 TotalPrice = cart.CartItems.Sum(ci => ci.Price * ci.Quantity)
             }).ToList();
 

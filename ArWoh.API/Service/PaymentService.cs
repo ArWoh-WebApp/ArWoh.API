@@ -114,9 +114,9 @@ public class PaymentService : IPaymentService
             transactions.Add(transaction);
 
             itemList.Add(new ItemData(
-                name: item.ImageTitle ?? "Ảnh không có tiêu đề",
-                quantity: item.Quantity,
-                price: (int)(item.Price) // PayOS xử lý đơn vị là VND * 100
+                item.ImageTitle ?? "Ảnh không có tiêu đề",
+                item.Quantity,
+                (int)item.Price // PayOS xử lý đơn vị là VND * 100
             ));
         }
 
@@ -129,10 +129,10 @@ public class PaymentService : IPaymentService
 
         // 5. Gọi PayOS API để tạo link thanh toán
         var paymentData = new PaymentData(
-            orderCode: payment.Id,
-            amount: (int)(cart.TotalPrice), 
-            description: "image payment",
-            items: itemList,
+            payment.Id,
+            (int)cart.TotalPrice,
+            "image payment",
+            itemList,
             returnUrl: "https://arwoh-fe.vercel.app/",
             cancelUrl: "https://arwoh.ae-tao-fullstack-api.site/"
         );

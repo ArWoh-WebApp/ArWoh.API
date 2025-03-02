@@ -122,7 +122,7 @@ namespace ArWoh.API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ImageId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    ImageTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CartId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),

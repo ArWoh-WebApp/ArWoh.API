@@ -105,4 +105,32 @@ public class UserController : ControllerBase
                 ApiResult<object>.Error($"An error occurred while retrieving photographers: {ex.Message}"));
         }
     }
+
+    [HttpPut("me/avatar")]
+    [Authorize]
+    [ProducesResponseType(typeof(ApiResult<UserProfileDto>), 200)]
+    [ProducesResponseType(typeof(ApiResult<object>), 400)]
+    [ProducesResponseType(typeof(ApiResult<object>), 401)]
+    [ProducesResponseType(typeof(ApiResult<object>), 500)]
+    public async Task<IActionResult> UpdateAvatar(IFormFile file)
+    {
+        if (file == null || file.Length == 0) return BadRequest(ApiResult<object>.Error("File is required"));
+
+        try
+        {
+            var userId = _claimService.GetCurrentUserId();
+            var updatedUser = await _userService.UserUpdateAvatar(userId, file);
+
+            return Ok(ApiResult<UserProfileDto>.Success(updatedUser, "User profile updated successfully"));
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound(ApiResult<object>.Error("User not found"));
+        }
+        catch (Exception e)
+        {
+            _logger.Error($"Failed to update user avatar: {e.Message}");
+            return StatusCode(500, ApiResult<object>.Error("An error occurred while updating avatar"));
+        }
+    }
 }

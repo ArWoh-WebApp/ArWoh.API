@@ -9,11 +9,47 @@ public class UserService : IUserService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILoggerService _logger;
+    private readonly IBlobService _blobService;
 
-    public UserService(IUnitOfWork unitOfWork, ILoggerService loggerService)
+    public UserService(IUnitOfWork unitOfWork, ILoggerService loggerService, IBlobService blobService)
     {
         _unitOfWork = unitOfWork;
         _logger = loggerService;
+        _blobService = blobService;
+    }
+
+    public async Task<UserProfileDto> UserUpdateAvatar(int userId, IFormFile file)
+    {
+        if (file == null || file.Length == 0) throw new ArgumentException("File is required");
+
+        var user = await _unitOfWork.Users.GetByIdAsync(userId);
+        if (user == null) throw new KeyNotFoundException("User not found");
+
+        // Tạo tên file duy nhất
+        var fileName = $"user-avatars/{userId}_{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+
+        // Upload file lên Blob Storage
+        using (var stream = file.OpenReadStream())
+        {
+            await _blobService.UploadFileAsync(fileName, stream);
+        }
+
+        // Lấy URL của file
+        var fileUrl = await _blobService.GetFileUrlAsync(fileName);
+
+        // Cập nhật URL ảnh đại diện trong User
+        user.ProfilePictureUrl = fileUrl;
+        user.UpdatedAt = DateTime.Now;
+        _unitOfWork.Users.Update(user);
+        await _unitOfWork.CompleteAsync();
+
+        // Trả về thông tin user đã cập nhật
+        return new UserProfileDto
+        {
+            UserId = user.Id,
+            Username = user.Username,
+            ProfilePictureUrl = user.ProfilePictureUrl
+        };
     }
 
     public async Task<UserProfileDto> GetUserDetailsById(int userId)

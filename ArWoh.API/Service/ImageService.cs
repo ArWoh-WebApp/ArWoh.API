@@ -47,6 +47,7 @@ public class ImageService : IImageService
                 Location = image.Location,
                 Tags = image.Tags,
                 FileName = image.FileName,
+                PhotographerId = image.PhotographerId,
                 Url = image.Url
             }).ToList();
 
@@ -93,6 +94,7 @@ public class ImageService : IImageService
                 Location = image.Location,
                 Tags = image.Tags,
                 FileName = image.FileName,
+                PhotographerId = image.PhotographerId,
                 Url = image.Url
             };
 
@@ -170,6 +172,7 @@ public class ImageService : IImageService
                 Orientation = image.Orientation,
                 Tags = image.Tags,
                 FileName = image.FileName,
+                PhotographerId = image.PhotographerId,
                 Url = image.Url
             };
 

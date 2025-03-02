@@ -5,6 +5,7 @@ namespace ArWoh.API.DTOs.ImageDTOs;
 public class ImageDto
 {
     public int Id { get; set; }
+    public int? PhotographerId { get; set; }
     public string? Title { get; set; }
     public string? Description { get; set; }
     public decimal Price { get; set; }

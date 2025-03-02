@@ -36,7 +36,6 @@ public class SystemController : ControllerBase
             await SeedUsersAndImages();
 
             return Ok(ApiResult<object>.Success("Seeding completed successfully"));
-
         }
         catch (DbUpdateException dbEx)
         {
@@ -77,8 +76,8 @@ public class SystemController : ControllerBase
             new()
             {
                 Username = "Dương Domic",
-                Email = "duongdomic@gmail.com",
-                PasswordHash = passwordHasher.HashPassword("duongdomic"),
+                Email = "a@gmail.com",
+                PasswordHash = passwordHasher.HashPassword("a"),
                 Role = UserRole.Photographer,
                 Bio = "Ca sĩ nhưng thích chụp hình",
                 ProfilePictureUrl =

@@ -4,8 +4,6 @@ namespace ArWoh.API.DTOs.UserDTOs;
 
 public class UserLoginDto
 {
-    [DefaultValue("a@gmail.com")]
-    public string Email { get; set; }
-    [DefaultValue("a")]
-    public string Password { get; set; }
+    [DefaultValue("a@gmail.com")] public string Email { get; set; }
+    [DefaultValue("a")] public string Password { get; set; }
 }

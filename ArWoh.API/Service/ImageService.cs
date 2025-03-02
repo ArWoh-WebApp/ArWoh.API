@@ -18,6 +18,47 @@ public class ImageService : IImageService
     }
 
     /// <summary>
+    /// Lấy tất cả images thuộc về photographer đó
+    /// </summary>
+    public async Task<IEnumerable<ImageDto>> GetImagesByPhotographer(int photographerId)
+    {
+        try
+        {
+            var photographer = await _unitOfWork.Users.GetByIdAsync(photographerId);
+            if (photographer == null)
+            {
+                _loggerService.Info($"Photographer with ID {photographerId} not found.");
+                throw new KeyNotFoundException($"Photographer with ID {photographerId} not found.");
+            }
+
+            var images = await _unitOfWork.Images.FindAsync(img => img.PhotographerId == photographerId);
+
+            if (images == null || !images.Any())
+            {
+                _loggerService.Info($"No images found for photographer ID {photographerId}.");
+                return Enumerable.Empty<ImageDto>();
+            }
+
+            return images.Select(img => new ImageDto
+            {
+                Id = img.Id,
+                Title = img.Title,
+                Description = img.Description,
+                Price = img.Price,
+                Url = img.Url,
+                PhotographerId = img.PhotographerId ?? 0,
+                Tags = img.Tags
+            }).ToList();
+        }
+        catch (Exception e)
+        {
+            _loggerService.Error($"Error retrieving images for photographer ID {photographerId}: {e.Message}");
+            throw;
+        }
+    }
+
+
+    /// <summary>
     /// Lấy list tất cả các images lên
     /// </summary>
     /// <returns></returns>

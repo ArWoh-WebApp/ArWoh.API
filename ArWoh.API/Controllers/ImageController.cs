@@ -72,7 +72,6 @@ public class ImageController : ControllerBase
         }
     }
 
-
     [HttpPost("upload")]
     [Authorize(Policy = "PhotographerPolicy")]
     [ProducesResponseType(typeof(ApiResult<ImageDto>), 200)]

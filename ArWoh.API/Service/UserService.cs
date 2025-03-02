@@ -114,6 +114,7 @@ public class UserService : IUserService
 
             return users.Select(user => new UserProfileDto
             {
+                UserId = user.Id,
                 Username = user.Username,
                 Email = user.Email,
                 Bio = user.Bio,

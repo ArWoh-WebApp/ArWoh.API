@@ -14,91 +14,12 @@ public class CartService : ICartService
 {
     private readonly ILoggerService _loggerService;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IPayOSService _payOS;
 
-    public CartService(ILoggerService loggerService, IUnitOfWork unitOfWork, IPayOSService payOs)
+    public CartService(ILoggerService loggerService, IUnitOfWork unitOfWork)
     {
         _loggerService = loggerService;
         _unitOfWork = unitOfWork;
-        _payOS = payOs;
     }
-
-    // public async Task<CreatePaymentResponse> CheckoutCartAsync(int userId, string returnUrl)
-    // {
-    //     try
-    //     {
-    //         // 1. Lấy giỏ hàng của user
-    //         var cart = await _unitOfWork.Carts
-    //             .GetQueryable()
-    //             .Include(c => c.CartItems)
-    //             .ThenInclude(ci => ci.Image)
-    //             .FirstOrDefaultAsync(c => c.UserId == userId);
-    //
-    //         if (cart == null || !cart.CartItems.Any())
-    //             throw new Exception("Cart is empty");
-    //
-    //         // 2. Tạo PaymentTransaction cho từng ảnh trong giỏ
-    //         var transactions = new List<PaymentTransaction>();
-    //         foreach (var item in cart.CartItems)
-    //         {
-    //             var transactionEntity = new PaymentTransaction
-    //             {
-    //                 CustomerId = userId,
-    //                 ImageId = item.ImageId,
-    //                 Amount = item.Price * item.Quantity,
-    //                 PaymentStatus = PaymentTransactionStatusEnum.PENDING,
-    //                 IsPhysicalPrint = false
-    //             };
-    //             transactions.Add(transactionEntity);
-    //         }
-    //
-    //         await _unitOfWork.Transactions.AddRangeAsync(transactions);
-    //         await _unitOfWork.CompleteAsync();
-    //
-    //         // 3. Tạo Payment record
-    //         var totalAmount = transactions.Sum(t => t.Amount);
-    //         var payment = new Payment
-    //         {
-    //             PaymentTransactionId = transactions.First().Id,
-    //             Amount = totalAmount,
-    //             PaymentGateway = PaymentGatewayEnum.PAYOS,
-    //             PaymentStatus = PaymentStatusEnum.PENDING
-    //         };
-    //         await _unitOfWork.Payments.AddAsync(payment);
-    //         await _unitOfWork.CompleteAsync();
-    //
-    //         // 4. Tạo Payment Link từ PayOS
-    //         var orderCode = int.Parse(DateTimeOffset.Now.ToString("ffffff"));
-    //         var items = transactions.Select(t => new ItemData(
-    //             $"Ảnh {t.ImageId}", 1, (int)t.Amount
-    //         )).ToList();
-    //
-    //         var paymentData = new PaymentData(
-    //             orderCode,
-    //             (int)totalAmount,
-    //             "Thanh toán giỏ hàng",
-    //             items,
-    //             returnUrl,
-    //             $"{returnUrl}/cancel"
-    //         );
-    //
-    //         var createPayment = await _payOS.CreatePaymentLink(paymentData);
-    //
-    //         // 5. Commit transaction & return checkout URL
-    //         await _unitOfWork.CompleteAsync();
-    //
-    //         return new CreatePaymentResponse
-    //         {
-    //             PaymentUrl = createPayment.checkoutUrl
-    //         };
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         _loggerService.Error($"Error in CheckoutCartAsync: {ex.Message}");
-    //         throw;
-    //     }
-    // }
-
 
     /// <summary>
     /// Thêm ảnh vào giỏ hàng

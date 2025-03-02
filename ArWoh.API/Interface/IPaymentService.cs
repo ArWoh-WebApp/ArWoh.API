@@ -4,5 +4,5 @@ namespace ArWoh.API.Interface;
 
 public interface IPaymentService
 {
-    Task<CreatePaymentResponse> CreatePayment(CreatePaymentRequest createPaymentRequest);
+    Task<string> ProcessPayment(int userId);
 }

@@ -10,7 +10,8 @@ public class CartItem : BaseEntity
     [Required]
     [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]
     public int Quantity { get; set; } = 1; // Số lượng (mặc định là 1)
-    public string? ImageTitle { get; set; } 
+
+    public string? ImageTitle { get; set; }
 
     [Required]
     [Column(TypeName = "decimal(18,2)")]

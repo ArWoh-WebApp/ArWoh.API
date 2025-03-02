@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArWoh.API.Migrations
 {
     [DbContext(typeof(ArWohDbContext))]
-    [Migration("20250302093756_update-img")]
-    partial class updateimg
+    [Migration("20250302120145_adssadasd")]
+    partial class adssadasd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -325,7 +325,7 @@ namespace ArWoh.API.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("Transactions");
+                    b.ToTable("PaymentTransactions");
                 });
 
             modelBuilder.Entity("ArWoh.API.Entities.User", b =>

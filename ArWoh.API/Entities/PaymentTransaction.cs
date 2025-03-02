@@ -11,10 +11,7 @@ public class PaymentTransaction : BaseEntity
     public PaymentTransactionStatusEnum PaymentStatus { get; set; } = PaymentTransactionStatusEnum.PENDING;
     public bool IsPhysicalPrint { get; set; } // Đánh dấu nếu là ảnh in
 
-    [ForeignKey("CustomerId")]
-    public User Customer { get; set; }
+    [ForeignKey("CustomerId")] public User Customer { get; set; }
 
-    [ForeignKey("ImageId")]
-    public Image Image { get; set; }
+    [ForeignKey("ImageId")] public Image Image { get; set; }
 }
-

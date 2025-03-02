@@ -10,7 +10,7 @@ public class ArWohDbContext : DbContext
 
     public DbSet<User> Users { get; set; }
     public DbSet<Image> Images { get; set; }
-    public DbSet<PaymentTransaction> Transactions { get; set; }
+    public DbSet<PaymentTransaction> PaymentTransactions { get; set; }
     public DbSet<Payment> Payments { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<AdminAction> AdminActions { get; set; }
@@ -38,7 +38,6 @@ public class ArWohDbContext : DbContext
             .WithMany(i => i.Transactions)
             .HasForeignKey(t => t.ImageId)
             .OnDelete(DeleteBehavior.Cascade);
-
 
 
         modelBuilder.Entity<Order>()

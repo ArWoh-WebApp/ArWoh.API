@@ -95,7 +95,7 @@ public class SystemController : ControllerBase
         };
 
         await _context.Users.AddRangeAsync(users);
-        await _context.SaveChangesAsync(); 
+        await _context.SaveChangesAsync();
 
         var photographers = await _context.Users
             .Where(u => u.Role == UserRole.Photographer)
@@ -321,9 +321,12 @@ public class SystemController : ControllerBase
             // Danh sách các bảng cần xóa theo thứ tự FK
             var tablesToDelete = new List<Func<Task>>
             {
+                async () => await context.CartItems.ExecuteDeleteAsync(),
                 async () => await context.AdminActions.ExecuteDeleteAsync(),
+                async () => await context.Carts.ExecuteDeleteAsync(),
+                async () => await context.Payments.ExecuteDeleteAsync(),
                 async () => await context.Orders.ExecuteDeleteAsync(),
-                async () => await context.Transactions.ExecuteDeleteAsync(),
+                async () => await context.PaymentTransactions.ExecuteDeleteAsync(),
                 async () => await context.Images.ExecuteDeleteAsync(),
                 async () => await context.Users.ExecuteDeleteAsync()
             };

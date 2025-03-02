@@ -322,7 +322,7 @@ namespace ArWoh.API.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("Transactions");
+                    b.ToTable("PaymentTransactions");
                 });
 
             modelBuilder.Entity("ArWoh.API.Entities.User", b =>

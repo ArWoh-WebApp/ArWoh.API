@@ -56,7 +56,7 @@ public class PayOSService : IPayOSService
                 transactions.Add(transactionEntity);
             }
 
-            await _context.Transactions.AddRangeAsync(transactions);
+            await _context.PaymentTransactions.AddRangeAsync(transactions);
             await _context.SaveChangesAsync();
 
 
@@ -117,7 +117,7 @@ public class PayOSService : IPayOSService
             var orderCode = verifiedData.orderCode;
 
             // Tìm PaymentTransaction dựa trên orderCode
-            var paymentTransaction = await _context.Transactions.FirstOrDefaultAsync(x => x.Id == orderCode);
+            var paymentTransaction = await _context.PaymentTransactions.FirstOrDefaultAsync(x => x.Id == orderCode);
 
             if (paymentTransaction == null)
                 return new WebhookResponse

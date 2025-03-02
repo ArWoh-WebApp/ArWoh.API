@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArWoh.API.Migrations
 {
     [DbContext(typeof(ArWohDbContext))]
-    [Migration("20250302091839_Initial")]
+    [Migration("20250302114530_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -120,7 +120,6 @@ namespace ArWoh.API.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ImageTitle")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")

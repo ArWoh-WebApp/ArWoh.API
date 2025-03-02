@@ -35,7 +35,7 @@
         <Content Include="..\.dockerignore">
             <Link>.dockerignore</Link>
         </Content>
-        <Content Remove="C:\Users\trang\.nuget\packages\vnpay.net\8.5.0\contentFiles\any\net8.0\Icon.ico" />
+        <Content Remove="C:\Users\trang\.nuget\packages\vnpay.net\8.5.0\contentFiles\any\net8.0\Icon.ico"/>
     </ItemGroup>
 
 </Project>

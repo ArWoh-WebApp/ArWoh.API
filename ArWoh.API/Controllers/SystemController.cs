@@ -71,7 +71,7 @@ public class SystemController : ControllerBase
                 Role = UserRole.Photographer,
                 Bio = "Một coder biết chơi đàn và thích chụp ảnh, mê đi phượt và rất yêu mèo.",
                 ProfilePictureUrl =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download..."
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=user-avatars%2F81700597_1303744603146435_5830943911396245504_n.jpg&version_id=null"
             },
             new()
             {
@@ -81,7 +81,7 @@ public class SystemController : ControllerBase
                 Role = UserRole.Photographer,
                 Bio = "Ca sĩ nhưng thích chụp hình",
                 ProfilePictureUrl =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download..."
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=user-avatars%2Fadad.jpg&version_id=null"
             },
             new()
             {
@@ -95,9 +95,8 @@ public class SystemController : ControllerBase
         };
 
         await _context.Users.AddRangeAsync(users);
-        await _context.SaveChangesAsync(); // Đảm bảo user được lưu trước khi tiếp tục
+        await _context.SaveChangesAsync(); 
 
-        // Lấy danh sách photographer từ database
         var photographers = await _context.Users
             .Where(u => u.Role == UserRole.Photographer)
             .Select(u => u.Id)
@@ -121,7 +120,7 @@ public class SystemController : ControllerBase
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Water Stream", "Brook", "Natural Water", "Landscape", "Mountains" },
                 Location = "Rocky Mountains, Colorado",
-                Price = 2500000,
+                Price = 2000,
                 FileName = "mountain_stream_dawn.jpg",
                 StoryOfArt = "A peaceful moment captured during dawn...",
                 PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
@@ -134,7 +133,7 @@ public class SystemController : ControllerBase
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Skyline", "City", "Nightlife", "Urban" },
                 Location = "New York City, USA",
-                Price = 3000000,
+                Price = 30000,
                 FileName = "city_skyline_dusk.jpg",
                 StoryOfArt = "The contrast between the city and sky...",
                 PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
@@ -147,7 +146,7 @@ public class SystemController : ControllerBase
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Mountains", "Snow", "Alps", "Winter" },
                 Location = "Swiss Alps, Switzerland",
-                Price = 2000000,
+                Price = 20000,
                 FileName = "snowy_mountain_peaks.jpg",
                 StoryOfArt = "A breathtaking view of snowy peaks...",
                 PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
@@ -160,7 +159,7 @@ public class SystemController : ControllerBase
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Flowers", "Garden", "Colorful", "Nature" },
                 Location = "Provence, France",
-                Price = 2300000,
+                Price = 23000,
                 FileName = "vibrant_flower_garden.jpg",
                 StoryOfArt = "An explosion of colors and life captured...",
                 PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
@@ -175,7 +174,7 @@ public class SystemController : ControllerBase
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Rain", "City", "Urban", "Night" },
                 Location = "Tokyo, Japan",
-                Price = 5000000,
+                Price = 50000,
                 FileName = "rainy_city_street.jpg",
                 StoryOfArt =
                     "An urban dreamscape, where neon lights and rain create an artistic blend of colors and reflections.",
@@ -191,7 +190,7 @@ public class SystemController : ControllerBase
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Sunset", "Lake", "Reflection", "Nature" },
                 Location = "Lake Tahoe, USA",
-                Price = 2400000,
+                Price = 24000,
                 FileName = "sunset_over_the_lake.jpg",
                 StoryOfArt = "A peaceful moment reflecting the golden hues of the setting sun over a tranquil lake.",
                 PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
@@ -206,7 +205,7 @@ public class SystemController : ControllerBase
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Night", "Stars", "Astrophotography", "Universe" },
                 Location = "Atacama Desert, Chile",
-                Price = 4000000,
+                Price = 40000,
                 FileName = "starry_night_sky.jpg",
                 StoryOfArt = "A gateway to the cosmos, capturing the mesmerizing beauty of the night sky.",
                 PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
@@ -221,7 +220,7 @@ public class SystemController : ControllerBase
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Countryside", "Road", "Farms", "Landscape" },
                 Location = "Tuscany, Italy",
-                Price = 4000000,
+                Price = 40000,
                 FileName = "countryside_road.jpg",
                 StoryOfArt = "A journey through rolling hills, where time slows down and nature takes center stage.",
                 PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
@@ -236,7 +235,7 @@ public class SystemController : ControllerBase
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Castle", "Ruins", "History", "Mystery" },
                 Location = "Scotland, UK",
-                Price = 4000000,
+                Price = 40000,
                 FileName = "ancient_castle_ruins.jpg",
                 StoryOfArt =
                     "A glimpse into the past, where the echoes of history whisper through the crumbling stones.",
@@ -252,7 +251,7 @@ public class SystemController : ControllerBase
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Tropical", "Forest", "Green", "Nature" },
                 Location = "Costa Rica",
-                Price = 4000000,
+                Price = 40000,
                 FileName = "lush_tropical_forest.jpg",
                 StoryOfArt = "A hidden paradise, where nature flourishes in an explosion of green.",
                 PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
@@ -267,7 +266,7 @@ public class SystemController : ControllerBase
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "River", "Calm", "Landscape", "Nature" },
                 Location = "Loire Valley, France",
-                Price = 4000000,
+                Price = 40000,
                 FileName = "calm_river_bend.jpg",
                 StoryOfArt = "A peaceful waterway winding through nature’s quiet embrace.",
                 PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
@@ -282,7 +281,7 @@ public class SystemController : ControllerBase
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Architecture", "Modern", "Design", "Urban" },
                 Location = "Dubai, UAE",
-                Price = 4000000,
+                Price = 40000,
                 FileName = "modern_architecture.jpg",
                 StoryOfArt = "A vision of the future, where form meets function in architectural brilliance.",
                 PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
@@ -297,7 +296,7 @@ public class SystemController : ControllerBase
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Mist", "Morning", "Valley", "Nature" },
                 Location = "Yosemite Valley, USA",
-                Price = 4000000,
+                Price = 40000,
                 FileName = "misty_morning_valley.jpg",
                 StoryOfArt = "A magical morning where mist dances over the rolling hills.",
                 PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer

@@ -62,6 +62,7 @@ public class CartService : ICartService
                 var newCartItem = new CartItem
                 {
                     ImageId = addCartItemDto.ImageId,
+                    ImageTitle = image.Title,
                     Quantity = addCartItemDto.Quantity,
                     Price = image.Price,
                     CartId = cart.Id
@@ -188,11 +189,10 @@ public class CartService : ICartService
             var cartDto = new CartDto
             {
                 UserId = cart.UserId,
-                CartItems = cart.CartItems.Select(ci => new CartItemDto
+                CartItems = cart.CartItems.Select(ci => new CartItem()
                 {
-                    CartItemId = ci.Id,
                     ImageId = ci.ImageId,
-                    Title = ci.Image?.Title,
+                    ImageTitle = ci.Image?.Title,
                     Price = ci.Price,
                     Quantity = ci.Quantity
                 }).ToList(),
@@ -235,14 +235,14 @@ public class CartService : ICartService
             var cartDtos = carts.Select(cart => new CartDto
             {
                 UserId = cart.UserId,
-                CartItems = cart.CartItems.Select(ci => new CartItemDto
+                CartItems = cart.CartItems.Select(ci => new CartItem()
                 {
-                    CartItemId = ci.Id,
                     ImageId = ci.ImageId,
-                    Title = ci.Image?.Title,
+                    ImageTitle = ci.Image?.Title,
                     Price = ci.Price,
                     Quantity = ci.Quantity
                 }).ToList(),
+                
                 TotalPrice = cart.CartItems.Sum(ci => ci.Price * ci.Quantity)
             }).ToList();
 

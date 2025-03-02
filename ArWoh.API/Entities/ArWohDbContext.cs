@@ -39,11 +39,7 @@ public class ArWohDbContext : DbContext
             .HasForeignKey(t => t.ImageId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        modelBuilder.Entity<PaymentTransaction>()
-            .HasOne(t => t.Payment)
-            .WithOne(p => p.PaymentTransaction)
-            .HasForeignKey<Payment>(p => p.Id)
-            .OnDelete(DeleteBehavior.Cascade);
+
 
         modelBuilder.Entity<Order>()
             .HasOne(o => o.Transaction)

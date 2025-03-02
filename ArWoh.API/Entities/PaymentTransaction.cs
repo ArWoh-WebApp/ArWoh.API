@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using ArWoh.API.Enums;
 
 namespace ArWoh.API.Entities;
@@ -10,8 +11,10 @@ public class PaymentTransaction : BaseEntity
     public PaymentTransactionStatusEnum PaymentStatus { get; set; } = PaymentTransactionStatusEnum.PENDING;
     public bool IsPhysicalPrint { get; set; } // Đánh dấu nếu là ảnh in
 
+    [ForeignKey("CustomerId")]
     public User Customer { get; set; }
-    public Image Image { get; set; }
 
-    public Payment Payment { get; set; } // Thêm quan hệ với Payment
+    [ForeignKey("ImageId")]
+    public Image Image { get; set; }
 }
+

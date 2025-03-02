@@ -1,8 +1,12 @@
 ﻿using ArWoh.API.Service.ThirdPartyService.Types;
+using Microsoft.AspNetCore.Mvc;
+using Net.payOS.Types;
 
 namespace ArWoh.API.Interface;
 
 public interface IPaymentService
 {
-    Task<CreatePaymentResponse> CreatePayment(CreatePaymentRequest createPaymentRequest);
+    Task<string> ProcessPayment(int userId);
+    Task<IActionResult> PaymentWebhook([FromBody] WebhookData webhookData);
 }
+

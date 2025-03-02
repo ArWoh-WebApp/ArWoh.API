@@ -209,8 +209,9 @@ namespace ArWoh.API.Migrations
                 name: "Payments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    PaymentTransactionId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PaymentTransactionId = table.Column<int>(type: "int", nullable: true),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PaymentGateway = table.Column<int>(type: "int", nullable: false),
                     PaymentStatus = table.Column<int>(type: "int", nullable: false),
@@ -224,11 +225,10 @@ namespace ArWoh.API.Migrations
                 {
                     table.PrimaryKey("PK_Payments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Payments_Transactions_Id",
-                        column: x => x.Id,
+                        name: "FK_Payments_Transactions_PaymentTransactionId",
+                        column: x => x.PaymentTransactionId,
                         principalTable: "Transactions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -261,6 +261,11 @@ namespace ArWoh.API.Migrations
                 table: "Orders",
                 column: "TransactionId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Payments_PaymentTransactionId",
+                table: "Payments",
+                column: "PaymentTransactionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Transactions_CustomerId",

@@ -79,6 +79,7 @@ public class PaymentService : IPaymentService
         }
     }
 
+
     public async Task<string> ProcessPayment(int userId)
     {
         // 1. Lấy giỏ hàng của người dùng
@@ -86,9 +87,20 @@ public class PaymentService : IPaymentService
         if (cart == null || !cart.CartItems.Any())
             throw new Exception("Giỏ hàng trống!");
 
-        // 2. Tạo danh sách PaymentTransaction từ giỏ hàng
+        // 2. Tạo Payment trước
+        var payment = new Payment
+        {
+            Amount = cart.TotalPrice,
+            PaymentGateway = PaymentGatewayEnum.PAYOS,
+            PaymentStatus = PaymentStatusEnum.PENDING
+        };
+
+        await _unitOfWork.Payments.AddAsync(payment);
+        await _unitOfWork.CompleteAsync(); // Lưu Payment để có ID
+
+        // 3. Tạo danh sách PaymentTransaction
         var transactions = new List<PaymentTransaction>();
-        var itemList = new List<ItemData>(); // Danh sách ItemData cho PayOS
+        var itemList = new List<ItemData>();
 
         foreach (var item in cart.CartItems)
         {
@@ -102,33 +114,25 @@ public class PaymentService : IPaymentService
             transactions.Add(transaction);
 
             itemList.Add(new ItemData(
-                item.Title ?? "Ảnh không có tiêu đề",
-                item.Quantity,
-                (int)(item.Price * 100) // PayOS xử lý đơn vị là VND * 100
+                name: item.Title ?? "Ảnh không có tiêu đề",
+                quantity: item.Quantity,
+                price: (int)(item.Price * 100) // PayOS xử lý đơn vị là VND * 100
             ));
         }
 
         await _unitOfWork.Transactions.AddRangeAsync(transactions);
         await _unitOfWork.CompleteAsync();
 
-        // 3. Tạo Payment duy nhất liên kết với PaymentTransaction
-        var payment = new Payment
-        {
-            PaymentTransactionId = transactions.First().Id, // Tham chiếu tới một trong các giao dịch
-            Amount = cart.TotalPrice,
-            PaymentGateway = PaymentGatewayEnum.PAYOS,
-            PaymentStatus = PaymentStatusEnum.PENDING
-        };
+        // 4. Cập nhật PaymentTransactionId trong Payment
+        payment.PaymentTransactionId = transactions.First().Id; // Lấy transaction đầu tiên
+        await _unitOfWork.CompleteAsync(); // Lưu cập nhật
 
-        await _unitOfWork.Payments.AddAsync(payment);
-        await _unitOfWork.CompleteAsync();
-
-        // 4. Gọi PayOS API để tạo link thanh toán
+        // 5. Gọi PayOS API để tạo link thanh toán
         var paymentData = new PaymentData(
-            payment.Id,
-            (int)(cart.TotalPrice * 100), // Chuyển sang đơn vị PayOS (VND x 100)
-            "Thanh toán đơn hàng trên ArWoh",
-            itemList, // Danh sách ảnh từ giỏ hàng
+            orderCode: payment.Id,
+            amount: (int)(cart.TotalPrice * 100), // Chuyển sang đơn vị PayOS (VND x 100)
+            description: "image payment",
+            items: itemList,
             returnUrl: "https://arwoh-fe.vercel.app/",
             cancelUrl: "https://arwoh.ae-tao-fullstack-api.site/"
         );
@@ -137,11 +141,10 @@ public class PaymentService : IPaymentService
         if (paymentResult == null || string.IsNullOrEmpty(paymentResult.checkoutUrl))
             throw new Exception("Không thể tạo link thanh toán!");
 
-        // 5. Cập nhật thông tin thanh toán và lưu vào database
+        // 6. Cập nhật thông tin thanh toán trong Payment
         payment.GatewayTransactionId = paymentResult.orderCode.ToString();
-        payment.PaymentStatus = PaymentStatusEnum.PENDING; // Đánh dấu đang chờ thanh toán
         await _unitOfWork.CompleteAsync();
 
-        return paymentResult.checkoutUrl; // Trả về link thanh toán cho người dùng
+        return paymentResult.checkoutUrl;
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArWoh.API.Migrations
 {
     [DbContext(typeof(ArWohDbContext))]
-    [Migration("20250302024113_Initial")]
+    [Migration("20250302061333_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -242,7 +242,10 @@ namespace ArWoh.API.Migrations
             modelBuilder.Entity("ArWoh.API.Entities.Payment", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
@@ -265,13 +268,15 @@ namespace ArWoh.API.Migrations
                     b.Property<int>("PaymentStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("PaymentTransactionId")
+                    b.Property<int?>("PaymentTransactionId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PaymentTransactionId");
 
                     b.ToTable("Payments");
                 });
@@ -435,10 +440,8 @@ namespace ArWoh.API.Migrations
             modelBuilder.Entity("ArWoh.API.Entities.Payment", b =>
                 {
                     b.HasOne("ArWoh.API.Entities.PaymentTransaction", "PaymentTransaction")
-                        .WithOne("Payment")
-                        .HasForeignKey("ArWoh.API.Entities.Payment", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("PaymentTransactionId");
 
                     b.Navigation("PaymentTransaction");
                 });
@@ -470,12 +473,6 @@ namespace ArWoh.API.Migrations
             modelBuilder.Entity("ArWoh.API.Entities.Image", b =>
                 {
                     b.Navigation("Transactions");
-                });
-
-            modelBuilder.Entity("ArWoh.API.Entities.PaymentTransaction", b =>
-                {
-                    b.Navigation("Payment")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("ArWoh.API.Entities.User", b =>

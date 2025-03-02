@@ -1,6 +1,7 @@
 using ArWoh.API.Interface;
 using ArWoh.API.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Net.payOS.Types;
 
 namespace ArWoh.API.Controllers;
 
@@ -34,5 +35,11 @@ public class PaymentController : ControllerBase
         {
             return BadRequest(new { success = false, message = ex.Message });
         }
+    }
+    
+    [HttpPost("webhook")]
+    public async Task<IActionResult> Webhook([FromBody] WebhookData webhookData)
+    {
+        return await _paymentService.PaymentWebhook(webhookData);
     }
 }

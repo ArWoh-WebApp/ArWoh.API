@@ -33,14 +33,10 @@ public class SystemController : ControllerBase
         try
         {
             await ClearDatabase(_context);
-            var users = await SeedUsers();
-            var images = await SeedImages();
+            await SeedUsersAndImages();
 
-            return Ok(ApiResult<object>.Success(new
-            {
-                UserCount = users.Count,
-                ImageCount = images.Count
-            }));
+            return Ok(ApiResult<object>.Success("Seeding completed successfully"));
+
         }
         catch (DbUpdateException dbEx)
         {
@@ -54,15 +50,14 @@ public class SystemController : ControllerBase
         }
     }
 
-    private async Task<List<User>> SeedUsers()
+    private async Task SeedUsersAndImages()
     {
-        _logger.Info("Seeding users into the database...");
+        _logger.Info("Seeding users and images into the database...");
 
-        var existingUsers = await _context.Users.AnyAsync();
-        if (existingUsers)
+        if (await _context.Users.AnyAsync())
         {
             _logger.Warn("Users already exist. Skipping seeding.");
-            return await _context.Users.ToListAsync();
+            return;
         }
 
         var passwordHasher = new PasswordHasher();
@@ -71,21 +66,23 @@ public class SystemController : ControllerBase
         {
             new()
             {
-                Username = "customer_user",
-                Email = "customer@gmail.com",
-                PasswordHash = passwordHasher.HashPassword("1@"),
-                Role = UserRole.Customer,
-                Bio = "A passionate art lover.",
-                ProfilePictureUrl = "https://example.com/images/customer.png"
+                Username = "Tiến Nhiếp Ảnh Gia",
+                Email = "hoangtien1105@gmail.com",
+                PasswordHash = passwordHasher.HashPassword("hoangtien1105"),
+                Role = UserRole.Photographer,
+                Bio = "Một coder biết chơi đàn và thích chụp ảnh, mê đi phượt và rất yêu mèo.",
+                ProfilePictureUrl =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download..."
             },
             new()
             {
-                Username = "photographer_user",
-                Email = "photographer@gmail.com",
-                PasswordHash = passwordHasher.HashPassword("1@"),
+                Username = "Dương Domic",
+                Email = "duongdomic@gmail.com",
+                PasswordHash = passwordHasher.HashPassword("duongdomic"),
                 Role = UserRole.Photographer,
-                Bio = "Professional nature photographer.",
-                ProfilePictureUrl = "https://example.com/images/photographer.png"
+                Bio = "Ca sĩ nhưng thích chụp hình",
+                ProfilePictureUrl =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download..."
             },
             new()
             {
@@ -99,116 +96,75 @@ public class SystemController : ControllerBase
         };
 
         await _context.Users.AddRangeAsync(users);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(); // Đảm bảo user được lưu trước khi tiếp tục
 
-        _logger.Success("User seeding completed successfully.");
+        // Lấy danh sách photographer từ database
+        var photographers = await _context.Users
+            .Where(u => u.Role == UserRole.Photographer)
+            .Select(u => u.Id)
+            .ToListAsync();
 
-        return users;
-    }
+        if (!photographers.Any())
+        {
+            _logger.Error("No photographers found. Skipping image seeding.");
+            return;
+        }
 
-    private async Task<List<Image>> SeedImages()
-    {
+        var random = new Random();
+
         var images = new List<Image>
         {
             new()
             {
                 Title = "Mountain Stream at Dawn",
-                Description =
-                    "Captured during the early hours of dawn, this mountain stream represents the raw beauty of untouched nature. The interplay of light and shadow creates a mesmerizing scene that invites viewers to pause and reflect on the tranquility of the natural world.",
+                Description = "Captured during the early hours of dawn...",
                 Url = "https://images.unsplash.com/photo-1548679847-1d4ff48016c7",
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Water Stream", "Brook", "Natural Water", "Landscape", "Mountains" },
                 Location = "Rocky Mountains, Colorado",
                 Price = 2500000,
                 FileName = "mountain_stream_dawn.jpg",
-                StoryOfArt = "A peaceful moment captured during dawn, highlighting nature’s untouched beauty."
+                StoryOfArt = "A peaceful moment captured during dawn...",
+                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
             },
             new()
             {
                 Title = "City Skyline at Dusk",
-                Description =
-                    "As daylight fades, the city transforms into a vibrant canvas of twinkling lights and urban silhouettes. The dusk creates a dramatic contrast between the illuminated skyscrapers and the darkening sky.",
-                Url =
-                    "https://images.unsplash.com/photo-1502635994848-2eb3b4a38201?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4" +
-                    ".0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                Description = "As daylight fades, the city transforms...",
+                Url = "https://images.unsplash.com/photo-1502635994848-2eb3b4a38201",
                 Orientation = OrientationType.Portrait,
-                Tags = new List<string> { "Water Stream", "Brook", "Natural Water", "Landscape", "Mountains" },
-                Location = "Rocky Mountains, Colorado",
-                Price = 2500000,
-                FileName = "mountain_stream_dawn.jpg",
-                StoryOfArt =
-                    "As daylight fades, the city transforms into a vibrant canvas of twinkling lights and urban silhouettes. The dusk creates a dramatic contrast between the illuminated skyscrapers and the darkening sky."
-            },
-            new()
-            {
-                Title = "Forest Trail in Autumn",
-                Description =
-                    "Captured during the early hours of dawn, this mountain stream represents the raw beauty of untouched nature. The interplay of light and shadow creates a mesmerizing scene that invites viewers to pause and reflect on the tranquility of the natural world.",
-                Url = "https://images.unsplash.com/photo-1548679847-1d4ff48016c7",
-                Orientation = OrientationType.Landscape,
-                Tags = new List<string> { "Forest", "Autumn", "Trail", "Nature" },
-                Location = "Bavarian Forest, Germany",
-                Price = 2500000,
-                FileName = "mountain_stream_dawn.jpg",
-                StoryOfArt =
-                    "The forest comes alive with vibrant hues of red, orange, and yellow. A winding trail invites wanderers to explore the crisp, refreshing atmosphere of autumn."
-            },
-            new()
-            {
-                Title = "Desert Mirage",
-                Description =
-                    "In the midst of arid landscapes, the shimmering heat gives rise to optical illusions that evoke mystery and wonder, capturing the stark beauty of the desert.",
-                Url =
-                    "https://plus.unsplash.com/premium_photo-1673631128794-e9758e20e5a8?q=80&w=1888&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                Orientation = OrientationType.Portrait,
-                Tags = new List<string> { "Desert", "Mirage", "Heat", "Landscape" },
-                Location = "Sahara Desert, Africa",
-                Price = 1000000,
-                FileName = "desert_mirage.jpg",
-                StoryOfArt =
-                    "The illusionary effect of heat waves in the vast desert creates an ethereal scene, mesmerizing travelers."
-            },
-            new()
-            {
-                Title = "Ocean Waves Crashing",
-                Description =
-                    "The raw power of the ocean is beautifully frozen in time as colossal waves break against rugged cliffs, showcasing nature’s unbridled energy and grace.",
-                Url =
-                    "https://images.unsplash.com/photo-1474767821094-a8fe9d8c8fdd?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                Orientation = OrientationType.Landscape,
-                Tags = new List<string> { "Ocean", "Waves", "Seascape", "Nature" },
-                Location = "Big Sur, California",
-                Price = 1500000,
-                FileName = "ocean_waves_crashing.jpg",
-                StoryOfArt = "A moment capturing the fierce yet graceful power of ocean waves."
+                Tags = new List<string> { "Skyline", "City", "Nightlife", "Urban" },
+                Location = "New York City, USA",
+                Price = 3000000,
+                FileName = "city_skyline_dusk.jpg",
+                StoryOfArt = "The contrast between the city and sky...",
+                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
             },
             new()
             {
                 Title = "Snowy Mountain Peaks",
-                Description =
-                    "Towering peaks dusted with pristine snow stand as a testament to nature’s grandeur. The crisp air and brilliant sky amplify the serene yet powerful landscape.",
-                Url =
-                    "https://images.unsplash.com/photo-1558089551-95d707e6c13c?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                Description = "Towering peaks dusted with pristine snow...",
+                Url = "https://images.unsplash.com/photo-1558089551-95d707e6c13c",
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Mountains", "Snow", "Alps", "Winter" },
                 Location = "Swiss Alps, Switzerland",
                 Price = 2000000,
                 FileName = "snowy_mountain_peaks.jpg",
-                StoryOfArt = "A breathtaking view of snowy peaks, symbolizing the raw and untouched beauty of nature."
+                StoryOfArt = "A breathtaking view of snowy peaks...",
+                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
             },
             new()
             {
                 Title = "Vibrant Flower Garden",
-                Description =
-                    "Lush, blooming flowers create a lively mosaic of colors and shapes. The garden exudes energy and beauty, inviting onlookers to lose themselves in its vibrant details.",
-                Url =
-                    "https://images.unsplash.com/photo-1428908728789-d2de25dbd4e2?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                Description = "Lush, blooming flowers create a lively mosaic...",
+                Url = "https://images.unsplash.com/photo-1428908728789-d2de25dbd4e2",
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Flowers", "Garden", "Colorful", "Nature" },
                 Location = "Provence, France",
                 Price = 2300000,
                 FileName = "vibrant_flower_garden.jpg",
-                StoryOfArt = "An explosion of colors and life captured in a vibrant flower garden."
+                StoryOfArt = "An explosion of colors and life captured...",
+                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
             },
             new()
             {
@@ -223,7 +179,8 @@ public class SystemController : ControllerBase
                 Price = 5000000,
                 FileName = "rainy_city_street.jpg",
                 StoryOfArt =
-                    "An urban dreamscape, where neon lights and rain create an artistic blend of colors and reflections."
+                    "An urban dreamscape, where neon lights and rain create an artistic blend of colors and reflections.",
+                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
             },
             new()
             {
@@ -237,7 +194,8 @@ public class SystemController : ControllerBase
                 Location = "Lake Tahoe, USA",
                 Price = 2400000,
                 FileName = "sunset_over_the_lake.jpg",
-                StoryOfArt = "A peaceful moment reflecting the golden hues of the setting sun over a tranquil lake."
+                StoryOfArt = "A peaceful moment reflecting the golden hues of the setting sun over a tranquil lake.",
+                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
             },
             new()
             {
@@ -251,7 +209,8 @@ public class SystemController : ControllerBase
                 Location = "Atacama Desert, Chile",
                 Price = 4000000,
                 FileName = "starry_night_sky.jpg",
-                StoryOfArt = "A gateway to the cosmos, capturing the mesmerizing beauty of the night sky."
+                StoryOfArt = "A gateway to the cosmos, capturing the mesmerizing beauty of the night sky.",
+                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
             },
             new()
             {
@@ -265,7 +224,8 @@ public class SystemController : ControllerBase
                 Location = "Tuscany, Italy",
                 Price = 4000000,
                 FileName = "countryside_road.jpg",
-                StoryOfArt = "A journey through rolling hills, where time slows down and nature takes center stage."
+                StoryOfArt = "A journey through rolling hills, where time slows down and nature takes center stage.",
+                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
             },
             new()
             {
@@ -280,7 +240,8 @@ public class SystemController : ControllerBase
                 Price = 4000000,
                 FileName = "ancient_castle_ruins.jpg",
                 StoryOfArt =
-                    "A glimpse into the past, where the echoes of history whisper through the crumbling stones."
+                    "A glimpse into the past, where the echoes of history whisper through the crumbling stones.",
+                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
             },
             new()
             {
@@ -294,7 +255,8 @@ public class SystemController : ControllerBase
                 Location = "Costa Rica",
                 Price = 4000000,
                 FileName = "lush_tropical_forest.jpg",
-                StoryOfArt = "A hidden paradise, where nature flourishes in an explosion of green."
+                StoryOfArt = "A hidden paradise, where nature flourishes in an explosion of green.",
+                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
             },
             new()
             {
@@ -308,7 +270,8 @@ public class SystemController : ControllerBase
                 Location = "Loire Valley, France",
                 Price = 4000000,
                 FileName = "calm_river_bend.jpg",
-                StoryOfArt = "A peaceful waterway winding through nature’s quiet embrace."
+                StoryOfArt = "A peaceful waterway winding through nature’s quiet embrace.",
+                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
             },
             new()
             {
@@ -322,7 +285,8 @@ public class SystemController : ControllerBase
                 Location = "Dubai, UAE",
                 Price = 4000000,
                 FileName = "modern_architecture.jpg",
-                StoryOfArt = "A vision of the future, where form meets function in architectural brilliance."
+                StoryOfArt = "A vision of the future, where form meets function in architectural brilliance.",
+                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
             },
             new()
             {
@@ -336,15 +300,17 @@ public class SystemController : ControllerBase
                 Location = "Yosemite Valley, USA",
                 Price = 4000000,
                 FileName = "misty_morning_valley.jpg",
-                StoryOfArt = "A magical morning where mist dances over the rolling hills."
+                StoryOfArt = "A magical morning where mist dances over the rolling hills.",
+                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
             }
         };
 
         await _context.Images.AddRangeAsync(images);
         await _context.SaveChangesAsync();
 
-        return images;
+        _logger.Success("User and image seeding completed successfully.");
     }
+
 
     private async Task ClearDatabase(ArWohDbContext context)
     {

@@ -10,7 +10,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: "http://+:8080;http://+:8081"
-      ConnectionStrings__DefaultConnection: "Server=103.211.201.162,1433;Database=ArWohDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;Encrypt=False;MultipleActiveResultSets=True"
+      ConnectionStrings__DefaultConnection: "Server=103.211.201.162,1433;Database=ArWohDb;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True;Encrypt=False;"
       JWT__SecretKey: "YourSuperStrongJWTSecretKeyWithAtLeast32Chars"
       JWT__Issuer: "ArWoh"
       JWT__Audience: "ArWohUsers"

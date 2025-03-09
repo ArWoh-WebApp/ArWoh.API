@@ -193,7 +193,7 @@ public class CartService : ICartService
                 {
                     CartItemId = ci.Id,
                     ImageId = ci.ImageId,
-                    ImageTitle = ci.Image?.Title,
+                    ImageTitle = ci.ImageTitle,
                     Price = ci.Price,
                     Quantity = ci.Quantity
                 }).ToList(),

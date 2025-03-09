@@ -9,5 +9,4 @@ public interface ICartService
     Task<CartDto> CreateCartAsync(AddCartItemDto addCartItemDto, int userId);
     Task<CartDto> UpdateCartAsync(UpdateCartItemDto updateCartItemDto, int userId);
     Task<CartDto> DeleteCartItemAsync(int cartItemId, int userId);
-    Task<IEnumerable<CartDto>> GetAllCarts();
 }

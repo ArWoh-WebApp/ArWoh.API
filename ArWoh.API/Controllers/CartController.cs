@@ -100,6 +100,7 @@ public class CartController : ControllerBase
     [ProducesResponseType(typeof(ApiResult<CartDto>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]
     [ProducesResponseType(typeof(ApiResult<object>), 500)]
+
     public async Task<IActionResult> RemoveFromCart(int cartItemId)
     {
         try
@@ -115,33 +116,6 @@ public class CartController : ControllerBase
         {
             _loggerService.Error($"Unexpected error in RemoveFromCart: {ex.Message}");
             return StatusCode(500, ApiResult<object>.Error("An error occurred while removing item from the cart"));
-        }
-    }
-
-    [HttpGet]
-    [ProducesResponseType(typeof(ApiResult<IEnumerable<CartDto>>), 200)]
-    [ProducesResponseType(typeof(ApiResult<object>), 400)]
-    [ProducesResponseType(typeof(ApiResult<object>), 500)]
-    public async Task<IActionResult> GetAllCarts()
-    {
-        try
-        {
-            _loggerService.Info("Fetching all carts");
-
-            var carts = await _cartService.GetAllCarts();
-
-            if (!carts.Any())
-            {
-                _loggerService.Warn("No carts found.");
-                return Ok(ApiResult<IEnumerable<CartDto>>.Success(new List<CartDto>()));
-            }
-
-            return Ok(ApiResult<IEnumerable<CartDto>>.Success(carts));
-        }
-        catch (Exception ex)
-        {
-            _loggerService.Error($"Unexpected error in GetAllCarts: {ex.Message}");
-            return StatusCode(500, ApiResult<object>.Error("An unexpected error occurred"));
         }
     }
 }

@@ -189,8 +189,9 @@ public class CartService : ICartService
             var cartDto = new CartDto
             {
                 UserId = cart.UserId,
-                CartItems = cart.CartItems.Select(ci => new CartItem()
+                CartItems = cart.CartItems.Select(ci => new CartItemDto()
                 {
+                    CartItemId = ci.Id,
                     ImageId = ci.ImageId,
                     ImageTitle = ci.Image?.Title,
                     Price = ci.Price,
@@ -207,53 +208,6 @@ public class CartService : ICartService
         {
             _loggerService.Error($"Unexpected error in GetCartByUserId: {ex.Message}");
             throw new Exception("An error occurred while fetching the cart.", ex);
-        }
-    }
-
-    /// <summary>
-    /// Lấy tất cả giỏ hàng
-    /// </summary>
-    /// <returns></returns>
-    public async Task<IEnumerable<CartDto>> GetAllCarts()
-    {
-        try
-        {
-            _loggerService.Info("Fetching all carts");
-
-            //var carts = await _unitOfWork.Carts.GetAllAsync();
-            var carts = await _unitOfWork.Carts
-                .GetQueryable()
-                .Include(c => c.CartItems.Where(ci => !ci.IsDeleted))
-                .ToListAsync();
-
-            if (!carts.Any())
-            {
-                _loggerService.Warn("No carts found.");
-                return new List<CartDto>();
-            }
-
-            var cartDtos = carts.Select(cart => new CartDto
-            {
-                UserId = cart.UserId,
-                CartItems = cart.CartItems.Select(ci => new CartItem()
-                {
-                    ImageId = ci.ImageId,
-                    ImageTitle = ci.Image?.Title,
-                    Price = ci.Price,
-                    Quantity = ci.Quantity
-                }).ToList(),
-
-                TotalPrice = cart.CartItems.Sum(ci => ci.Price * ci.Quantity)
-            }).ToList();
-
-            _loggerService.Success($"Successfully fetched {cartDtos.Count} carts.");
-
-            return cartDtos;
-        }
-        catch (Exception ex)
-        {
-            _loggerService.Error($"Unexpected error in GetAllCarts: {ex.Message}");
-            throw new Exception("An error occurred while fetching all carts.", ex);
         }
     }
 }

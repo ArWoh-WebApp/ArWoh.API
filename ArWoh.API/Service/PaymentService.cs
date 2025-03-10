@@ -1,8 +1,6 @@
 ﻿using ArWoh.API.Entities;
 using ArWoh.API.Enums;
 using ArWoh.API.Interface;
-using ArWoh.API.Service.ThirdPartyService.Interfaces;
-using ArWoh.API.Service.ThirdPartyService.Types;
 using Microsoft.AspNetCore.Mvc;
 using Net.payOS;
 using Net.payOS.Types;
@@ -79,7 +77,6 @@ public class PaymentService : IPaymentService
             return new StatusCodeResult(500);
         }
     }
-
 
     public async Task<string> ProcessPayment(int userId)
     {

@@ -1,6 +1,7 @@
 using ArWoh.API.DTOs.ImageDTOs;
 using ArWoh.API.Entities;
 using ArWoh.API.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace ArWoh.API.Service;
 
@@ -17,89 +18,52 @@ public class ImageService : IImageService
         _unitOfWork = unitOfWork;
     }
 
-    /// <summary>
-    /// Lấy tất cả images thuộc về photographer đó
-    /// </summary>
-    public async Task<IEnumerable<ImageDto>> GetImagesByPhotographer(int photographerId)
-    {
-        try
-        {
-            var photographer = await _unitOfWork.Users.GetByIdAsync(photographerId);
-            if (photographer == null)
-            {
-                _loggerService.Info($"Photographer with ID {photographerId} not found.");
-                throw new KeyNotFoundException($"Photographer with ID {photographerId} not found.");
-            }
-
-            var images = await _unitOfWork.Images.FindAsync(img => img.PhotographerId == photographerId);
-
-            if (images == null || !images.Any())
-            {
-                _loggerService.Info($"No images found for photographer ID {photographerId}.");
-                return Enumerable.Empty<ImageDto>();
-            }
-
-            return images.Select(img => new ImageDto
-            {
-                Id = img.Id,
-                Title = img.Title,
-                Description = img.Description,
-                Price = img.Price,
-                Url = img.Url,
-                PhotographerId = img.PhotographerId ?? 0,
-                Tags = img.Tags
-            }).ToList();
-        }
-        catch (Exception e)
-        {
-            _loggerService.Error($"Error retrieving images for photographer ID {photographerId}: {e.Message}");
-            throw;
-        }
-    }
-
 
     /// <summary>
-    /// Lấy list tất cả các images lên
+    /// Lấy tất cả hình sau khi User đã mua dựa trên table PaymentTransaction
     /// </summary>
+    /// <param name="userId"></param>
+    /// <summary>
+    /// Lấy tất cả hình sau khi User đã mua dựa trên table PaymentTransaction
+    /// </summary>
+    /// <param name="userId"></param>
     /// <returns></returns>
-    /// <exception cref="Exception"></exception>
-    public async Task<IEnumerable<ImageDto>> GetAllImages()
+    public async Task<IEnumerable<ImageDto>> GetAllImagesBoughtByUser(int userId)
     {
         try
         {
-            _loggerService.Info("Fetching all images from database.");
+            // Lấy dữ liệu PaymentTransaction với eager loading cho Image
+            var paymentTransactions = await _unitOfWork.Transactions
+                .GetQueryable()  // Trả về IQueryable từ GenericRepository
+                .Where(pt => pt.CustomerId == userId)
+                .Include(pt => pt.Image)  // Thực hiện eager loading với Image
+                .ToListAsync();
 
-            var images = await _unitOfWork.Images.GetAllAsync();
+            // Lọc các giao dịch có Image và chuyển đổi thành ImageDto
+            var images = paymentTransactions
+                .Where(pt => pt.Image != null) // Kiểm tra Image có tồn tại
+                .Select(pt => new ImageDto
+                {
+                    Id = pt.Image.Id,
+                    PhotographerId = pt.Image.PhotographerId,
+                    Title = pt.Image.Title,
+                    Description = pt.Image.Description,
+                    Price = pt.Image.Price,
+                    StoryOfArt = pt.Image.StoryOfArt,
+                    Orientation = pt.Image.Orientation,
+                    Tags = pt.Image.Tags,
+                    Location = pt.Image.Location,
+                    FileName = pt.Image.FileName,
+                    Url = pt.Image.Url
+                })
+                .ToList();
 
-            if (!images.Any())
-            {
-                _loggerService.Warn("No images found in the database.");
-                return new List<ImageDto>(); // Trả về danh sách rỗng thay vì null
-            }
-
-            var imageDtos = images.Select(image => new ImageDto
-            {
-                Id = image.Id,
-                Title = image.Title,
-                Description = image.Description,
-                Price = image.Price,
-                StoryOfArt = image.StoryOfArt,
-                Orientation = image.Orientation,
-                Location = image.Location,
-                Tags = image.Tags,
-                FileName = image.FileName,
-                PhotographerId = image.PhotographerId,
-                Url = image.Url
-            }).ToList();
-
-            _loggerService.Success($"Successfully retrieved {imageDtos.Count} images.");
-
-            return imageDtos;
+            return images;
         }
         catch (Exception ex)
         {
-            _loggerService.Error($"Unexpected error in GetAllImages: {ex.Message}");
-            throw new Exception("An error occurred while retrieving images.", ex);
+            _loggerService.Error($"Error fetching images for user {userId}: {ex.Message}");
+            throw;
         }
     }
 
@@ -154,6 +118,91 @@ public class ImageService : IImageService
             throw new Exception("An error occurred while retrieving the image details.", ex);
         }
     }
+
+
+    public async Task<IEnumerable<ImageDto>> GetImagesByPhotographer(int photographerId)
+    {
+        try
+        {
+            var photographer = await _unitOfWork.Users.GetByIdAsync(photographerId);
+            if (photographer == null)
+            {
+                _loggerService.Info($"Photographer with ID {photographerId} not found.");
+                throw new KeyNotFoundException($"Photographer with ID {photographerId} not found.");
+            }
+
+            var images = await _unitOfWork.Images.FindAsync(img => img.PhotographerId == photographerId);
+
+            if (images == null || !images.Any())
+            {
+                _loggerService.Info($"No images found for photographer ID {photographerId}.");
+                return Enumerable.Empty<ImageDto>();
+            }
+
+            return images.Select(img => new ImageDto
+            {
+                Id = img.Id,
+                Title = img.Title,
+                Description = img.Description,
+                Price = img.Price,
+                Url = img.Url,
+                PhotographerId = img.PhotographerId ?? 0,
+                Tags = img.Tags
+            }).ToList();
+        }
+        catch (Exception e)
+        {
+            _loggerService.Error($"Error retrieving images for photographer ID {photographerId}: {e.Message}");
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// Lấy list tất cả các images lên
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public async Task<IEnumerable<ImageDto>> GetAllImages()
+    {
+        try
+        {
+            _loggerService.Info("Fetching all images from database.");
+
+            var images = await _unitOfWork.Images.GetAllAsync();
+
+            if (!images.Any())
+            {
+                _loggerService.Warn("No images found in the database.");
+                return new List<ImageDto>(); // Trả về danh sách rỗng thay vì null
+            }
+
+            var imageDtos = images.Select(image => new ImageDto
+            {
+                Id = image.Id,
+                Title = image.Title,
+                Description = image.Description,
+                Price = image.Price,
+                StoryOfArt = image.StoryOfArt,
+                Orientation = image.Orientation,
+                Location = image.Location,
+                Tags = image.Tags,
+                FileName = image.FileName,
+                PhotographerId = image.PhotographerId,
+                Url = image.Url
+            }).ToList();
+
+            _loggerService.Success($"Successfully retrieved {imageDtos.Count} images.");
+
+            return imageDtos;
+        }
+        catch (Exception ex)
+        {
+            _loggerService.Error($"Unexpected error in GetAllImages: {ex.Message}");
+            throw new Exception("An error occurred while retrieving images.", ex);
+        }
+    }
+
+
 
     /// <summary>
     /// Dùng cho Photographer up hình ảnh lên system

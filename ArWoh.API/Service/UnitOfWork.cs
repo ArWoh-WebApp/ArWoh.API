@@ -16,8 +16,9 @@ public class UnitOfWork : IUnitOfWork
     public IGenericRepository<Cart> Carts { get; }
     public IGenericRepository<CartItem> CartItems { get; }
     public IGenericRepository<Payment> Payments { get; }
+    public IGenericRepository<PaymentTransaction> PaymentTransactions { get; }
 
-    public UnitOfWork(ArWohDbContext context)
+    public UnitOfWork(ArWohDbContext context, IGenericRepository<PaymentTransaction> paymentTransactions)
     {
         _context = context;
         Users = new GenericRepository<User>(_context);
@@ -28,6 +29,7 @@ public class UnitOfWork : IUnitOfWork
         Carts = new GenericRepository<Cart>(_context);
         CartItems = new GenericRepository<CartItem>(_context);
         Payments = new GenericRepository<Payment>(_context);
+        PaymentTransactions = paymentTransactions;
     }
 
     public async Task<int> CompleteAsync()

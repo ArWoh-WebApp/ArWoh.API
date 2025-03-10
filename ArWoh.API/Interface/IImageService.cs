@@ -1,5 +1,4 @@
 using ArWoh.API.DTOs.ImageDTOs;
-using ArWoh.API.Entities;
 
 namespace ArWoh.API.Interface;
 
@@ -7,6 +6,8 @@ public interface IImageService
 {
     Task<IEnumerable<ImageDto>> GetImagesByPhotographer(int photographerId);
     Task<IEnumerable<ImageDto>> GetAllImages();
+    Task<IEnumerable<ImageDto>> GetAllImagesBoughtByUser(int userId);
+
     Task<ImageDto> GetImageById(int imageId);
     Task<ImageDto> UploadImageAsync(UploadImageDto uploadDto, int photographerId);
     Task<ImageDto> UpdateImageAsync(int imageId, UpdateImageDto updateDto);

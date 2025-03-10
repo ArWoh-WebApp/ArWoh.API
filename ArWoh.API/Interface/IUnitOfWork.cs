@@ -12,5 +12,6 @@ public interface IUnitOfWork : IDisposable
     IGenericRepository<CartItem> CartItems { get; }
     IGenericRepository<Cart> Carts { get; }
     IGenericRepository<Payment> Payments { get; }
+    IGenericRepository<PaymentTransaction> PaymentTransactions { get; }
     Task<int> CompleteAsync();
 }

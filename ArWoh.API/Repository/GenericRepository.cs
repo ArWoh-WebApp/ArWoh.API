@@ -1,7 +1,7 @@
-using System.Linq.Expressions;
-using ArWoh.API.Entities;
+﻿using ArWoh.API.Entities;
 using ArWoh.API.Interface;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace ArWoh.API.Repository;
 
@@ -100,6 +100,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public IQueryable<T> GetQueryable()
     {
-        return _dbSet;
+        return _dbSet.Where(entity => !entity.IsDeleted);  // Trả về IQueryable để có thể gọi Include
     }
 }

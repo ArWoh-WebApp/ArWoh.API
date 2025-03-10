@@ -13,8 +13,9 @@ public class PaymentService : IPaymentService
 {
     private readonly PayOS _payOS;
     private readonly ILoggerService _logger;
-    private readonly ICartService _cartService;
     private readonly IUnitOfWork _unitOfWork;
+
+    private readonly ICartService _cartService;
 
     public PaymentService(ILoggerService logger, PayOS payOs, ICartService cartService, IUnitOfWork unitOfWork)
     {

@@ -119,8 +119,7 @@ public class ImageService : IImageService
         }
     }
 
-
-    public async Task<IEnumerable<ImageDto>> GetImagesByPhotographer(int photographerId)
+    public async Task<IEnumerable<ImageDto>> GetImagesUploadedByPhotographer(int photographerId)
     {
         try
         {

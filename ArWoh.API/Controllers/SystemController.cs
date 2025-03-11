@@ -65,6 +65,16 @@ public class SystemController : ControllerBase
         {
             new()
             {
+                Username = "Tiến User",
+                Email = "user1@gmail.com",
+                PasswordHash = passwordHasher.HashPassword("1@"),
+                Role = UserRole.Customer,
+                Bio = "Một coder biết chơi đàn và thích chụp ảnh, mê đi phượt và rất yêu mèo.",
+                ProfilePictureUrl =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=user-avatars%2F81700597_1303744603146435_5830943911396245504_n.jpg&version_id=null"
+            },
+            new()
+            {
                 Username = "Tiến Nhiếp Ảnh Gia",
                 Email = "hoangtien1105@gmail.com",
                 PasswordHash = passwordHasher.HashPassword("hoangtien1105"),

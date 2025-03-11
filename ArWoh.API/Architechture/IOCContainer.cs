@@ -102,7 +102,7 @@ public static class IOCContainer
             c.UseInlineDefinitionsForEnums();
 
             c.SwaggerDoc("v1",
-                new OpenApiInfo { Title = "VaccinaCareAPI", Version = "v1" });
+                new OpenApiInfo { Title = "ArWohApi", Version = "v1" });
             var jwtSecurityScheme = new OpenApiSecurityScheme
             {
                 Name = "JWT Authentication",

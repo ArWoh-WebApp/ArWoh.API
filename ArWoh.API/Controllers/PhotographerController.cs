@@ -14,7 +14,9 @@ public class PhotographerController : ControllerBase
     private readonly ILoggerService _loggerService;
     private readonly IClaimService _claimService;
     private readonly IPaymentService _paymentService;
-    public PhotographerController(IImageService imageService, ILoggerService loggerService, IClaimService claimService, IPaymentService paymentService)
+
+    public PhotographerController(IImageService imageService, ILoggerService loggerService, IClaimService claimService,
+        IPaymentService paymentService)
     {
         _imageService = imageService;
         _loggerService = loggerService;
@@ -73,5 +75,4 @@ public class PhotographerController : ControllerBase
             return Ok(ApiResult<object>.Error($"An unexpected error occurred: {ex.Message}"));
         }
     }
-
 }

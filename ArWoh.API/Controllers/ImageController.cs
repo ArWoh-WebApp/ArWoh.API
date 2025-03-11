@@ -22,7 +22,6 @@ public class ImageController : ControllerBase
     }
 
 
-
     [HttpGet]
     [ProducesResponseType(typeof(ApiResult<IEnumerable<ImageDto>>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]
@@ -91,8 +90,6 @@ public class ImageController : ControllerBase
             return StatusCode(500, ApiResult<object>.Error("An unexpected error occurred"));
         }
     }
-
-
 
 
     [HttpPost("upload")]

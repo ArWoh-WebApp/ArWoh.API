@@ -100,6 +100,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public IQueryable<T> GetQueryable()
     {
-        return _dbSet.Where(entity => !entity.IsDeleted);  // Trả về IQueryable để có thể gọi Include
+        return _dbSet.Where(entity => !entity.IsDeleted); // Trả về IQueryable để có thể gọi Include
     }
 }

@@ -34,9 +34,9 @@ public class ImageService : IImageService
         {
             // Lấy dữ liệu PaymentTransaction với eager loading cho Image
             var paymentTransactions = await _unitOfWork.Transactions
-                .GetQueryable()  // Trả về IQueryable từ GenericRepository
+                .GetQueryable() // Trả về IQueryable từ GenericRepository
                 .Where(pt => pt.CustomerId == userId)
-                .Include(pt => pt.Image)  // Thực hiện eager loading với Image
+                .Include(pt => pt.Image) // Thực hiện eager loading với Image
                 .ToListAsync();
 
             // Lọc các giao dịch có Image và chuyển đổi thành ImageDto
@@ -200,7 +200,6 @@ public class ImageService : IImageService
             throw new Exception("An error occurred while retrieving images.", ex);
         }
     }
-
 
 
     /// <summary>

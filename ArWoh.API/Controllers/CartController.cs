@@ -100,7 +100,6 @@ public class CartController : ControllerBase
     [ProducesResponseType(typeof(ApiResult<CartDto>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]
     [ProducesResponseType(typeof(ApiResult<object>), 500)]
-
     public async Task<IActionResult> RemoveFromCart(int cartItemId)
     {
         try

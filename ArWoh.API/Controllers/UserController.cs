@@ -95,7 +95,7 @@ public class UserController : ControllerBase
             return Ok(ApiResult<object>.Error(e.Message));
         }
     }
-    
+
     [HttpGet("me/profile")]
     [Authorize]
     [ProducesResponseType(typeof(ApiResult<UserProfileDto>), 200)]
@@ -125,5 +125,4 @@ public class UserController : ControllerBase
                 ApiResult<object>.Error($"An error occurred while retrieving user profile: {ex.Message}"));
         }
     }
-    
 }

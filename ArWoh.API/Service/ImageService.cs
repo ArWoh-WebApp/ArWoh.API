@@ -20,7 +20,7 @@ public class ImageService : IImageService
     /// <summary>
     /// Lấy tất cả images thuộc về photographer đó
     /// </summary>
-    public async Task<IEnumerable<ImageDto>> GetImagesByPhotographer(int photographerId)
+    public async Task<IEnumerable<ImageDto>> GetImagesUploadedByPhotographer(int photographerId)
     {
         try
         {

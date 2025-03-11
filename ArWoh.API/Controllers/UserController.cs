@@ -13,75 +13,16 @@ public class UserController : ControllerBase
     private readonly IUserService _userService;
     private readonly IClaimService _claimService;
     private readonly ILoggerService _logger;
+    private readonly IPaymentService _paymentService;
 
-    public UserController(IUserService userService, IClaimService claimService, ILoggerService logger)
+    public UserController(IUserService userService, IClaimService claimService, ILoggerService logger,
+        IPaymentService paymentService)
     {
         _userService = userService;
         _claimService = claimService;
         _logger = logger;
+        _paymentService = paymentService;
     }
-
-
-    [HttpGet("profile")]
-    [Authorize]
-    [ProducesResponseType(typeof(ApiResult<UserProfileDto>), 200)]
-    [ProducesResponseType(typeof(ApiResult<object>), 400)]
-    [ProducesResponseType(typeof(ApiResult<object>), 401)]
-    [ProducesResponseType(typeof(ApiResult<object>), 500)]
-    public async Task<IActionResult> GetUserProfile()
-    {
-        try
-        {
-            var userId = _claimService.GetCurrentUserId();
-            if (userId == null) return Unauthorized(ApiResult<object>.Error("User not authenticated."));
-
-            var currentUser = await _userService.GetUserDetailsById(userId);
-            if (currentUser == null) return NotFound(ApiResult<object>.Error("User profile not found."));
-
-            var result = ApiResult<UserProfileDto>.Success(currentUser, "User profile retrieved successfully.");
-            return Ok(result);
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            return Unauthorized(ApiResult<object>.Error(ex.Message));
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500,
-                ApiResult<object>.Error($"An error occurred while retrieving user profile: {ex.Message}"));
-        }
-    }
-
-    [HttpGet]
-    [ProducesResponseType(typeof(ApiResult<List<UserProfileDto>>), 200)]
-    [ProducesResponseType(typeof(ApiResult<object>), 400)]
-    [ProducesResponseType(typeof(ApiResult<object>), 401)]
-    [ProducesResponseType(typeof(ApiResult<object>), 500)]
-    public async Task<IActionResult> GetAllUsers()
-    {
-        try
-        {
-            var users = await _userService.GetAllUsers();
-
-            return Ok(new ApiResult<List<UserProfileDto>>
-            {
-                IsSuccess = true,
-                Message = "Users retrieved successfully",
-                Data = users
-            });
-        }
-        catch (Exception ex)
-        {
-            _logger.Error($"Error while fetching users: {ex.Message}");
-            return StatusCode(500, new ApiResult<object>
-            {
-                IsSuccess = false,
-                Message = "An internal server error occurred",
-                Data = null
-            });
-        }
-    }
-
 
     [HttpGet("photographers")]
     [ProducesResponseType(typeof(ApiResult<List<UserProfileDto>>), 200)]
@@ -112,7 +53,7 @@ public class UserController : ControllerBase
     [ProducesResponseType(typeof(ApiResult<object>), 400)]
     [ProducesResponseType(typeof(ApiResult<object>), 401)]
     [ProducesResponseType(typeof(ApiResult<object>), 500)]
-    public async Task<IActionResult> UpdateAvatar(IFormFile file)
+    public async Task<IActionResult> UpdateMyAvatar(IFormFile file)
     {
         if (file == null || file.Length == 0) return BadRequest(ApiResult<object>.Error("File is required"));
 
@@ -133,4 +74,56 @@ public class UserController : ControllerBase
             return StatusCode(500, ApiResult<object>.Error("An error occurred while updating avatar"));
         }
     }
+
+    [HttpGet("me/transactions")]
+    [Authorize]
+    [ProducesResponseType(typeof(ApiResult<UserProfileDto>), 200)]
+    [ProducesResponseType(typeof(ApiResult<object>), 400)]
+    [ProducesResponseType(typeof(ApiResult<object>), 401)]
+    [ProducesResponseType(typeof(ApiResult<object>), 500)]
+    public async Task<IActionResult> GetMyTransactions()
+    {
+        try
+        {
+            var userId = _claimService.GetCurrentUserId();
+            var transactions = _paymentService.GetUserTransactions(userId);
+
+            return Ok(ApiResult<object>.Success(transactions, "Transactions retrieved successfully"));
+        }
+        catch (Exception e)
+        {
+            return Ok(ApiResult<object>.Error(e.Message));
+        }
+    }
+    
+    [HttpGet("me/profile")]
+    [Authorize]
+    [ProducesResponseType(typeof(ApiResult<UserProfileDto>), 200)]
+    [ProducesResponseType(typeof(ApiResult<object>), 400)]
+    [ProducesResponseType(typeof(ApiResult<object>), 401)]
+    [ProducesResponseType(typeof(ApiResult<object>), 500)]
+    public async Task<IActionResult> GetMyProfile()
+    {
+        try
+        {
+            var userId = _claimService.GetCurrentUserId();
+            if (userId == null) return Unauthorized(ApiResult<object>.Error("User not authenticated."));
+
+            var currentUser = await _userService.GetUserDetailsById(userId);
+            if (currentUser == null) return NotFound(ApiResult<object>.Error("User profile not found."));
+
+            var result = ApiResult<UserProfileDto>.Success(currentUser, "User profile retrieved successfully.");
+            return Ok(result);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            return Unauthorized(ApiResult<object>.Error(ex.Message));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500,
+                ApiResult<object>.Error($"An error occurred while retrieving user profile: {ex.Message}"));
+        }
+    }
+    
 }

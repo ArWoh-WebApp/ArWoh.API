@@ -76,6 +76,7 @@ public class UserService : IUserService
             {
                 Username = user.Username,
                 Email = user.Email,
+                Role = user.Role,
                 Bio = user.Bio,
                 ProfilePictureUrl = user.ProfilePictureUrl
             };
@@ -96,7 +97,6 @@ public class UserService : IUserService
             throw;
         }
     }
-
 
     public async Task<List<UserProfileDto>> GetAllUsers()
     {

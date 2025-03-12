@@ -40,8 +40,8 @@ if (app.Environment.IsDevelopment())
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
         c.RoutePrefix = string.Empty;
-        c.InjectStylesheet("/swagger-ui/custom-theme.css"); // Custom stylesheet
-        c.HeadContent = $"<style>{SwaggerTheme.GetSwaggerThemeCss(Theme.OneDark)}</style>";
+        c.InjectStylesheet("/swagger-ui/custom-theme.css"); 
+        c.HeadContent = $"<style>{SwaggerTheme.GetSwaggerThemeCss(Theme.UniversalDark)}</style>";
     });
 
 }

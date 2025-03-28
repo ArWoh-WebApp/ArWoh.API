@@ -134,15 +134,7 @@ public class PaymentService : IPaymentService
                         ImageTitle = image.Title ?? "Untitled",
                         ImageUrl = image.Url ?? "",
                         SalesCount = imageTrans.Count,
-                        TotalAmount = imageTrans.Sum(t => t.Amount),
-                        Transactions = imageTrans.Select(t => new TransactionDetail
-                        {
-                            TransactionId = t.Id,
-                            PurchaseDate = t.CreatedAt,
-                            Amount = t.Amount,
-                            IsPhysicalPrint = t.IsPhysicalPrint,
-                            Status = t.PaymentStatus
-                        }).ToList()
+                        TotalAmount = imageTrans.Sum(t => t.Amount)
                     };
 
                     _logger.Info($"Added detail for ImageId: {imageId}, Title: {detail.ImageTitle}, SalesCount: {detail.SalesCount}, TotalAmount: {detail.TotalAmount}");

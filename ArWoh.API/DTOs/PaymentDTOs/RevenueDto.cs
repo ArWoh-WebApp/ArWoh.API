@@ -16,7 +16,6 @@ public class ImageSalesDetail
     public string ImageUrl { get; set; }
     public int SalesCount { get; set; }
     public decimal TotalAmount { get; set; }
-    public List<TransactionDetail> Transactions { get; set; } = new List<TransactionDetail>();
 }
 
 public class TransactionDetail

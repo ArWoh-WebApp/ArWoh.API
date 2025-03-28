@@ -1,5 +1,4 @@
 ﻿using ArWoh.API.DTOs.UserDTOs;
-using ArWoh.API.Entities;
 using ArWoh.API.Enums;
 using ArWoh.API.Interface;
 
@@ -74,6 +73,7 @@ public class UserService : IUserService
 
             return new UserProfileDto
             {
+                UserId = userId,
                 Username = user.Username,
                 Email = user.Email,
                 Role = user.Role,
@@ -144,6 +144,7 @@ public class UserService : IUserService
 
             return users.Select(user => new UserProfileDto
             {
+                UserId = user.Id,
                 Username = user.Username,
                 Email = user.Email,
                 Bio = user.Bio,

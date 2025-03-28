@@ -27,7 +27,7 @@ public class ImageService : IImageService
         try
         {
             // Lấy dữ liệu PaymentTransaction với eager loading cho Image
-            var paymentTransactions = await _unitOfWork.Transactions
+            var paymentTransactions = await _unitOfWork.PaymentTransactions
                 .GetQueryable() // Trả về IQueryable từ GenericRepository
                 .Where(pt => pt.CustomerId == userId)
                 .Include(pt => pt.Image) // Thực hiện eager loading với Image

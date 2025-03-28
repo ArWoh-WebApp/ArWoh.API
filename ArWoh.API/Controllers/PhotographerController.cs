@@ -45,7 +45,6 @@ public class PhotographerController : ControllerBase
         }
         catch (Exception e)
         {
-            _loggerService.Error($"Error retrieving images for photographer {photographerId}: {e.Message}");
             return StatusCode(500, ApiResult<object>.Error("An error occurred while retrieving images"));
         }
     }
@@ -66,13 +65,9 @@ public class PhotographerController : ControllerBase
 
             return Ok(ApiResult<object>.Success(revenue, "Photographer revenue retrieved successfully."));
         }
-        catch (KeyNotFoundException ex)
-        {
-            return Ok(ApiResult<object>.Error(ex.Message));
-        }
         catch (Exception ex)
         {
-            return Ok(ApiResult<object>.Error($"An unexpected error occurred: {ex.Message}"));
+            return StatusCode(500, ApiResult<object>.Error("An error occurred while retrieving images"));
         }
     }
 }

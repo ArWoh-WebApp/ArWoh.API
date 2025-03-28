@@ -1,4 +1,5 @@
-﻿using ArWoh.API.Entities;
+﻿using ArWoh.API.DTOs.PaymentDTOs;
+using ArWoh.API.Entities;
 using ArWoh.API.Enums;
 using ArWoh.API.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -63,7 +64,7 @@ public class PaymentService : IPaymentService
             ));
         }
 
-        await _unitOfWork.Transactions.AddRangeAsync(transactions);
+        await _unitOfWork.PaymentTransactions.AddRangeAsync(transactions);
         await _unitOfWork.CompleteAsync();
 
         // 4. Cập nhật PaymentTransactionId trong Payment
@@ -98,7 +99,7 @@ public class PaymentService : IPaymentService
             if (userId <= 0)
                 throw new ArgumentException("Invalid user ID");
 
-            var transactions = await _unitOfWork.Transactions.FindAsync(t => t.CustomerId == userId);
+            var transactions = await _unitOfWork.PaymentTransactions.FindAsync(t => t.CustomerId == userId);
 
             if (transactions == null || !transactions.Any())
                 throw new KeyNotFoundException("No transactions found for this user");
@@ -116,7 +117,7 @@ public class PaymentService : IPaymentService
     {
         try
         {
-            var transactions = await _unitOfWork.Transactions.GetAllAsync();
+            var transactions = await _unitOfWork.PaymentTransactions.GetAllAsync();
 
             if (transactions == null || !transactions.Any())
                 throw new KeyNotFoundException("No transactions found");
@@ -129,31 +130,68 @@ public class PaymentService : IPaymentService
         }
     }
 
-    public async Task<decimal> GetPhotographerRevenue(int photographerId)
+    public async Task<RevenueDto> GetPhotographerRevenue(int photographerId)
+{
+    try
     {
-        try
+        if (photographerId <= 0)
+            throw new ArgumentException("Invalid photographer ID");
+
+        var images = await _unitOfWork.Images.FindAsync(i => i.PhotographerId == photographerId);
+        if (images == null || !images.Any())
+            throw new KeyNotFoundException("No images found for this photographer");
+
+        var imageIds = images.Select(i => i.Id).ToList();
+        var transactions = await _unitOfWork.PaymentTransactions.FindAsync(t => 
+            imageIds.Contains(t.ImageId) && 
+            t.PaymentStatus == PaymentTransactionStatusEnum.COMPLETED);
+
+        var revenueDto = new RevenueDto
         {
-            if (photographerId <= 0)
-                throw new ArgumentException("Invalid photographer ID");
+            TotalRevenue = transactions?.Sum(t => t.Amount) ?? 0,
+            TotalTransactions = transactions?.Count() ?? 0,
+            TotalImagesSold = transactions?.Select(t => t.ImageId).Distinct().Count() ?? 0,
+            ImageSaleDetails = new List<ImageSaleDetail>()
+        };
 
-            var images = await _unitOfWork.Images.FindAsync(i => i.PhotographerId == photographerId);
-            if (images == null || !images.Any())
-                throw new KeyNotFoundException("No images found for this photographer");
-
-            var imageIds = images.Select(i => i.Id).ToList();
-            var transactions = await _unitOfWork.Transactions.FindAsync(t => imageIds.Contains(t.ImageId));
-
-            if (transactions == null || !transactions.Any())
-                return 0; // Không có giao dịch nào, doanh thu là 0
-
-            return transactions.Sum(t => t.Amount);
-        }
-        catch (Exception ex)
+        // Group transactions by image to get details per image
+        var imageGroups = transactions?.GroupBy(t => t.ImageId);
+        if (imageGroups != null)
         {
-            throw new Exception($"Error retrieving photographer revenue: {ex.Message}", ex);
+            foreach (var group in imageGroups)
+            {
+                var imageId = group.Key;
+                var image = images.FirstOrDefault(i => i.Id == imageId);
+                if (image != null)
+                {
+                    var physicalPrints = group.Where(t => t.IsPhysicalPrint).ToList();
+                    var digitalDownloads = group.Where(t => !t.IsPhysicalPrint).ToList();
+                    
+                    var detail = new ImageSaleDetail
+                    {
+                        ImageId = imageId,
+                        Title = image.Title,
+                        FileName = image.FileName,
+                        Url = image.Url,
+                        SalesCount = group.Count(),
+                        TotalAmount = group.Sum(t => t.Amount),
+                        HasPhysicalPrints = physicalPrints.Any(),
+                        PhysicalPrintCount = physicalPrints.Count,
+                        DigitalDownloadCount = digitalDownloads.Count
+                    };
+                    
+                    revenueDto.ImageSaleDetails.Add(detail);
+                }
+            }
         }
+
+        return revenueDto;
     }
-
+    catch (Exception ex)
+    {
+        throw new Exception($"Error retrieving photographer revenue: {ex.Message}", ex);
+    }
+}
 
     /// <summary>
     /// Xử lý Webhook từ PayOS

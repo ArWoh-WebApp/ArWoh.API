@@ -13,7 +13,6 @@ public class PaymentService : IPaymentService
     private readonly PayOS _payOs;
     private readonly ILoggerService _logger;
     private readonly IUnitOfWork _unitOfWork;
-
     private readonly ICartService _cartService;
 
     public PaymentService(ILoggerService logger, PayOS payOs, ICartService cartService, IUnitOfWork unitOfWork)
@@ -22,6 +21,150 @@ public class PaymentService : IPaymentService
         _payOs = payOs;
         _cartService = cartService;
         _unitOfWork = unitOfWork;
+    }
+
+
+    public async Task<IEnumerable<PaymentTransaction>> GetUserTransactions(int userId)
+    {
+        try
+        {
+            if (userId <= 0)
+                throw new ArgumentException("Invalid user ID");
+
+            var transactions = await _unitOfWork.PaymentTransactions.FindAsync(t => t.CustomerId == userId);
+
+            if (transactions == null || !transactions.Any())
+                throw new KeyNotFoundException("No transactions found for this user");
+
+            return transactions;
+        }
+        catch (Exception ex)
+        {
+            // Log lỗi tại đây nếu có hệ thống logging
+            throw new Exception($"Error retrieving user transactions: {ex.Message}", ex);
+        }
+    }
+
+    public async Task<IEnumerable<PaymentTransaction>> GetAllTransactions()
+    {
+        try
+        {
+            var transactions = await _unitOfWork.PaymentTransactions.GetAllAsync();
+
+            if (transactions == null || !transactions.Any())
+                throw new KeyNotFoundException("No transactions found");
+
+            return transactions;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error retrieving all transactions: {ex.Message}", ex);
+        }
+    }
+
+    public async Task<RevenueDto> GetPhotographerRevenue(int photographerId)
+    {
+        _logger.Info($"Starting GetPhotographerRevenue for photographerId: {photographerId}");
+
+        try
+        {
+            if (photographerId <= 0)
+            {
+                _logger.Warn($"Invalid photographer ID: {photographerId}");
+                throw new ArgumentException("Invalid photographer ID");
+            }
+
+            // Get images by photographer
+            _logger.Info($"Fetching images for photographerId: {photographerId}");
+            var images = await _unitOfWork.Images.FindAsync(i => i.PhotographerId == photographerId);
+
+            if (images == null || !images.Any())
+            {
+                _logger.Warn($"No images found for photographerId: {photographerId}");
+                throw new KeyNotFoundException("No images found for this photographer");
+            }
+
+            _logger.Info($"Found {images.Count()} images for photographerId: {photographerId}");
+            var imageIds = images.Select(i => i.Id).ToList();
+            _logger.Info($"Image IDs: {string.Join(", ", imageIds)}");
+
+            // Get transactions
+            _logger.Info($"Fetching transactions for imageIds: {string.Join(", ", imageIds)}");
+            var transactions = await _unitOfWork.PaymentTransactions.FindAsync(t => imageIds.Contains(t.ImageId));
+            _logger.Info($"Found {transactions.Count()} total transactions");
+
+            // Filter for completed transactions
+            var completedTransactions = transactions.Where(t => (int)t.PaymentStatus == (int)PaymentTransactionStatusEnum.COMPLETED).ToList();
+            _logger.Info($"Found {completedTransactions.Count} completed transactions");
+
+            foreach (var tx in completedTransactions)
+            {
+                _logger.Info($"Transaction ID: {tx.Id}, ImageId: {tx.ImageId}, Amount: {tx.Amount}, Status: {tx.PaymentStatus}");
+            }
+
+            var result = new RevenueDto
+            {
+                TotalRevenue = completedTransactions.Sum(t => t.Amount),
+                TotalImagesSold = completedTransactions.Select(t => t.ImageId).Distinct().Count()
+            };
+
+            _logger.Info($"Calculated TotalRevenue: {result.TotalRevenue}, TotalImagesSold: {result.TotalImagesSold}");
+
+            // Dictionary for image lookup
+            var imageDict = images.ToDictionary(i => i.Id);
+
+            // Group transactions by image
+            var groupedTransactions = completedTransactions
+                .GroupBy(t => t.ImageId)
+                .ToDictionary(g => g.Key, g => g.ToList());
+
+            _logger.Info($"Grouped transactions by image: {groupedTransactions.Count} images have transactions");
+
+            // Process each image with transactions
+            foreach (var imageId in imageIds)
+            {
+                _logger.Info($"Processing ImageId: {imageId}");
+
+                if (groupedTransactions.TryGetValue(imageId, out var imageTrans) && imageTrans.Any())
+                {
+                    var image = imageDict[imageId];
+                    var detail = new ImageSalesDetail
+                    {
+                        ImageId = imageId,
+                        ImageTitle = image.Title ?? "Untitled",
+                        ImageUrl = image.Url ?? "",
+                        SalesCount = imageTrans.Count,
+                        TotalAmount = imageTrans.Sum(t => t.Amount),
+                        Transactions = imageTrans.Select(t => new TransactionDetail
+                        {
+                            TransactionId = t.Id,
+                            PurchaseDate = t.CreatedAt,
+                            Amount = t.Amount,
+                            IsPhysicalPrint = t.IsPhysicalPrint,
+                            Status = t.PaymentStatus
+                        }).ToList()
+                    };
+
+                    _logger.Info($"Added detail for ImageId: {imageId}, Title: {detail.ImageTitle}, SalesCount: {detail.SalesCount}, TotalAmount: {detail.TotalAmount}");
+                    result.ImageSales.Add(detail);
+                }
+                else
+                {
+                    _logger.Info($"No completed transactions found for ImageId: {imageId}");
+                }
+            }
+
+            // Sort by sales count
+            result.ImageSales = result.ImageSales.OrderByDescending(i => i.SalesCount).ToList();
+            _logger.Success($"Successfully retrieved revenue details for photographerId: {photographerId}");
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _logger.Error($"Error in GetPhotographerRevenue: {ex.Message}, Stack: {ex.StackTrace}");
+            throw new Exception($"Error retrieving photographer revenue details: {ex.Message}", ex);
+        }
     }
 
     public async Task<string> ProcessPayment(int userId)
@@ -91,108 +234,6 @@ public class PaymentService : IPaymentService
 
         return paymentResult.checkoutUrl;
     }
-
-    public async Task<IEnumerable<PaymentTransaction>> GetUserTransactions(int userId)
-    {
-        try
-        {
-            if (userId <= 0)
-                throw new ArgumentException("Invalid user ID");
-
-            var transactions = await _unitOfWork.PaymentTransactions.FindAsync(t => t.CustomerId == userId);
-
-            if (transactions == null || !transactions.Any())
-                throw new KeyNotFoundException("No transactions found for this user");
-
-            return transactions;
-        }
-        catch (Exception ex)
-        {
-            // Log lỗi tại đây nếu có hệ thống logging
-            throw new Exception($"Error retrieving user transactions: {ex.Message}", ex);
-        }
-    }
-
-    public async Task<IEnumerable<PaymentTransaction>> GetAllTransactions()
-    {
-        try
-        {
-            var transactions = await _unitOfWork.PaymentTransactions.GetAllAsync();
-
-            if (transactions == null || !transactions.Any())
-                throw new KeyNotFoundException("No transactions found");
-
-            return transactions;
-        }
-        catch (Exception ex)
-        {
-            throw new Exception($"Error retrieving all transactions: {ex.Message}", ex);
-        }
-    }
-
-    public async Task<RevenueDto> GetPhotographerRevenue(int photographerId)
-    {
-        try
-        {
-            if (photographerId <= 0)
-                throw new ArgumentException("Invalid photographer ID");
-
-            var images = await _unitOfWork.Images.FindAsync(i => i.PhotographerId == photographerId);
-            if (images == null || !images.Any())
-                throw new KeyNotFoundException("No images found for this photographer");
-
-            var imageIds = images.Select(i => i.Id).ToList();
-            var transactions = await _unitOfWork.PaymentTransactions.FindAsync(t =>
-                imageIds.Contains(t.ImageId) &&
-                t.PaymentStatus == PaymentTransactionStatusEnum.COMPLETED);
-
-            var revenueDto = new RevenueDto
-            {
-                TotalRevenue = transactions?.Sum(t => t.Amount) ?? 0,
-                TotalTransactions = transactions?.Count() ?? 0,
-                TotalImagesSold = transactions?.Select(t => t.ImageId).Distinct().Count() ?? 0,
-                ImageSaleDetails = new List<ImageSaleDetail>()
-            };
-
-            // Group transactions by image to get details per image
-            var imageGroups = transactions?.GroupBy(t => t.ImageId);
-            if (imageGroups != null)
-            {
-                foreach (var group in imageGroups)
-                {
-                    var imageId = group.Key;
-                    var image = images.FirstOrDefault(i => i.Id == imageId);
-                    if (image != null)
-                    {
-                        var physicalPrints = group.Where(t => t.IsPhysicalPrint).ToList();
-                        var digitalDownloads = group.Where(t => !t.IsPhysicalPrint).ToList();
-
-                        var detail = new ImageSaleDetail
-                        {
-                            ImageId = imageId,
-                            Title = image.Title,
-                            FileName = image.FileName,
-                            Url = image.Url,
-                            SalesCount = group.Count(),
-                            TotalAmount = group.Sum(t => t.Amount),
-                            HasPhysicalPrints = physicalPrints.Any(),
-                            PhysicalPrintCount = physicalPrints.Count,
-                            DigitalDownloadCount = digitalDownloads.Count
-                        };
-
-                        revenueDto.ImageSaleDetails.Add(detail);
-                    }
-                }
-            }
-
-            return revenueDto;
-        }
-        catch (Exception ex)
-        {
-            throw new Exception($"Error retrieving photographer revenue: {ex.Message}", ex);
-        }
-    }
-
     /// <summary>
     /// Xử lý Webhook từ PayOS
     /// </summary>

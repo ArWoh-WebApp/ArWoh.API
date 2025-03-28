@@ -49,7 +49,7 @@ public class PhotographerController : ControllerBase
         }
     }
 
-    [HttpGet("revenue")]
+    [HttpGet("revenue/me")]
     [Authorize(Policy = "PhotographerPolicy")]
     [ProducesResponseType(typeof(ApiResult<object>), 200)]
     public async Task<IActionResult> GetPhotographerRevenue()
@@ -57,13 +57,8 @@ public class PhotographerController : ControllerBase
         try
         {
             var photographerId = _claimService.GetCurrentUserId();
-
-            if (photographerId <= 0)
-                return Ok(ApiResult<object>.Error("Invalid photographer ID"));
-
             var revenue = await _paymentService.GetPhotographerRevenue(photographerId);
-
-            return Ok(ApiResult<object>.Success(revenue, "Photographer revenue retrieved successfully."));
+            return Ok(ApiResult<object>.Success(revenue));
         }
         catch (Exception ex)
         {

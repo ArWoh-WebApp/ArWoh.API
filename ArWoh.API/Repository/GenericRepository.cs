@@ -16,24 +16,52 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         _dbSet = _context.Set<T>();
     }
 
-    public async Task<T> GetByIdAsync(int id)
+    public async Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes)
     {
-        return await _dbSet.FirstOrDefaultAsync(entity => entity.Id == id && !entity.IsDeleted);
+        IQueryable<T> query = _dbSet.Where(entity => entity.Id == id && !entity.IsDeleted);
+
+        if (includes != null)
+        {
+            query = includes.Aggregate(query, (current, include) => current.Include(include));
+        }
+
+        return await query.FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
     {
-        return await _dbSet.Where(entity => !entity.IsDeleted).ToListAsync();
+        IQueryable<T> query = _dbSet.Where(entity => !entity.IsDeleted);
+
+        if (includes != null)
+        {
+            query = includes.Aggregate(query, (current, include) => current.Include(include));
+        }
+
+        return await query.ToListAsync();
     }
 
-    public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
+    public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
     {
-        return await _dbSet.Where(predicate).ToListAsync();
+        IQueryable<T> query = _dbSet.Where(predicate);
+
+        if (includes != null)
+        {
+            query = includes.Aggregate(query, (current, include) => current.Include(include));
+        }
+
+        return await query.ToListAsync();
     }
 
-    public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
+    public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
     {
-        return await _dbSet.FirstOrDefaultAsync(predicate);
+        IQueryable<T> query = _dbSet.Where(predicate);
+
+        if (includes != null)
+        {
+            query = includes.Aggregate(query, (current, include) => current.Include(include));
+        }
+
+        return await query.FirstOrDefaultAsync();
     }
 
     public async Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate)
@@ -53,11 +81,16 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public void Update(T entity)
     {
+        entity.UpdatedAt = DateTime.UtcNow;
         _dbSet.Update(entity);
     }
 
     public void UpdateRange(IEnumerable<T> entities)
     {
+        foreach (var entity in entities)
+        {
+            entity.UpdatedAt = DateTime.UtcNow;
+        }
         _dbSet.UpdateRange(entities);
     }
 
@@ -83,12 +116,12 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public async Task<int> CountAsync()
     {
-        return await _dbSet.CountAsync();
+        return await _dbSet.CountAsync(entity => !entity.IsDeleted);
     }
 
     public async Task<int> CountAsync(Expression<Func<T, bool>> predicate)
     {
-        return await _dbSet.CountAsync(predicate);
+        return await _dbSet.Where(e => !e.IsDeleted).CountAsync(predicate);
     }
 
     public async Task<int> SaveChangesAsync()
@@ -96,8 +129,15 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         return await _context.SaveChangesAsync();
     }
 
-    public IQueryable<T> GetQueryable()
+    public IQueryable<T> GetQueryable(params Expression<Func<T, object>>[] includes)
     {
-        return _dbSet.Where(entity => !entity.IsDeleted); // Trả về IQueryable để có thể gọi Include
+        IQueryable<T> query = _dbSet.Where(entity => !entity.IsDeleted);
+
+        if (includes != null)
+        {
+            query = includes.Aggregate(query, (current, include) => current.Include(include));
+        }
+
+        return query;
     }
 }

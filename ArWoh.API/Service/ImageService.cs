@@ -18,12 +18,6 @@ public class ImageService : IImageService
         _unitOfWork = unitOfWork;
     }
 
-
-    /// <summary>
-    /// Lấy tất cả hình sau khi User đã mua dựa trên table PaymentTransaction
-    /// </summary>
-    /// <param name="userId"></param>
-    /// <summary>
     /// Lấy tất cả hình sau khi User đã mua dựa trên table PaymentTransaction
     /// </summary>
     /// <param name="userId"></param>
@@ -258,6 +252,7 @@ public class ImageService : IImageService
                 Price = image.Price,
                 StoryOfArt = image.StoryOfArt,
                 Orientation = image.Orientation,
+                Location = image.Location,
                 Tags = image.Tags,
                 FileName = image.FileName,
                 PhotographerId = image.PhotographerId,

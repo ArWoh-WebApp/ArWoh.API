@@ -1,5 +1,4 @@
-﻿using ArWoh.API.Entities;
-using ArWoh.API.Interface;
+﻿using ArWoh.API.Interface;
 using Minio;
 using Minio.DataModel.Args;
 using Minio.Exceptions;

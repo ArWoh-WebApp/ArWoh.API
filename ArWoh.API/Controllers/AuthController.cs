@@ -118,7 +118,6 @@ public class AuthController : ControllerBase
         }
     }
 
-
     [HttpPost("login")]
     [ProducesResponseType(typeof(ApiResult<string>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]
@@ -136,7 +135,7 @@ public class AuthController : ControllerBase
 
             if (string.IsNullOrEmpty(token))
                 return Unauthorized(new ApiResult<object>
-                    { IsSuccess = false, Message = "Invalid email or password." });
+                { IsSuccess = false, Message = "Invalid email or password." });
 
             return Ok(new ApiResult<string>
             {

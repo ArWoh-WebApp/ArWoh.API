@@ -14,7 +14,7 @@ public class UploadImageDto
     [DefaultValue("No Description")]
     public string Description { get; set; }
 
-    [Required] [DefaultValue(0.0)] public decimal Price { get; set; }
+    [Required][DefaultValue(0.0)] public decimal Price { get; set; }
 
     [DefaultValue(null)] public string? Location { get; set; }
 

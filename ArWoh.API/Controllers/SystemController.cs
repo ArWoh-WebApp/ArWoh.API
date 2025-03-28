@@ -319,7 +319,6 @@ public class SystemController : ControllerBase
         _logger.Success("User and image seeding completed successfully.");
     }
 
-
     private async Task ClearDatabase(ArWohDbContext context)
     {
         using var transaction = await context.Database.BeginTransactionAsync();

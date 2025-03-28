@@ -1,7 +1,7 @@
-﻿using ArWoh.API.Entities;
+﻿using System.Linq.Expressions;
+using ArWoh.API.Entities;
 using ArWoh.API.Interface;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace ArWoh.API.Repository;
 
@@ -25,7 +25,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         return await _dbSet.Where(entity => !entity.IsDeleted).ToListAsync();
     }
-
 
     public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)
     {
@@ -69,7 +68,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         entity.UpdatedAt = DateTime.UtcNow;
         _dbSet.Update(entity);
     }
-
 
     public void DeleteRange(IEnumerable<T> entities)
     {

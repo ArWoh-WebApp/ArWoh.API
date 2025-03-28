@@ -36,10 +36,8 @@ public class PayOSService : IPayOSService
                 .ThenInclude(ci => ci.Image)
                 .FirstOrDefault(c => c.UserId == request.UserId);
 
-
             if (cart == null || !cart.CartItems.Any())
                 throw new Exception("Cart is empty");
-
 
             // 2. Tạo PaymentTransaction cho từng ảnh trong giỏ
             var transactions = new List<PaymentTransaction>();
@@ -58,7 +56,6 @@ public class PayOSService : IPayOSService
 
             await _context.PaymentTransactions.AddRangeAsync(transactions);
             await _context.SaveChangesAsync();
-
 
             // 3. Tạo Payment record cho toàn bộ giỏ hàng
             var totalAmount = transactions.Sum(t => t.Amount);

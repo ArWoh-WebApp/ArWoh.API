@@ -21,7 +21,6 @@ public class ImageController : ControllerBase
         _loggerService = loggerService;
     }
 
-
     [HttpGet]
     [ProducesResponseType(typeof(ApiResult<IEnumerable<ImageDto>>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]
@@ -69,7 +68,6 @@ public class ImageController : ControllerBase
         }
     }
 
-
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(ApiResult<ImageDto>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]
@@ -90,7 +88,6 @@ public class ImageController : ControllerBase
             return StatusCode(500, ApiResult<object>.Error("An unexpected error occurred"));
         }
     }
-
 
     [HttpPost("upload")]
     [Authorize(Policy = "PhotographerPolicy")]

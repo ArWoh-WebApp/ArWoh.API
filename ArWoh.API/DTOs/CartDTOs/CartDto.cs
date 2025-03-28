@@ -1,5 +1,4 @@
 ﻿using ArWoh.API.DTOs.CartItemDTOs;
-using ArWoh.API.Entities;
 
 namespace ArWoh.API.DTOs.CartDTOs;
 

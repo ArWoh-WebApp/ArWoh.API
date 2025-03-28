@@ -2,7 +2,6 @@
 using ArWoh.API.DTOs.CartItemDTOs;
 using ArWoh.API.Interface;
 using ArWoh.API.Utils;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArWoh.API.Controllers;
@@ -71,7 +70,6 @@ public class CartController : ControllerBase
             return StatusCode(500, ApiResult<object>.Error("An unexpected error occurred"));
         }
     }
-
 
     [HttpPut("me")]
     [ProducesResponseType(typeof(ApiResult<CartDto>), 200)]

@@ -8,7 +8,6 @@ public class PasswordHasher
     private const int SaltSize = 16; // 128-bit salt
     private const int HashSize = 32; // 256-bit hash
 
-
     public string HashPassword(string password)
     {
         if (string.IsNullOrEmpty(password))

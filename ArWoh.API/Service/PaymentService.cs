@@ -131,67 +131,67 @@ public class PaymentService : IPaymentService
     }
 
     public async Task<RevenueDto> GetPhotographerRevenue(int photographerId)
-{
-    try
     {
-        if (photographerId <= 0)
-            throw new ArgumentException("Invalid photographer ID");
-
-        var images = await _unitOfWork.Images.FindAsync(i => i.PhotographerId == photographerId);
-        if (images == null || !images.Any())
-            throw new KeyNotFoundException("No images found for this photographer");
-
-        var imageIds = images.Select(i => i.Id).ToList();
-        var transactions = await _unitOfWork.PaymentTransactions.FindAsync(t => 
-            imageIds.Contains(t.ImageId) && 
-            t.PaymentStatus == PaymentTransactionStatusEnum.COMPLETED);
-
-        var revenueDto = new RevenueDto
+        try
         {
-            TotalRevenue = transactions?.Sum(t => t.Amount) ?? 0,
-            TotalTransactions = transactions?.Count() ?? 0,
-            TotalImagesSold = transactions?.Select(t => t.ImageId).Distinct().Count() ?? 0,
-            ImageSaleDetails = new List<ImageSaleDetail>()
-        };
+            if (photographerId <= 0)
+                throw new ArgumentException("Invalid photographer ID");
 
-        // Group transactions by image to get details per image
-        var imageGroups = transactions?.GroupBy(t => t.ImageId);
-        if (imageGroups != null)
-        {
-            foreach (var group in imageGroups)
+            var images = await _unitOfWork.Images.FindAsync(i => i.PhotographerId == photographerId);
+            if (images == null || !images.Any())
+                throw new KeyNotFoundException("No images found for this photographer");
+
+            var imageIds = images.Select(i => i.Id).ToList();
+            var transactions = await _unitOfWork.PaymentTransactions.FindAsync(t =>
+                imageIds.Contains(t.ImageId) &&
+                t.PaymentStatus == PaymentTransactionStatusEnum.COMPLETED);
+
+            var revenueDto = new RevenueDto
             {
-                var imageId = group.Key;
-                var image = images.FirstOrDefault(i => i.Id == imageId);
-                if (image != null)
+                TotalRevenue = transactions?.Sum(t => t.Amount) ?? 0,
+                TotalTransactions = transactions?.Count() ?? 0,
+                TotalImagesSold = transactions?.Select(t => t.ImageId).Distinct().Count() ?? 0,
+                ImageSaleDetails = new List<ImageSaleDetail>()
+            };
+
+            // Group transactions by image to get details per image
+            var imageGroups = transactions?.GroupBy(t => t.ImageId);
+            if (imageGroups != null)
+            {
+                foreach (var group in imageGroups)
                 {
-                    var physicalPrints = group.Where(t => t.IsPhysicalPrint).ToList();
-                    var digitalDownloads = group.Where(t => !t.IsPhysicalPrint).ToList();
-                    
-                    var detail = new ImageSaleDetail
+                    var imageId = group.Key;
+                    var image = images.FirstOrDefault(i => i.Id == imageId);
+                    if (image != null)
                     {
-                        ImageId = imageId,
-                        Title = image.Title,
-                        FileName = image.FileName,
-                        Url = image.Url,
-                        SalesCount = group.Count(),
-                        TotalAmount = group.Sum(t => t.Amount),
-                        HasPhysicalPrints = physicalPrints.Any(),
-                        PhysicalPrintCount = physicalPrints.Count,
-                        DigitalDownloadCount = digitalDownloads.Count
-                    };
-                    
-                    revenueDto.ImageSaleDetails.Add(detail);
+                        var physicalPrints = group.Where(t => t.IsPhysicalPrint).ToList();
+                        var digitalDownloads = group.Where(t => !t.IsPhysicalPrint).ToList();
+
+                        var detail = new ImageSaleDetail
+                        {
+                            ImageId = imageId,
+                            Title = image.Title,
+                            FileName = image.FileName,
+                            Url = image.Url,
+                            SalesCount = group.Count(),
+                            TotalAmount = group.Sum(t => t.Amount),
+                            HasPhysicalPrints = physicalPrints.Any(),
+                            PhysicalPrintCount = physicalPrints.Count,
+                            DigitalDownloadCount = digitalDownloads.Count
+                        };
+
+                        revenueDto.ImageSaleDetails.Add(detail);
+                    }
                 }
             }
-        }
 
-        return revenueDto;
+            return revenueDto;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error retrieving photographer revenue: {ex.Message}", ex);
+        }
     }
-    catch (Exception ex)
-    {
-        throw new Exception($"Error retrieving photographer revenue: {ex.Message}", ex);
-    }
-}
 
     /// <summary>
     /// Xử lý Webhook từ PayOS

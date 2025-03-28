@@ -195,7 +195,6 @@ public class ImageService : IImageService
         }
     }
 
-
     /// <summary>
     /// Dùng cho Photographer up hình ảnh lên system
     /// </summary>

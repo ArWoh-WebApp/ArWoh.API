@@ -1,12 +1,8 @@
 ﻿using ArWoh.API.DTOs.CartDTOs;
 using ArWoh.API.DTOs.CartItemDTOs;
 using ArWoh.API.Entities;
-using ArWoh.API.Enums;
 using ArWoh.API.Interface;
-using ArWoh.API.Service.ThirdPartyService.Interfaces;
-using ArWoh.API.Service.ThirdPartyService.Types;
 using Microsoft.EntityFrameworkCore;
-using Net.payOS.Types;
 
 namespace ArWoh.API.Service;
 

@@ -122,20 +122,12 @@ public class ImageController : ControllerBase
                 Data = image
             });
         }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new ApiResult<object>
-            {
-                IsSuccess = false,
-                Message = ex.Message
-            });
-        }
         catch (Exception ex)
         {
             return StatusCode(500, new ApiResult<object>
             {
                 IsSuccess = false,
-                Message = "An error occurred while uploading the image."
+                Message = $"An error occurred while uploading the image. {ex.Message}"
             });
         }
     }

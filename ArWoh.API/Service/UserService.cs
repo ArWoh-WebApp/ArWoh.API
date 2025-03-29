@@ -51,6 +51,67 @@ public class UserService : IUserService
         };
     }
 
+     public async Task<UserProfileDto> GetPhotographerProfile(int photographerId)
+    {
+        if (photographerId <= 0)
+        {
+            _logger.Warn($"Attempted to fetch photographer with invalid ID: {photographerId}");
+            throw new ArgumentException("Invalid photographerId");
+        }
+
+        try
+        {
+            var user = await _unitOfWork.Users.GetByIdAsync(photographerId);
+
+            if (user == null)
+            {
+                _logger.Warn($"No user found with ID: {photographerId}");
+                throw new KeyNotFoundException($"User with ID {photographerId} not found.");
+            }
+
+            // Check if the user has the Photographer role
+            if (user.Role != UserRole.Photographer)
+            {
+                _logger.Warn($"User with ID {photographerId} is not a photographer. Role: {user.Role}");
+                throw new UnauthorizedAccessException($"User with ID {photographerId} is not a photographer.");
+            }
+
+            _logger.Info($"Successfully fetched photographer with ID: {photographerId}");
+
+            return new UserProfileDto
+            {
+                UserId = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                Role = user.Role,
+                Bio = user.Bio,
+                ProfilePictureUrl = user.ProfilePictureUrl
+            };
+        }
+        catch (KeyNotFoundException knfEx)
+        {
+            _logger.Error($"User retrieval error: {knfEx.Message}");
+            throw;
+        }
+        catch (ArgumentException argEx)
+        {
+            _logger.Error($"Invalid argument: {argEx.Message}");
+            throw;
+        }
+        catch (UnauthorizedAccessException uaEx)
+        {
+            _logger.Error($"Unauthorized access: {uaEx.Message}");
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(
+                $"An unexpected error occurred while fetching photographer details for ID {photographerId}: {ex.Message}");
+            throw new Exception($"Error retrieving photographer profile: {ex.Message}", ex);
+        }
+    }
+
+    
     public async Task<UserProfileDto> GetUserDetailsById(int userId)
     {
         if (userId == null)

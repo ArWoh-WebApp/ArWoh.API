@@ -5,7 +5,7 @@ namespace ArWoh.API.Interface;
 public interface IUserService
 {
     Task<UserProfileDto> GetUserDetailsById(int userId);
-
+    Task<UserProfileDto> GetPhotographerProfile(int photographerId);
     Task<List<UserProfileDto>> GetAllUsers();
 
     Task<List<UserProfileDto>> GetPhotographers();

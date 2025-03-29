@@ -26,8 +26,9 @@ public class PhotographerController : ControllerBase
 
     [HttpGet("{photographerId}/images")]
     [ProducesResponseType(typeof(ApiResult<IEnumerable<ImageDto>>), 200)]
-    public async Task<IActionResult> GetImagesByPhotographer(int photographerId)
+    public async Task<IActionResult> GetImagesByPhotographer()
     {
+        var photographerId = _claimService.GetCurrentUserId();
         if (photographerId <= 0) return BadRequest(ApiResult<object>.Error("Invalid photographer ID"));
 
         try

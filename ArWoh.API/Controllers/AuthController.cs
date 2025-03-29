@@ -135,7 +135,7 @@ public class AuthController : ControllerBase
 
             if (string.IsNullOrEmpty(token))
                 return Unauthorized(new ApiResult<object>
-                { IsSuccess = false, Message = "Invalid email or password." });
+                    { IsSuccess = false, Message = "Invalid email or password." });
 
             return Ok(new ApiResult<string>
             {

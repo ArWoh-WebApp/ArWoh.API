@@ -7,8 +7,8 @@ namespace ArWoh.API.Service;
 
 public class ImageService : IImageService
 {
-    private readonly ILoggerService _loggerService;
     private readonly IBlobService _blobService;
+    private readonly ILoggerService _loggerService;
     private readonly IUnitOfWork _unitOfWork;
 
     public ImageService(ILoggerService loggerService, IBlobService blobService, IUnitOfWork unitOfWork)
@@ -62,7 +62,7 @@ public class ImageService : IImageService
     }
 
     /// <summary>
-    /// Lấy details của 1 tấm hình
+    ///     Lấy details của 1 tấm hình
     /// </summary>
     /// <param name="imageId"></param>
     /// <returns></returns>
@@ -151,7 +151,7 @@ public class ImageService : IImageService
     }
 
     /// <summary>
-    /// Lấy list tất cả các images lên
+    ///     Lấy list tất cả các images lên
     /// </summary>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
@@ -196,7 +196,7 @@ public class ImageService : IImageService
     }
 
     /// <summary>
-    /// Dùng cho Photographer up hình ảnh lên system
+    ///     Dùng cho Photographer up hình ảnh lên system
     /// </summary>
     /// <param name="uploadDto"></param>
     /// <param name="photographerId"></param>
@@ -268,7 +268,7 @@ public class ImageService : IImageService
     }
 
     /// <summary>
-    /// Cập nhật thông tin của 1 tấm ảnh
+    ///     Cập nhật thông tin của 1 tấm ảnh
     /// </summary>
     /// <param name="imageId"></param>
     /// <param name="updateDto"></param>
@@ -342,7 +342,7 @@ public class ImageService : IImageService
     }
 
     /// <summary>
-    /// Xóa mềm 1 tấm ảnh trong DB
+    ///     Xóa mềm 1 tấm ảnh trong DB
     /// </summary>
     /// <param name="imageId"></param>
     /// <returns></returns>

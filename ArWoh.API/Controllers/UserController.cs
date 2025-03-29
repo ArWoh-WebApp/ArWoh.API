@@ -10,10 +10,10 @@ namespace ArWoh.API.Controllers;
 [Route("api/users")]
 public class UserController : ControllerBase
 {
-    private readonly IUserService _userService;
     private readonly IClaimService _claimService;
     private readonly ILoggerService _logger;
     private readonly IPaymentService _paymentService;
+    private readonly IUserService _userService;
 
     public UserController(IUserService userService, IClaimService claimService, ILoggerService logger,
         IPaymentService paymentService)

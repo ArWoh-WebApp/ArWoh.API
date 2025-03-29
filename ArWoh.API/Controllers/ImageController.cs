@@ -10,9 +10,9 @@ namespace ArWoh.API.Controllers;
 [Route("api/images")]
 public class ImageController : ControllerBase
 {
+    private readonly IClaimService _claimService;
     private readonly IImageService _imageService;
     private readonly ILoggerService _loggerService;
-    private readonly IClaimService _claimService;
 
     public ImageController(IImageService imageService, IClaimService claimService, ILoggerService loggerService)
     {

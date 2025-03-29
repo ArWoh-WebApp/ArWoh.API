@@ -10,10 +10,10 @@ namespace ArWoh.API.Service;
 
 public class PaymentService : IPaymentService
 {
-    private readonly PayOS _payOs;
-    private readonly ILoggerService _logger;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly ICartService _cartService;
+    private readonly ILoggerService _logger;
+    private readonly PayOS _payOs;
+    private readonly IUnitOfWork _unitOfWork;
 
     public PaymentService(ILoggerService logger, PayOS payOs, ICartService cartService, IUnitOfWork unitOfWork)
     {
@@ -94,13 +94,13 @@ public class PaymentService : IPaymentService
             _logger.Info($"Found {transactions.Count()} total transactions");
 
             // Filter for completed transactions
-            var completedTransactions = transactions.Where(t => (int)t.PaymentStatus == (int)PaymentTransactionStatusEnum.COMPLETED).ToList();
+            var completedTransactions = transactions
+                .Where(t => (int)t.PaymentStatus == (int)PaymentTransactionStatusEnum.COMPLETED).ToList();
             _logger.Info($"Found {completedTransactions.Count} completed transactions");
 
             foreach (var tx in completedTransactions)
-            {
-                _logger.Info($"Transaction ID: {tx.Id}, ImageId: {tx.ImageId}, Amount: {tx.Amount}, Status: {tx.PaymentStatus}");
-            }
+                _logger.Info(
+                    $"Transaction ID: {tx.Id}, ImageId: {tx.ImageId}, Amount: {tx.Amount}, Status: {tx.PaymentStatus}");
 
             var result = new RevenueDto
             {
@@ -137,7 +137,8 @@ public class PaymentService : IPaymentService
                         TotalAmount = imageTrans.Sum(t => t.Amount)
                     };
 
-                    _logger.Info($"Added detail for ImageId: {imageId}, Title: {detail.ImageTitle}, SalesCount: {detail.SalesCount}, TotalAmount: {detail.TotalAmount}");
+                    _logger.Info(
+                        $"Added detail for ImageId: {imageId}, Title: {detail.ImageTitle}, SalesCount: {detail.SalesCount}, TotalAmount: {detail.TotalAmount}");
                     result.ImageSales.Add(detail);
                 }
                 else
@@ -226,8 +227,9 @@ public class PaymentService : IPaymentService
 
         return paymentResult.checkoutUrl;
     }
+
     /// <summary>
-    /// Xử lý Webhook từ PayOS
+    ///     Xử lý Webhook từ PayOS
     /// </summary>
     public async Task<IActionResult> PaymentWebhook([FromBody] WebhookData webhookData)
     {

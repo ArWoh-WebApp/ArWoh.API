@@ -10,9 +10,9 @@ namespace ArWoh.API.Controllers;
 [Route("api/photographers")]
 public class PhotographerController : ControllerBase
 {
+    private readonly IClaimService _claimService;
     private readonly IImageService _imageService;
     private readonly ILoggerService _loggerService;
-    private readonly IClaimService _claimService;
     private readonly IPaymentService _paymentService;
 
     public PhotographerController(IImageService imageService, ILoggerService loggerService, IClaimService claimService,

@@ -20,10 +20,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         IQueryable<T> query = _dbSet.Where(entity => entity.Id == id && !entity.IsDeleted);
 
-        if (includes != null)
-        {
-            query = includes.Aggregate(query, (current, include) => current.Include(include));
-        }
+        if (includes != null) query = includes.Aggregate(query, (current, include) => current.Include(include));
 
         return await query.FirstOrDefaultAsync();
     }
@@ -32,34 +29,27 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         IQueryable<T> query = _dbSet.Where(entity => !entity.IsDeleted);
 
-        if (includes != null)
-        {
-            query = includes.Aggregate(query, (current, include) => current.Include(include));
-        }
+        if (includes != null) query = includes.Aggregate(query, (current, include) => current.Include(include));
 
         return await query.ToListAsync();
     }
 
-    public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+    public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate,
+        params Expression<Func<T, object>>[] includes)
     {
         IQueryable<T> query = _dbSet.Where(predicate);
 
-        if (includes != null)
-        {
-            query = includes.Aggregate(query, (current, include) => current.Include(include));
-        }
+        if (includes != null) query = includes.Aggregate(query, (current, include) => current.Include(include));
 
         return await query.ToListAsync();
     }
 
-    public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+    public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate,
+        params Expression<Func<T, object>>[] includes)
     {
         IQueryable<T> query = _dbSet.Where(predicate);
 
-        if (includes != null)
-        {
-            query = includes.Aggregate(query, (current, include) => current.Include(include));
-        }
+        if (includes != null) query = includes.Aggregate(query, (current, include) => current.Include(include));
 
         return await query.FirstOrDefaultAsync();
     }
@@ -87,10 +77,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public void UpdateRange(IEnumerable<T> entities)
     {
-        foreach (var entity in entities)
-        {
-            entity.UpdatedAt = DateTime.UtcNow;
-        }
+        foreach (var entity in entities) entity.UpdatedAt = DateTime.UtcNow;
         _dbSet.UpdateRange(entities);
     }
 
@@ -133,10 +120,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         IQueryable<T> query = _dbSet.Where(entity => !entity.IsDeleted);
 
-        if (includes != null)
-        {
-            query = includes.Aggregate(query, (current, include) => current.Include(include));
-        }
+        if (includes != null) query = includes.Aggregate(query, (current, include) => current.Include(include));
 
         return query;
     }

@@ -9,8 +9,8 @@ namespace ArWoh.API.Controllers;
 [Route("api/payment")]
 public class PaymentController : ControllerBase
 {
-    private readonly IPaymentService _paymentService;
     private readonly IClaimService _claimService;
+    private readonly IPaymentService _paymentService;
 
     public PaymentController(IPaymentService paymentService, IClaimService claimService)
     {

@@ -8,15 +8,6 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly ArWohDbContext _context;
 
-    public IGenericRepository<User> Users { get; }
-    public IGenericRepository<Image> Images { get; }
-    public IGenericRepository<PaymentTransaction> PaymentTransactions { get; }
-    public IGenericRepository<Order> Orders { get; }
-    public IGenericRepository<AdminAction> AdminActions { get; }
-    public IGenericRepository<Cart> Carts { get; }
-    public IGenericRepository<CartItem> CartItems { get; }
-    public IGenericRepository<Payment> Payments { get; }
-
     public UnitOfWork(ArWohDbContext context)
     {
         _context = context;
@@ -29,6 +20,15 @@ public class UnitOfWork : IUnitOfWork
         CartItems = new GenericRepository<CartItem>(_context);
         Payments = new GenericRepository<Payment>(_context);
     }
+
+    public IGenericRepository<User> Users { get; }
+    public IGenericRepository<Image> Images { get; }
+    public IGenericRepository<PaymentTransaction> PaymentTransactions { get; }
+    public IGenericRepository<Order> Orders { get; }
+    public IGenericRepository<AdminAction> AdminActions { get; }
+    public IGenericRepository<Cart> Carts { get; }
+    public IGenericRepository<CartItem> CartItems { get; }
+    public IGenericRepository<Payment> Payments { get; }
 
     public async Task<int> CompleteAsync()
     {

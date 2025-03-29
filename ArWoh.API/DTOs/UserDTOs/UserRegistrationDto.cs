@@ -9,7 +9,7 @@ public class UserRegistrationDto
     [DefaultValue("a@gmail.com")]
     public string Email { get; set; }
 
-    [Required][DefaultValue("1@")] public string Password { get; set; }
+    [Required] [DefaultValue("1@")] public string Password { get; set; }
 
     [DefaultValue("NewUser")] public string Username { get; set; } = "NewUser";
 

@@ -6,7 +6,7 @@ public class RevenueDto
 {
     public decimal TotalRevenue { get; set; }
     public int TotalImagesSold { get; set; }
-    public List<ImageSalesDetail> ImageSales { get; set; } = new List<ImageSalesDetail>();
+    public List<ImageSalesDetail> ImageSales { get; set; } = new();
 }
 
 public class ImageSalesDetail

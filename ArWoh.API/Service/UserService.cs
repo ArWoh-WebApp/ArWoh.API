@@ -6,9 +6,9 @@ namespace ArWoh.API.Service;
 
 public class UserService : IUserService
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ILoggerService _logger;
     private readonly IBlobService _blobService;
+    private readonly ILoggerService _logger;
+    private readonly IUnitOfWork _unitOfWork;
 
     public UserService(IUnitOfWork unitOfWork, ILoggerService loggerService, IBlobService blobService)
     {

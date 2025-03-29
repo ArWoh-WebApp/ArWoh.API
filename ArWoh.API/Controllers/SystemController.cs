@@ -21,7 +21,7 @@ public class SystemController : ControllerBase
     }
 
     /// <summary>
-    /// Seed data vào database
+    ///     Seed data vào database
     /// </summary>
     /// <returns></returns>
     [HttpPost("seed-all-data")]

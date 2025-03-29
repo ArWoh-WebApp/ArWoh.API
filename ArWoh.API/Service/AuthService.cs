@@ -18,7 +18,7 @@ public class AuthService : IAuthService
     }
 
     /// <summary>
-    /// Tạo tài khoản cho customer
+    ///     Tạo tài khoản cho customer
     /// </summary>
     /// <param name="registrationDto"></param>
     /// <returns></returns>
@@ -63,7 +63,7 @@ public class AuthService : IAuthService
     }
 
     /// <summary>
-    /// Tạo tài khoản cho photographer
+    ///     Tạo tài khoản cho photographer
     /// </summary>
     /// <param name="registrationDto"></param>
     /// <returns></returns>

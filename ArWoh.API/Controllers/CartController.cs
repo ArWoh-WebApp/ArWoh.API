@@ -11,8 +11,8 @@ namespace ArWoh.API.Controllers;
 public class CartController : ControllerBase
 {
     private readonly ICartService _cartService;
-    private readonly ILoggerService _loggerService;
     private readonly IClaimService _claimService;
+    private readonly ILoggerService _loggerService;
 
     public CartController(ICartService cartService, ILoggerService loggerService, IClaimService claimService)
     {
@@ -21,7 +21,7 @@ public class CartController : ControllerBase
         _claimService = claimService;
     }
 
-    [HttpPost()]
+    [HttpPost]
     [ProducesResponseType(typeof(ApiResult<CartDto>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]
     [ProducesResponseType(typeof(ApiResult<object>), 500)]

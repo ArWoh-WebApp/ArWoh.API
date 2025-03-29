@@ -124,7 +124,7 @@ public class ImageService : IImageService
                 throw new KeyNotFoundException($"Photographer with ID {photographerId} not found.");
             }
 
-            var images = await _unitOfWork.Images.FindAsync(img => img.PhotographerId == photographerId);
+            var images = await _unitOfWork.Images.FindAsync(img => img.PhotographerId == photographerId && !img.IsDeleted);
 
             if (images == null || !images.Any())
             {

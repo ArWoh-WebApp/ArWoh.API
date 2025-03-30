@@ -49,6 +49,33 @@ public class ImageController : ControllerBase
         }
     }
 
+    [HttpGet("random")]
+    [ProducesResponseType(typeof(ApiResult<IEnumerable<ImageDto>>), 200)]
+    [ProducesResponseType(typeof(ApiResult<object>), 500)]
+    public async Task<IActionResult> GetRandomImages()
+    {
+        try
+        {
+            _loggerService.Info("Fetching random images via API.");
+
+            var images = await _imageService.GetRandomImages();
+
+            if (!images.Any())
+            {
+                _loggerService.Warn("No images found for random selection.");
+                return Ok(ApiResult<IEnumerable<ImageDto>>.Success(new List<ImageDto>()));
+            }
+
+            _loggerService.Success($"Successfully retrieved {images.Count()} random images.");
+            return Ok(ApiResult<IEnumerable<ImageDto>>.Success(images));
+        }
+        catch (Exception ex)
+        {
+            _loggerService.Error($"Unexpected error in GetRandomImages: {ex.Message}");
+            return StatusCode(500, ApiResult<object>.Error("An unexpected error occurred"));
+        }
+    }
+
     [HttpGet("bought-by-user")]
     [ProducesResponseType(typeof(ApiResult<IEnumerable<ImageDto>>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]

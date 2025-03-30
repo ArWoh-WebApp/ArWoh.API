@@ -19,6 +19,68 @@ public class ImageService : IImageService
     }
 
     /// <summary>
+    /// Lấy tất cả ảnh trong hệ thống với thứ tự ngẫu nhiên
+    /// </summary>
+    /// <returns>Danh sách tất cả ảnh được sắp xếp ngẫu nhiên</returns>
+    public async Task<IEnumerable<ImageDto>> GetRandomImages()
+    {
+        try
+        {
+            _loggerService.Info("Fetching all images in random order from database.");
+
+            // Lấy tất cả các ảnh không bị xóa mềm
+            var imagesQuery = _unitOfWork.Images.GetQueryable();
+
+            // Include thông tin photographer
+            var allImages = await imagesQuery
+                .Include(i => i.Photographer)
+                .ToListAsync();
+
+            if (!allImages.Any())
+            {
+                _loggerService.Warn("No images found in the database.");
+                return new List<ImageDto>(); // Trả về danh sách rỗng thay vì null
+            }
+
+            // Tạo một Random instance
+            var random = new Random();
+
+            // Sắp xếp tất cả ảnh theo thứ tự ngẫu nhiên
+            var randomImages = allImages
+                .OrderBy(_ => random.Next())
+                .ToList();
+
+            var imageDtos = randomImages.Select(image => new ImageDto
+            {
+                Id = image.Id,
+                Title = image.Title,
+                Description = image.Description,
+                Price = image.Price,
+                StoryOfArt = image.StoryOfArt,
+                Orientation = image.Orientation,
+                Location = image.Location,
+                Tags = image.Tags,
+                FileName = image.FileName,
+                PhotographerId = image.PhotographerId,
+                Url = image.Url,
+                // Thêm thông tin photographer nếu có
+                PhotographerAvatar = image.Photographer.ProfilePictureUrl,
+                PhotographerName = image.Photographer?.Username ?? "Unknown",
+                PhotographerEmail = image.Photographer?.Email
+            }).ToList();
+
+            _loggerService.Success($"Successfully retrieved {imageDtos.Count} images in random order.");
+
+            return imageDtos;
+        }
+        catch (Exception ex)
+        {
+            _loggerService.Error($"Unexpected error in GetRandomImages: {ex.Message}");
+            throw new Exception("An error occurred while retrieving random images.", ex);
+        }
+    }
+
+    /// <summary>
     ///     Lấy list tất cả các images kèm theo thông tin photographer
     /// </summary>
     public async Task<IEnumerable<ImageDto>> GetAllImages()
@@ -55,6 +117,7 @@ public class ImageService : IImageService
                 PhotographerId = image.PhotographerId,
                 Url = image.Url,
                 // Thêm thông tin photographer nếu có
+                PhotographerAvatar = image.Photographer?.ProfilePictureUrl,
                 PhotographerName = image.Photographer?.Username ?? "Unknown",
                 PhotographerEmail = image.Photographer?.Email
             }).ToList();
@@ -146,6 +209,7 @@ public class ImageService : IImageService
                 PhotographerId = image.PhotographerId,
                 Url = image.Url,
                 // Thêm thông tin photographer nếu có
+                PhotographerAvatar = image.Photographer?.ProfilePictureUrl,
                 PhotographerName = image.Photographer?.Username ?? "Unknown",
                 PhotographerEmail = image.Photographer?.Email
             };

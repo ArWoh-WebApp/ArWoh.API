@@ -19,5 +19,6 @@ public class ImageDto
 
     // Thêm thông tin photographer
     public string? PhotographerName { get; set; }
+    public string? PhotographerAvatar { get; set; }
     public string? PhotographerEmail { get; set; }
 }

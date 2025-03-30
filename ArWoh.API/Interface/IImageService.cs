@@ -6,6 +6,8 @@ public interface IImageService
 {
     Task<IEnumerable<ImageDto>> GetImagesUploadedByPhotographer(int photographerId);
 
+    Task<IEnumerable<ImageDto>> GetRandomImages();
+    
     Task<IEnumerable<ImageDto>> GetAllImages();
 
     Task<IEnumerable<ImageDto>> GetAllImagesBoughtByUser(int userId);

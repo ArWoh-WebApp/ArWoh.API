@@ -19,7 +19,7 @@ public class ImageService : IImageService
     }
 
     /// <summary>
-    /// Lấy list tất cả các images kèm theo thông tin photographer
+    ///     Lấy list tất cả các images kèm theo thông tin photographer
     /// </summary>
     public async Task<IEnumerable<ImageDto>> GetAllImages()
     {
@@ -71,7 +71,7 @@ public class ImageService : IImageService
     }
 
     /// <summary>
-    /// Lấy tất cả hình sau khi User đã mua dựa trên table PaymentTransaction
+    ///     Lấy tất cả hình sau khi User đã mua dựa trên table PaymentTransaction
     /// </summary>
     public async Task<IEnumerable<ImageDto>> GetAllImagesBoughtByUser(int userId)
     {
@@ -111,7 +111,7 @@ public class ImageService : IImageService
     }
 
     /// <summary>
-    /// Lấy details của 1 tấm hình kèm thông tin photographer
+    ///     Lấy details của 1 tấm hình kèm thông tin photographer
     /// </summary>
     public async Task<ImageDto> GetImageById(int imageId)
     {

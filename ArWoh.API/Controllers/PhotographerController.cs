@@ -76,7 +76,7 @@ public class PhotographerController : ControllerBase
         }
     }
 
-    
+
     [HttpGet("revenue/me")]
     [Authorize(Policy = "PhotographerPolicy")]
     [ProducesResponseType(typeof(ApiResult<object>), 200)]

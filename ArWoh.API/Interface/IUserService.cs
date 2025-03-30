@@ -11,4 +11,5 @@ public interface IUserService
     Task<List<UserProfileDto>> GetPhotographers();
 
     Task<UserProfileDto> UserUpdateAvatar(int userId, IFormFile file);
+    Task<UserProfileDto> UpdateUserInfo(int userId, UserUpdateDto updateDto);
 }

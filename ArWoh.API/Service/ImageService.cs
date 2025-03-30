@@ -111,7 +111,7 @@ public class ImageService : IImageService
     }
 
     /// <summary>
-    ///     Lấy details của 1 tấm hình kèm thông tin photographer
+    /// Lấy details của 1 tấm hình kèm thông tin photographer
     /// </summary>
     public async Task<ImageDto> GetImageById(int imageId)
     {
@@ -218,7 +218,8 @@ public class ImageService : IImageService
 
         try
         {
-            var fileName = $"{Guid.NewGuid()}_{uploadDto.File.FileName}";
+            // Thay đổi đường dẫn thành artworks/
+            var fileName = $"artworks/{photographerId}_{Guid.NewGuid()}{Path.GetExtension(uploadDto.File.FileName)}";
 
             using (var stream = uploadDto.File.OpenReadStream())
             {

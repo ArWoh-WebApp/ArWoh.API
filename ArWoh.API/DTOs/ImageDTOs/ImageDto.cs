@@ -15,4 +15,7 @@ public class ImageDto
     public string? Location { get; set; }
     public string? FileName { get; set; }
     public string? Url { get; set; }
+    // Thêm thông tin photographer
+    public string? PhotographerName { get; set; }
+    public string? PhotographerEmail { get; set; }
 }

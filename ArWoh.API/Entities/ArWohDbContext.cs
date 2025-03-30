@@ -12,6 +12,7 @@ public class ArWohDbContext : DbContext
     public DbSet<Image> Images { get; set; }
     public DbSet<PaymentTransaction> PaymentTransactions { get; set; }
     public DbSet<Payment> Payments { get; set; }
+    public DbSet<ShippingOrder> ShippingOrders { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<AdminAction> AdminActions { get; set; }
     public DbSet<Cart> Carts { get; set; }
@@ -48,5 +49,11 @@ public class ArWohDbContext : DbContext
             .HasOne(a => a.Admin)
             .WithMany()
             .HasForeignKey(a => a.AdminId);
+
+        modelBuilder.Entity<ShippingOrder>()
+            .HasOne(so => so.Transaction)
+            .WithMany()
+            .HasForeignKey(so => so.TransactionId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

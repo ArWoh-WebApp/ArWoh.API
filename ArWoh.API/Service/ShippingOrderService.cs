@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ArWoh.API.Service;
 
-public class ShippingOrderService
+public class ShippingOrderService : IShippingOrderService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILoggerService _logger;
@@ -86,6 +86,10 @@ public class ShippingOrderService
             if (transaction == null)
                 throw new KeyNotFoundException($"Không tìm thấy giao dịch với ID {createDto.TransactionId}");
 
+            // Kiểm tra trạng thái transaction
+            if (transaction.PaymentStatus != PaymentTransactionStatusEnum.COMPLETED)
+                throw new InvalidOperationException("Giao dịch chưa hoàn thành thanh toán");
+
             // Kiểm tra xem transaction đã có đơn ship chưa
             var existingOrder = await _unitOfWork.ShippingOrders
                 .FirstOrDefaultAsync(so => so.TransactionId == createDto.TransactionId);
@@ -111,12 +115,34 @@ public class ShippingOrderService
             // Lấy thông tin hình ảnh từ transaction
             var image = await _unitOfWork.Images.GetByIdAsync(transaction.ImageId);
 
+            // Kiểm tra xem có tìm thấy hình ảnh không
+            if (image == null)
+            {
+                _logger.Warn($"Không tìm thấy hình ảnh với ID {transaction.ImageId} cho transaction {transaction.Id}");
+
+                // Vẫn trả về thông tin đơn hàng nhưng không có thông tin hình ảnh
+                return new ShippingOrderDto
+                {
+                    Id = shippingOrder.Id,
+                    TransactionId = shippingOrder.TransactionId,
+                    ImageId = transaction.ImageId,
+                    ImageTitle = "Không tìm thấy thông tin hình ảnh",
+                    ImageUrl = null,
+                    ShippingAddress = shippingOrder.ShippingAddress,
+                    ShippingFee = shippingOrder.ShippingFee,
+                    OrderAmount = transaction.Amount,
+                    TotalAmount = transaction.Amount + shippingOrder.ShippingFee,
+                    Status = shippingOrder.Status,
+                    CreatedAt = shippingOrder.CreatedAt
+                };
+            }
+
             return new ShippingOrderDto
             {
                 Id = shippingOrder.Id,
                 TransactionId = shippingOrder.TransactionId,
                 ImageId = image.Id,
-                ImageTitle = image.Title,
+                ImageTitle = image.Title ?? "Không có tiêu đề",
                 ImageUrl = image.Url,
                 ShippingAddress = shippingOrder.ShippingAddress,
                 ShippingFee = shippingOrder.ShippingFee,
@@ -272,7 +298,7 @@ public class ShippingOrderService
             throw;
         }
     }
-    
+
     /// <summary>
     /// Cập nhật trạng thái đơn hàng (dành cho Admin)
     /// </summary>
@@ -284,14 +310,14 @@ public class ShippingOrderService
             var currentUserRole = _claimService.GetCurrentUserRole();
             if (currentUserRole != "Admin")
                 throw new UnauthorizedAccessException("Chỉ Admin mới có quyền cập nhật trạng thái đơn hàng");
-                
+
             var shippingOrder = await _unitOfWork.ShippingOrders.GetByIdAsync(updateDto.OrderId);
             if (shippingOrder == null)
                 throw new KeyNotFoundException($"Không tìm thấy đơn hàng ship với ID {updateDto.OrderId}");
-                
+
             // Cập nhật trạng thái và ghi chú tương ứng
             shippingOrder.Status = updateDto.Status;
-            
+
             switch (updateDto.Status)
             {
                 case ShippingStatusEnum.Confirmed:
@@ -306,10 +332,10 @@ public class ShippingOrderService
                 case ShippingStatusEnum.Delivered:
                     break;
             }
-            
+
             shippingOrder.UpdatedAt = DateTime.UtcNow;
             await _unitOfWork.CompleteAsync();
-            
+
             // Trả về thông tin chi tiết đơn hàng sau khi cập nhật
             return await GetShippingOrderById(shippingOrder.Id);
         }

@@ -23,7 +23,6 @@ public class SystemController : ControllerBase
     /// <summary>
     ///     Seed data vào database
     /// </summary>
-    /// <returns></returns>
     [HttpPost("seed-all-data")]
     [ProducesResponseType(typeof(ApiResult<object>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]

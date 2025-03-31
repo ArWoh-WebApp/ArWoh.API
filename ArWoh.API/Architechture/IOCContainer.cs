@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 using ArWoh.API.Entities;
 using ArWoh.API.Interface;
@@ -72,6 +73,7 @@ public static class IOCContainer
         services.AddScoped<IPaymentService, PaymentService>();
         services.AddScoped<IPayOSService, PayOSService>();
         services.AddScoped<ICartService, CartService>();
+        services.AddScoped<IShippingOrderService, ShippingOrderService>();
 
         services.AddHttpContextAccessor();
 
@@ -111,6 +113,11 @@ public static class IOCContainer
                 Scheme = "bearer",
                 BearerFormat = "JWT"
             };
+
+            // Set the comments path for the Swagger JSON and UI
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            c.IncludeXmlComments(xmlPath);
 
             c.AddSecurityDefinition("Bearer", jwtSecurityScheme);
 

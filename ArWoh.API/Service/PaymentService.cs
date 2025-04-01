@@ -246,12 +246,27 @@ public class PaymentService : IPaymentService
                 return new NotFoundObjectResult("Payment not found");
             }
 
+            // (Thêm skibidi dab dab) Tìm UserId thông qua PaymentTransaction
+            var paymentTransaction = await _unitOfWork.Transactions.FirstOrDefaultAsync(t => t.Id == payment.PaymentTransactionId);
+            if (paymentTransaction == null)
+            {
+                _logger.Warn($"Không tìm thấy PaymentTransaction với ID: {payment.PaymentTransactionId}");
+                return new NotFoundObjectResult("PaymentTransaction not found");
+            }
+            int userId = paymentTransaction.CustomerId;
+
             // 3. Xử lý trạng thái thanh toán dựa trên statusCode từ PayOS
             switch (statusCode)
             {
                 case "00": // Thanh toán thành công
                     payment.PaymentStatus = PaymentStatusEnum.COMPLETED;
                     payment.GatewayTransactionId = transactionId;
+
+                    //(Thêm skibidi dab dab)
+                    _logger.Info($"Resetting cart for user {userId} after payment.");
+                    await _cartService.ResetCartAfterPayment(userId);
+
+                    _logger.Success($"Cart reset successfully for user {userId}.");
 
                     // Update PaymentTransaction status
                     if (payment.PaymentTransactionId.HasValue)

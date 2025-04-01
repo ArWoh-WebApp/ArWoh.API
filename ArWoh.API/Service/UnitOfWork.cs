@@ -20,7 +20,6 @@ public class UnitOfWork : IUnitOfWork
         CartItems = new GenericRepository<CartItem>(_context);
         Payments = new GenericRepository<Payment>(_context);
         ShippingOrders = new GenericRepository<ShippingOrder>(_context);
-
     }
 
     public IGenericRepository<User> Users { get; }

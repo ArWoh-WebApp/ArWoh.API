@@ -50,7 +50,7 @@ public class PhotographerController : ControllerBase
             return StatusCode(500, ApiResult<object>.Error("An error occurred while retrieving images"));
         }
     }
-    
+
     [HttpGet("{photographerId}/images")]
     [ProducesResponseType(typeof(ApiResult<IEnumerable<ImageDto>>), 200)]
     public async Task<IActionResult> GetImagesByPhotographer(int photographerId)
@@ -74,7 +74,6 @@ public class PhotographerController : ControllerBase
             return StatusCode(500, ApiResult<object>.Error("An error occurred while retrieving images"));
         }
     }
-
 
 
     [HttpGet("{photographerId}/profile")]

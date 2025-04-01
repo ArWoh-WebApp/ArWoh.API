@@ -19,7 +19,7 @@ public class ImageService : IImageService
     }
 
     /// <summary>
-    /// Lấy tất cả ảnh trong hệ thống với thứ tự ngẫu nhiên
+    ///     Lấy tất cả ảnh trong hệ thống với thứ tự ngẫu nhiên
     /// </summary>
     /// <returns>Danh sách tất cả ảnh được sắp xếp ngẫu nhiên</returns>
     public async Task<IEnumerable<ImageDto>> GetRandomImages()
@@ -174,7 +174,7 @@ public class ImageService : IImageService
     }
 
     /// <summary>
-    /// Lấy details của 1 tấm hình kèm thông tin photographer
+    ///     Lấy details của 1 tấm hình kèm thông tin photographer
     /// </summary>
     public async Task<ImageDto> GetImageById(int imageId)
     {

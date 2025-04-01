@@ -10,9 +10,9 @@ namespace ArWoh.API.Controllers;
 [Route("api/shipping")]
 public class ShippingOrderController : ControllerBase
 {
-    private readonly IShippingOrderService _shippingService;
     private readonly IClaimService _claimService;
     private readonly ILoggerService _logger;
+    private readonly IShippingOrderService _shippingService;
 
     public ShippingOrderController(
         IShippingOrderService shippingService,
@@ -25,7 +25,7 @@ public class ShippingOrderController : ControllerBase
     }
 
     /// <summary>
-    /// Lấy danh sách hình ảnh có thể ship của user hiện tại
+    ///     Lấy danh sách hình ảnh có thể ship của user hiện tại
     /// </summary>
     [HttpGet("shippable-images")]
     [Authorize]
@@ -48,11 +48,12 @@ public class ShippingOrderController : ControllerBase
     }
 
     /// <summary>
-    /// Tạo đơn hàng ship mới
+    ///     Tạo đơn hàng ship mới
     /// </summary>
     [HttpPost]
     [Authorize]
-    public async Task<ActionResult<ApiResult<ShippingOrderDto>>> CreateShippingOrder([FromBody] CreateShippingOrderDto createDto)
+    public async Task<ActionResult<ApiResult<ShippingOrderDto>>> CreateShippingOrder(
+        [FromBody] CreateShippingOrderDto createDto)
     {
         try
         {
@@ -80,7 +81,7 @@ public class ShippingOrderController : ControllerBase
     }
 
     /// <summary>
-    /// Lấy danh sách đơn hàng ship của user hiện tại
+    ///     Lấy danh sách đơn hàng ship của user hiện tại
     /// </summary>
     [HttpGet("user")]
     [Authorize]
@@ -103,7 +104,7 @@ public class ShippingOrderController : ControllerBase
     }
 
     /// <summary>
-    /// Lấy chi tiết một đơn hàng ship
+    ///     Lấy chi tiết một đơn hàng ship
     /// </summary>
     [HttpGet("{id}")]
     [Authorize]
@@ -118,10 +119,8 @@ public class ShippingOrderController : ControllerBase
             var userRole = _claimService.GetCurrentUserRole();
 
             if (order.CustomerId != userId && userRole != "Admin")
-            {
                 return Forbid(ApiResult<ShippingOrderDto>.Error(
                     "Bạn không có quyền xem đơn hàng này").ToString());
-            }
 
             return Ok(ApiResult<ShippingOrderDto>.Success(
                 order,
@@ -141,7 +140,7 @@ public class ShippingOrderController : ControllerBase
     }
 
     /// <summary>
-    /// Lấy tất cả đơn hàng ship (Admin only)
+    ///     Lấy tất cả đơn hàng ship (Admin only)
     /// </summary>
     [HttpGet]
     [Authorize(Roles = "Admin")]
@@ -163,11 +162,12 @@ public class ShippingOrderController : ControllerBase
     }
 
     /// <summary>
-    /// Cập nhật trạng thái đơn hàng (Admin only)
+    ///     Cập nhật trạng thái đơn hàng (Admin only)
     /// </summary>
     [HttpPut("status")]
     [Authorize(Roles = "Admin")]
-    public async Task<ActionResult<ApiResult<ShippingOrderDto>>> UpdateShippingStatus([FromForm] UpdateShippingStatusDto updateDto)
+    public async Task<ActionResult<ApiResult<ShippingOrderDto>>> UpdateShippingStatus(
+        [FromForm] UpdateShippingStatusDto updateDto)
     {
         try
         {

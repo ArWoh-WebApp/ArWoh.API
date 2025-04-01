@@ -8,10 +8,10 @@ namespace ArWoh.API.Service;
 
 public class ShippingOrderService : IShippingOrderService
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ILoggerService _logger;
-    private readonly IImageService _imageService;
     private readonly IClaimService _claimService;
+    private readonly IImageService _imageService;
+    private readonly ILoggerService _logger;
+    private readonly IUnitOfWork _unitOfWork;
 
     public ShippingOrderService(IUnitOfWork unitOfWork, ILoggerService logger, IImageService imageService,
         IClaimService claimService)
@@ -23,7 +23,7 @@ public class ShippingOrderService : IShippingOrderService
     }
 
     /// <summary>
-    /// Lấy danh sách hình ảnh để người dùng chọn tạo đơn ship
+    ///     Lấy danh sách hình ảnh để người dùng chọn tạo đơn ship
     /// </summary>
     public async Task<IEnumerable<ShippableImageDto>> GetShippableImagesByUserId(int userId)
     {
@@ -75,7 +75,7 @@ public class ShippingOrderService : IShippingOrderService
     }
 
     /// <summary>
-    /// Tạo đơn hàng ship cho hình ảnh
+    ///     Tạo đơn hàng ship cho hình ảnh
     /// </summary>
     public async Task<ShippingOrderDto> CreateShippingOrder(CreateShippingOrderDto createDto)
     {
@@ -160,7 +160,7 @@ public class ShippingOrderService : IShippingOrderService
     }
 
     /// <summary>
-    /// Lấy danh sách đơn hàng ship của user
+    ///     Lấy danh sách đơn hàng ship của user
     /// </summary>
     public async Task<IEnumerable<ShippingOrderDto>> GetUserShippingOrders(int userId)
     {
@@ -211,7 +211,7 @@ public class ShippingOrderService : IShippingOrderService
 
 
     /// <summary>
-    /// Lấy chi tiết đơn hàng ship
+    ///     Lấy chi tiết đơn hàng ship
     /// </summary>
     public async Task<ShippingOrderDto> GetShippingOrderById(int orderId)
     {
@@ -256,7 +256,7 @@ public class ShippingOrderService : IShippingOrderService
     }
 
     /// <summary>
-    /// Lấy tất cả đơn hàng ship (dành cho Admin)
+    ///     Lấy tất cả đơn hàng ship (dành cho Admin)
     /// </summary>
     public async Task<IEnumerable<ShippingOrderDto>> GetAllShippingOrders()
     {
@@ -300,7 +300,7 @@ public class ShippingOrderService : IShippingOrderService
     }
 
     /// <summary>
-    /// Cập nhật trạng thái đơn hàng (dành cho Admin)
+    ///     Cập nhật trạng thái đơn hàng (dành cho Admin)
     /// </summary>
     public async Task<ShippingOrderDto> UpdateShippingOrderStatus(UpdateShippingStatusDto updateDto)
     {
@@ -345,5 +345,4 @@ public class ShippingOrderService : IShippingOrderService
             throw;
         }
     }
-
 }

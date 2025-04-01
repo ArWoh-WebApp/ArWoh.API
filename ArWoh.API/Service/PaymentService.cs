@@ -280,6 +280,9 @@ public class PaymentService : IPaymentService
 
                             _logger.Info(
                                 $"Updated {relatedTransactions.Count() + 1} payment transactions to COMPLETED status");
+
+                            // Clear the user's cart after successful payment
+                            await ClearUserCart(mainTransaction.CustomerId);
                         }
                         else
                         {
@@ -292,14 +295,14 @@ public class PaymentService : IPaymentService
 
                 case "01": // Thanh toán thất bại
                     payment.PaymentStatus = PaymentStatusEnum.CANCELED;
-                    // Update related transactions to CANCELED
-                    UpdateRelatedTransactions(payment, PaymentTransactionStatusEnum.FAILED);
+                    // Update related transactions to FAILED
+                    await UpdateRelatedTransactions(payment, PaymentTransactionStatusEnum.FAILED);
                     break;
 
                 case "02": // Người dùng huỷ thanh toán
                     payment.PaymentStatus = PaymentStatusEnum.CANCELED;
-                    // Update related transactions to CANCELED
-                    UpdateRelatedTransactions(payment, PaymentTransactionStatusEnum.FAILED);
+                    // Update related transactions to FAILED
+                    await UpdateRelatedTransactions(payment, PaymentTransactionStatusEnum.FAILED);
                     break;
 
                 default:
@@ -351,6 +354,41 @@ public class PaymentService : IPaymentService
             {
                 _logger.Warn($"Không tìm thấy PaymentTransaction với ID: {payment.PaymentTransactionId.Value}");
             }
+        }
+    }
+
+// Helper method to clear a user's cart after successful payment
+    private async Task ClearUserCart(int userId)
+    {
+        try
+        {
+            // Find the user's cart
+            var cart = await _unitOfWork.Carts.FirstOrDefaultAsync(c => c.UserId == userId);
+            if (cart != null)
+            {
+                // Find all cart items associated with this cart
+                var cartItems = await _unitOfWork.CartItems.FindAsync(ci => ci.CartId == cart.Id);
+
+                // Delete all cart items
+                if (cartItems != null && cartItems.Any())
+                {
+                    _unitOfWork.CartItems.DeleteRange(cartItems);
+                    _logger.Info($"Deleted {cartItems.Count()} cart items for user ID: {userId}");
+                }
+
+                await _unitOfWork.CompleteAsync();
+                _logger.Info($"Successfully cleared cart for user ID: {userId}");
+            }
+            else
+            {
+                _logger.Info($"No active cart found for user ID: {userId}");
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.Error($"Error clearing cart for user ID {userId}: {ex.Message}");
+            // We don't want to throw the exception here as it would disrupt the payment process
+            // Just log the error and continue
         }
     }
 }

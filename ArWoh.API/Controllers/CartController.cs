@@ -2,7 +2,6 @@
 using ArWoh.API.DTOs.CartItemDTOs;
 using ArWoh.API.Interface;
 using ArWoh.API.Utils;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArWoh.API.Controllers;
@@ -12,8 +11,8 @@ namespace ArWoh.API.Controllers;
 public class CartController : ControllerBase
 {
     private readonly ICartService _cartService;
-    private readonly ILoggerService _loggerService;
     private readonly IClaimService _claimService;
+    private readonly ILoggerService _loggerService;
 
     public CartController(ICartService cartService, ILoggerService loggerService, IClaimService claimService)
     {
@@ -22,7 +21,7 @@ public class CartController : ControllerBase
         _claimService = claimService;
     }
 
-    [HttpPost()]
+    [HttpPost]
     [ProducesResponseType(typeof(ApiResult<CartDto>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]
     [ProducesResponseType(typeof(ApiResult<object>), 500)]
@@ -71,7 +70,6 @@ public class CartController : ControllerBase
             return StatusCode(500, ApiResult<object>.Error("An unexpected error occurred"));
         }
     }
-
 
     [HttpPut("me")]
     [ProducesResponseType(typeof(ApiResult<CartDto>), 200)]

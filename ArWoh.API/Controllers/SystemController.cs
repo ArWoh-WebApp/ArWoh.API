@@ -21,9 +21,8 @@ public class SystemController : ControllerBase
     }
 
     /// <summary>
-    /// Seed data vào database
+    ///     Seed data vào database
     /// </summary>
-    /// <returns></returns>
     [HttpPost("seed-all-data")]
     [ProducesResponseType(typeof(ApiResult<object>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]
@@ -132,8 +131,9 @@ public class SystemController : ControllerBase
                 Location = "Rocky Mountains, Colorado",
                 Price = 2000,
                 FileName = "mountain_stream_dawn.jpg",
-                StoryOfArt = "A peaceful moment captured during dawn...",
-                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
+                StoryOfArt =
+                    "<h2>The Journey of Light and Water</h2><br><br>1. Dawn's First Light. The photograph captures that magical moment when the first rays of sunlight pierce through the mountain mist, creating golden reflections on the flowing stream.\n\n2. Technical Challenges. Shooting in low-light conditions required a delicate balance between exposure time and aperture to maintain the crispness of the moving water while preserving the warm glow of dawn.\n\n3. Personal Connection. This location holds special significance as it marks the beginning of my journey as a landscape photographer, teaching me patience and the rewards of rising before the sun.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
             },
             new()
             {
@@ -145,8 +145,9 @@ public class SystemController : ControllerBase
                 Location = "New York City, USA",
                 Price = 30000,
                 FileName = "city_skyline_dusk.jpg",
-                StoryOfArt = "The contrast between the city and sky...",
-                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
+                StoryOfArt =
+                    "<h2>Urban Metamorphosis: A City's Twilight Tale</h2><br><br>1. The Transition Hour. This image was taken during the 'blue hour' - that brief window after sunset when artificial lights begin to glow but the sky still retains deep blue tones rather than complete darkness.\n\n2. Architectural Symphony. The composition deliberately juxtaposes historical buildings with modern skyscrapers, creating a visual narrative of the city's evolution through time.\n\n3. Human Element. Though no people are visible, the thousands of illuminated windows represent countless individual stories unfolding simultaneously across the urban landscape.\n\n4. Technical Approach. A long exposure of 15 seconds allowed me to capture the light trails of moving vehicles, adding dynamism to the otherwise static cityscape.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
             },
             new()
             {
@@ -158,8 +159,9 @@ public class SystemController : ControllerBase
                 Location = "Swiss Alps, Switzerland",
                 Price = 20000,
                 FileName = "snowy_mountain_peaks.jpg",
-                StoryOfArt = "A breathtaking view of snowy peaks...",
-                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
+                StoryOfArt =
+                    "<h2>Silence in White: Alpine Majesty</h2><br><br>1. Nature's Monument. These ancient mountains, formed over millions of years, stand as silent sentinels covered in their winter blanket, untouched and pristine.\n\n2. The Climb. Reaching this vantage point required a three-day trek through increasingly harsh conditions, with temperatures dropping to -15°C on the final morning.\n\n3. Light's Perfection. The image was captured during the phenomenon known as 'alpenglow,' when the peaks are illuminated with a reddish glow while the valleys remain in shadow.\n\n4. Scale and Perspective. The vastness of these mountains reminds us of our place in the natural world - temporary visitors in an ancient landscape that will outlast generations.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
             },
             new()
             {
@@ -171,8 +173,9 @@ public class SystemController : ControllerBase
                 Location = "Provence, France",
                 Price = 23000,
                 FileName = "vibrant_flower_garden.jpg",
-                StoryOfArt = "An explosion of colors and life captured...",
-                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
+                StoryOfArt =
+                    "<h2>Nature's Color Palette: The Gardener's Canvas</h2><br><br>1. Historical Context. This garden has been maintained by five generations of the same family, with planting techniques passed down through oral tradition since the early 19th century.\n\n2. Biodiversity Focus. Over 45 different species of flowering plants are visible in this single frame, each selected not only for visual impact but also to support local pollinator populations.\n\n3. Compositional Technique. The seeming randomness of the garden belies the careful color theory application - complementary colors are strategically positioned to enhance visual vibrancy.\n\n4. Seasonal Storytelling. The image captures the garden at its peak bloom during the three-week window in late spring when all varieties reach their full expression simultaneously.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
             },
             new()
             {
@@ -187,8 +190,8 @@ public class SystemController : ControllerBase
                 Price = 50000,
                 FileName = "rainy_city_street.jpg",
                 StoryOfArt =
-                    "An urban dreamscape, where neon lights and rain create an artistic blend of colors and reflections.",
-                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
+                    "<h2>Liquid Light: Tokyo After Rainfall</h2><br><br>1. Moment of Serendipity. This image was captured during an unexpected thunderstorm when most pedestrians had sought shelter, leaving the normally bustling street momentarily empty.\n\n2. Cultural Reflection. The neon signs displaying both Japanese characters and English text represent the unique cultural fusion that defines modern Tokyo.\n\n3. Technical Patience. I waited under an awning for nearly two hours for the precise moment when the rain intensity created perfect reflections without obscuring the distant details.\n\n4. Emotional Resonance. The scene evokes the distinctive feeling of being alone in a crowd - a common experience in mega-cities where millions live in close proximity yet often in emotional isolation.\n\n5. Visual Metaphor. The reflected lights create a parallel world beneath the surface, suggesting the duality between Tokyo's polished exterior and its complex undercurrents.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
             },
             new()
             {
@@ -202,8 +205,9 @@ public class SystemController : ControllerBase
                 Location = "Lake Tahoe, USA",
                 Price = 24000,
                 FileName = "sunset_over_the_lake.jpg",
-                StoryOfArt = "A peaceful moment reflecting the golden hues of the setting sun over a tranquil lake.",
-                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
+                StoryOfArt =
+                    "<h2>Day's End: The Lake's Sunset Symphony</h2><br><br>1. Perfect Stillness. After three days of strong winds, the lake surface became completely calm on this evening, creating a mirror-like reflection that doubles the visual impact of the sunset.\n\n2. Color Science. The exceptional pink and purple hues resulted from distant forest fire particles in the atmosphere, filtering the light wavelengths in a way rarely seen in this region.\n\n3. Sound Dimension. Though impossible to convey in a photograph, this moment was accompanied by the evening chorus of loons calling across the water - adding an auditory dimension to the visual experience.\n\n4. Conservation Message. This pristine view exists today thanks to conservation efforts that prevented commercial development along this shoreline in the 1970s, preserving the natural viewshed for future generations.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
             },
             new()
             {
@@ -217,8 +221,9 @@ public class SystemController : ControllerBase
                 Location = "Atacama Desert, Chile",
                 Price = 40000,
                 FileName = "starry_night_sky.jpg",
-                StoryOfArt = "A gateway to the cosmos, capturing the mesmerizing beauty of the night sky.",
-                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
+                StoryOfArt =
+                    "<h2>Cosmic Canvas: Windows to Infinity</h2><br><br>1. Light Years Away. What appears as simple points of light represents ancient photons that have traveled for centuries or millennia before reaching my camera sensor.\n\n2. Technical Excellence. This image is a composite of 85 separate 30-second exposures, meticulously aligned and stacked to reveal celestial details invisible to the naked eye.\n\n3. Geographic Advantage. The Atacama Desert's extreme altitude, dry air, and distance from light pollution make it one of only three locations on Earth where such clarity of the night sky is possible.\n\n4. Scientific Value. Several previously undocumented stellar phenomena were discovered in this image upon detailed analysis, leading to collaboration with astronomers from the European Southern Observatory.\n\n5. Human Context. The small silhouette of a traditional observatory dome in the lower frame provides scale, contrasting human endeavors with the incomprehensible vastness above.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
             },
             new()
             {
@@ -232,8 +237,9 @@ public class SystemController : ControllerBase
                 Location = "Tuscany, Italy",
                 Price = 40000,
                 FileName = "countryside_road.jpg",
-                StoryOfArt = "A journey through rolling hills, where time slows down and nature takes center stage.",
-                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
+                StoryOfArt =
+                    "<h2>The Winding Path: Tuscany's Timeless Journey</h2><br><br>1. Historical Pathway. This road follows the route of an ancient Roman trade path that has connected hillside villages for over two millennia.\n\n2. Agricultural Heritage. The distinctive pattern of cypress trees lining the road was established in the 15th century as wind protection for the valuable crops growing in adjacent fields.\n\n3. Light Study. The late afternoon sun position creates alternating patterns of light and shadow that emphasize the undulating topography of the landscape.\n\n4. Preservation Challenges. This iconic view now faces threats from modernization and climate change, with traditional farming practices giving way to more industrialized methods.\n\n5. Personal Discovery. I found this specific vantage point by getting completely lost while cycling through back roads, a reminder that sometimes the best compositions appear when we deviate from planned routes.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
             },
             new()
             {
@@ -248,8 +254,8 @@ public class SystemController : ControllerBase
                 Price = 40000,
                 FileName = "ancient_castle_ruins.jpg",
                 StoryOfArt =
-                    "A glimpse into the past, where the echoes of history whisper through the crumbling stones.",
-                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
+                    "<h2>Echoes in Stone: A Fortress Remembers</h2><br><br>1. Archaeological Context. These ruins date to the 13th century and were once a strategic stronghold controlling passage through the valley below during the Scottish Wars of Independence.\n\n2. Dramatic Timing. The threatening storm clouds were approaching rapidly when this image was taken, with the first raindrops beginning to fall as I captured the final frame in the sequence.\n\n3. Compositional Intent. I deliberately positioned myself to frame the central tower against the brightest part of the sky, creating a silhouette effect that emphasizes the castle's imposing presence even in its deteriorated state.\n\n4. Hidden Details. Close examination reveals medieval mason marks still visible on several stones - the signatures of craftsmen who died nearly 800 years ago.\n\n5. Conservation Status. Though appearing untouched by modern intervention, these ruins underwent careful stabilization work in the 1990s to prevent complete collapse while maintaining their authentic weathered appearance.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
             },
             new()
             {
@@ -263,8 +269,9 @@ public class SystemController : ControllerBase
                 Location = "Costa Rica",
                 Price = 40000,
                 FileName = "lush_tropical_forest.jpg",
-                StoryOfArt = "A hidden paradise, where nature flourishes in an explosion of green.",
-                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
+                StoryOfArt =
+                    "<h2>Green Cathedral: The Rainforest's Secret World</h2><br><br>1. Biodiversity Hotspot. The small area captured in this single frame contains over 200 distinct plant species, representing one of the highest concentrations of botanical diversity on the planet.\n\n2. Light Phenomenon. The sunbeams visible in the image result from a rare alignment that occurs for only 20 minutes each day when the sun reaches a specific angle relative to the canopy gaps.\n\n3. Ecological Narrative. The varying shades of green represent different canopy layers, each creating its own microhabitat for specialized flora and fauna.\n\n4. Sensory Experience. The photograph cannot convey the accompanying sounds and smells - the constant dripping of condensation, the calls of unseen birds, and the rich earthy aroma of decomposition and growth.\n\n5. Conservation Status. This particular forest section stands in a protected biological corridor that connects larger preserves, allowing wildlife migration patterns to continue despite surrounding development pressure.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
             },
             new()
             {
@@ -278,8 +285,9 @@ public class SystemController : ControllerBase
                 Location = "Loire Valley, France",
                 Price = 40000,
                 FileName = "calm_river_bend.jpg",
-                StoryOfArt = "A peaceful waterway winding through nature’s quiet embrace.",
-                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
+                StoryOfArt =
+                    "<h2>Water's Patient Journey: The River's Narrative</h2><br><br>1. Geological Timekeeper. This gentle curve has been shaped over millennia, with the river slowly carving its path through soft limestone, revealing layers of Earth's history in the exposed banks.\n\n2. Historical Significance. For centuries, this bend served as a critical navigation point for trade vessels, with records of its use dating back to Roman times.\n\n3. Ecological Function. The slower water flow at this bend creates a natural deposition zone where nutrients collect, supporting the lush vegetation visible along the shoreline.\n\n4. Atmospheric Conditions. The unusual stillness of the water resulted from a rare weather phenomenon where air temperature and water temperature reached perfect equilibrium, eliminating all surface disturbance.\n\n5. Artistic Heritage. This same view has inspired painters since the Impressionist movement, with several notable works by Monet featuring this identical bend from slightly different angles.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
             },
             new()
             {
@@ -293,8 +301,9 @@ public class SystemController : ControllerBase
                 Location = "Dubai, UAE",
                 Price = 40000,
                 FileName = "modern_architecture.jpg",
-                StoryOfArt = "A vision of the future, where form meets function in architectural brilliance.",
-                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
+                StoryOfArt =
+                    "<h2>Geometry in Glass: The Future Manifested</h2><br><br>1. Architectural Innovation. This structure pioneered a revolutionary tensile support system that allows the seemingly impossible cantilevers to extend without visible external support.\n\n2. Environmental Design. Despite its location in one of Earth's hottest climates, the building achieves remarkable energy efficiency through smart glass technology and passive cooling systems integrated into its geometric design.\n\n3. Cultural Context. The angular forms reference traditional regional architectural motifs, modernized through contemporary materials and engineering.\n\n4. Photographic Challenge. Capturing this image required precise timing to avoid lens flare from the harsh desert sun while maintaining the clarity of both the reflective surfaces and the sky.\n\n5. Design Philosophy. The architect described this building as 'crystallized music' - an attempt to give physical form to mathematical harmonies through proportion and rhythm in the structural elements.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
             },
             new()
             {
@@ -308,9 +317,107 @@ public class SystemController : ControllerBase
                 Location = "Yosemite Valley, USA",
                 Price = 40000,
                 FileName = "misty_morning_valley.jpg",
-                StoryOfArt = "A magical morning where mist dances over the rolling hills.",
-                PhotographerId = photographers[random.Next(photographers.Count)] // Random photographer
-            }
+                StoryOfArt =
+                    "<h2>Veiled Landscape: Dawn's Ethereal Moment</h2><br><br>1. Meteorological Marvel. The mist formation captured here results from a temperature inversion where cold air becomes trapped beneath warmer air, a phenomenon that occurs in this valley fewer than 20 days each year.\n\n2. Historical Perspective. This view closely resembles what the first European explorers would have witnessed upon discovering the valley in the 19th century, with minimal visible human intervention in the landscape.\n\n3. Compositional Patience. I visited this overlook for seven consecutive mornings before atmospheric conditions aligned perfectly with the ideal light angle.\n\n4. Acoustic Dimension. The mist created an unusual acoustic environment where distant sounds (birds, falling water) seemed amplified and closer than their actual locations.\n\n5. Ephemeral Nature. Within 30 minutes of taking this photograph, the mist had completely dissipated, revealing an entirely different landscape beneath - a reminder of nature's constant state of transition.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+
+            // hình tụi nó
+            new()
+            {
+                Title = "Desert Dunes at Sunset",
+                Description =
+                    "Rolling sand dunes catch the last golden rays of sunset, creating a mesmerizing pattern of light and shadow across the desert landscape.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FIMG_2318.jpg&version_id=null",
+                Orientation = OrientationType.Landscape,
+                Tags = new List<string> { "Desert", "Dunes", "Sunset", "Sand", "Minimalist" },
+                Location = "Sahara Desert, Morocco",
+                Price = 35000,
+                FileName = "desert_dunes_sunset.jpg",
+                StoryOfArt =
+                    "<h2>Golden Waves: The Desert's Shifting Canvas</h2><br><br>1. Environmental Extremes. This photograph was taken in 48°C (118°F) heat, necessitating special thermal protection for both photographer and equipment.\n\n2. Transient Beauty. The specific dune formations shown will no longer exist in their captured form, as desert winds continually reshape the landscape.\n\n3. Color Science. The rich orange hues result from the high iron oxide content in the sand, amplified by the low-angle sunlight at golden hour.\n\n4. Scale Deception. While appearing modest in size, the largest dune in frame stands over 150 meters tall, demonstrating the difficulty of conveying true scale in desert environments.\n\n5. Silent Witness. These dunes have remained largely unchanged in process for over 4,000 years, though their exact shapes shift daily with the wind.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            new()
+            {
+                Title = "Autumn Forest Path",
+                Description =
+                    "A winding path cuts through a forest ablaze with autumn colors, creating a tunnel of golden and crimson foliage.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FIMG_2319.jpg&version_id=null",
+                Orientation = OrientationType.Portrait,
+                Tags = new List<string> { "Autumn", "Forest", "Path", "Fall Colors", "Trees" },
+                Location = "Vermont, USA",
+                Price = 28000,
+                FileName = "autumn_forest_path.jpg",
+                StoryOfArt =
+                    "<h2>The Golden Corridor: Autumn's Transient Gallery</h2><br><br>1. Seasonal Peak. This image captures the precise 72-hour window when fall colors reached their maximum vibrancy before beginning to fade and fall.\n\n2. Biological Symphony. The varied colors represent different tree species' unique chemical responses to decreasing daylight - predominantly sugar maples (red), birch (yellow), and oak (russet).\n\n3. Historical Route. The path visible dates to the 18th century and was originally used for transporting maple sap from the forest to local sugar houses.\n\n4. Photographic Technique. To achieve the tunnel effect while maintaining focus throughout, I used focus stacking of seven separate exposures with incrementally different focal points.\n\n5. Climate Concern. Rising regional temperatures have delayed peak foliage season by nearly two weeks compared to historical records from the 1950s.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            new()
+            {
+                Title = "Coastal Cliff Sunrise",
+                Description =
+                    "Dramatic sea cliffs catch the first light of day as waves crash against their base, showcasing the raw power of where land meets sea.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FIMG_2320.jpg&version_id=null",
+                Orientation = OrientationType.Landscape,
+                Tags = new List<string> { "Coast", "Cliffs", "Ocean", "Sunrise", "Waves" },
+                Location = "Moher, Ireland",
+                Price = 45000,
+                FileName = "coastal_cliff_sunrise.jpg",
+                StoryOfArt =
+                    "<h2>Edge of Worlds: Where Land Confronts Ocean</h2><br><br>1. Geological Testament. These cliffs contain visible sedimentary layers representing over 300 million years of Earth's history, readable like pages in a stone book.\n\n2. Weather Challenge. Capturing this image required enduring near-gale force winds that threatened both equipment stability and photographer safety.\n\n3. Timing Precision. The specific light angle occurs only twice yearly when the sunrise aligns perfectly with the cliff orientation during the spring equinox.\n\n4. Sound Landscape. The thunderous crash of waves against rock created vibrations powerful enough to be felt through the ground at the shooting location 70 meters above sea level.\n\n5. Conservation Significance. This coastline serves as critical nesting habitat for endangered seabird species, with restrictions on human access during breeding seasons.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            new()
+            {
+                Title = "Mountain Lake Reflection",
+                Description =
+                    "A pristine alpine lake perfectly mirrors the surrounding mountains and sky, creating a symmetrical landscape of extraordinary beauty.",
+                Url = "https://images.unsplash.com/photo-1439853949127-fa647821eba0",
+                Orientation = OrientationType.Landscape,
+                Tags = new List<string> { "Lake", "Mountains", "Reflection", "Alpine", "Symmetry" },
+                Location = "Banff National Park, Canada",
+                Price = 38000,
+                FileName = "mountain_lake_reflection.jpg",
+                StoryOfArt =
+                    "<h2>Mirror of the Sky: Perfect Alpine Symmetry</h2><br><br>1. Glacial Origin. This lake formed approximately 12,000 years ago during the last ice age when retreating glaciers carved the basin and filled it with pristine meltwater.\n\n2. Rare Conditions. The perfect reflection captured required absolute stillness in both water and air - conditions that occur on fewer than 10 days annually in this high-altitude, typically windy environment.\n\n3. Water Chemistry. The distinctive turquoise color results from 'rock flour' - microscopic glacial sediment suspended in the water that reflects specific light wavelengths.\n\n4. Indigenous Significance. This location holds sacred status for local First Nations peoples, who have traditional stories describing the lake as a portal between worlds.\n\n5. Expedition Challenge. Reaching this remote shooting location required a three-day backcountry hike with all equipment carried by hand, as no vehicle or helicopter access exists.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            new()
+            {
+                Title = "Urban Night Rain",
+                Description =
+                    "A busy city intersection glistens with reflections from neon signs and traffic lights, as rain transforms an ordinary urban scene into a colorful abstract canvas.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FIMG_2321.jpg&version_id=null",
+                Orientation = OrientationType.Portrait,
+                Tags = new List<string> { "Urban", "Rain", "Night", "City Lights", "Reflection" },
+                Location = "Seoul, South Korea",
+                Price = 42000,
+                FileName = "urban_night_rain.jpg",
+                StoryOfArt =
+                    "<h2>Electric Rain: Urban Symphony After Dark</h2><br><br>1. Cultural Crossroads. This intersection marks the boundary between Seoul's traditional market district and its modern technology hub - a physical manifestation of the country's rapid transformation.\n\n2. Technical Approach. This image employs intentional lens distortion to enhance the surreal quality of the reflections, emphasizing the disorienting experience of urban spaces in adverse weather.\n\n3. Human Element. Though seemingly anonymous, several pedestrians granted permission to be included in the final image, understanding they would become part of an artistic representation of their city.\n\n4. Light Complexity. The scene contains over 200 distinct light sources in various colors and intensities, creating a challenging exposure situation requiring careful dynamic range management.\n\n5. Urban Evolution. This exact view no longer exists as several buildings visible have since been replaced with newer structures - the photograph now serves as historical documentation of a specific moment in the city's development.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            new()
+            {
+                Title = "Ancient Olive Grove",
+                Description =
+                    "Centuries-old olive trees with gnarled trunks stand in formation across a Mediterranean hillside, their silver-green leaves shimmering in the warm light.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FIMG_2392.jpg&version_id=null",
+                Orientation = OrientationType.Landscape,
+                Tags = new List<string> { "Olives", "Trees", "Mediterranean", "Agriculture", "Ancient" },
+                Location = "Puglia, Italy",
+                Price = 32000,
+                FileName = "ancient_olive_grove.jpg",
+                StoryOfArt =
+                    "<h2>Living Monuments: The Olive Guardians</h2><br><br>1. Botanical Elders. Several trees in this grove have been carbon-dated to be over 1,500 years old, making them living links to the Byzantine period when they were first planted.\n\n2. Agricultural Continuity. The same families have harvested olives from these trees for 27 generations, maintaining traditional farming techniques passed down through centuries.\n\n3. Environmental Adaptation. The twisted forms of the trunks represent the trees' response to prevailing winds and periodic drought - a physical record of environmental conditions spanning millennia.\n\n4. Seasonal Selection. The photograph was taken during the two-week period before harvest when the olives have reached full maturity but remain on the branches.\n\n5. Conservation Challenge. This ancient grove now faces threats from a bacterial disease spreading through the region, potentially endangering trees that have survived countless previous challenges throughout history.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
         };
 
         await _context.Images.AddRangeAsync(images);
@@ -318,7 +425,6 @@ public class SystemController : ControllerBase
 
         _logger.Success("User and image seeding completed successfully.");
     }
-
 
     private async Task ClearDatabase(ArWohDbContext context)
     {
@@ -331,6 +437,7 @@ public class SystemController : ControllerBase
             // Danh sách các bảng cần xóa theo thứ tự FK
             var tablesToDelete = new List<Func<Task>>
             {
+                async () => await context.ShippingOrders.ExecuteDeleteAsync(),
                 async () => await context.CartItems.ExecuteDeleteAsync(),
                 async () => await context.AdminActions.ExecuteDeleteAsync(),
                 async () => await context.Carts.ExecuteDeleteAsync(),

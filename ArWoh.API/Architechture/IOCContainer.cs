@@ -1,14 +1,15 @@
+using System.Reflection;
+using System.Text;
 using ArWoh.API.Entities;
 using ArWoh.API.Interface;
 using ArWoh.API.Repository;
 using ArWoh.API.Service;
+using ArWoh.API.Service.ThirdPartyService.Interfaces;
+using ArWoh.API.Service.ThirdPartyService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Text;
-using ArWoh.API.Service.ThirdPartyService.Interfaces;
-using ArWoh.API.Service.ThirdPartyService.Services;
 using Net.payOS;
 
 namespace ArWoh.API.Architechture;
@@ -34,7 +35,6 @@ public static class IOCContainer
         services.SetupThirdParty();
         return services;
     }
-
 
     public static IServiceCollection SetupThirdParty(this IServiceCollection services)
     {
@@ -74,6 +74,7 @@ public static class IOCContainer
         services.AddScoped<IPayOSService, PayOSService>();
         services.AddScoped<ICartService, CartService>();
         services.AddScoped<IAdminService, AdminService>();
+        services.AddScoped<IShippingOrderService, ShippingOrderService>();
 
         services.AddHttpContextAccessor();
 
@@ -114,6 +115,11 @@ public static class IOCContainer
                 BearerFormat = "JWT"
             };
 
+            // Set the comments path for the Swagger JSON and UI
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            c.IncludeXmlComments(xmlPath);
+
             c.AddSecurityDefinition("Bearer", jwtSecurityScheme);
 
             var securityRequirement = new OpenApiSecurityRequirement
@@ -136,7 +142,6 @@ public static class IOCContainer
             // Cấu hình Swagger để sử dụng Newtonsoft.Json
             c.UseAllOfForInheritance();
         });
-
 
         return services;
     }
@@ -181,7 +186,6 @@ public static class IOCContainer
             options.AddPolicy("AdminPolicy", policy =>
                 policy.RequireRole("Admin"));
         });
-
 
         return services;
     }

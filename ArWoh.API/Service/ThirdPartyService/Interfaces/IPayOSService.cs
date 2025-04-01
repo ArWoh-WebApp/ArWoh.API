@@ -7,5 +7,6 @@ namespace ArWoh.API.Service.ThirdPartyService.Interfaces;
 public interface IPayOSService
 {
     Task<CreatePaymentResponse> CreatePaymentLink(CreatePaymentRequest request);
+
     Task<WebhookResponse> HandleWebhook(WebhookType webhookData);
 }

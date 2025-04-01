@@ -1,5 +1,4 @@
 ﻿using ArWoh.API.DTOs.UserDTOs;
-using ArWoh.API.Entities;
 using ArWoh.API.Enums;
 using ArWoh.API.Interface;
 
@@ -7,9 +6,9 @@ namespace ArWoh.API.Service;
 
 public class UserService : IUserService
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ILoggerService _logger;
     private readonly IBlobService _blobService;
+    private readonly ILoggerService _logger;
+    private readonly IUnitOfWork _unitOfWork;
 
     public UserService(IUnitOfWork unitOfWork, ILoggerService loggerService, IBlobService blobService)
     {
@@ -52,6 +51,145 @@ public class UserService : IUserService
         };
     }
 
+    public async Task<UserProfileDto> UpdateUserInfo(int userId, UserUpdateDto updateDto)
+    {
+        if (userId <= 0)
+        {
+            _logger.Warn($"Attempted to update user with invalid ID: {userId}");
+            throw new ArgumentException("Invalid userId");
+        }
+
+        try
+        {
+            var user = await _unitOfWork.Users.GetByIdAsync(userId);
+
+            if (user == null)
+            {
+                _logger.Warn($"No user found with ID: {userId}");
+                throw new KeyNotFoundException($"User with ID {userId} not found.");
+            }
+
+            // Update user properties if provided in the DTO
+            if (!string.IsNullOrWhiteSpace(updateDto.Username)) user.Username = updateDto.Username;
+
+            if (!string.IsNullOrWhiteSpace(updateDto.Email))
+            {
+                // Check if email is already in use by another user
+                var existingUser =
+                    await _unitOfWork.Users.FirstOrDefaultAsync(u => u.Email == updateDto.Email && u.Id != userId);
+                if (existingUser != null)
+                {
+                    _logger.Warn($"Email {updateDto.Email} is already in use by another user.");
+                    throw new InvalidOperationException("Email is already in use.");
+                }
+
+                user.Email = updateDto.Email;
+            }
+
+            if (!string.IsNullOrWhiteSpace(updateDto.Bio)) user.Bio = updateDto.Bio;
+
+            // Update the UpdatedAt timestamp
+            user.UpdatedAt = DateTime.UtcNow;
+
+            // Save changes to the database
+            _unitOfWork.Users.Update(user);
+            await _unitOfWork.CompleteAsync();
+
+            _logger.Info($"Successfully updated user with ID: {userId}");
+
+            // Return updated user profile
+            return new UserProfileDto
+            {
+                UserId = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                Role = user.Role,
+                Bio = user.Bio,
+                ProfilePictureUrl = user.ProfilePictureUrl
+            };
+        }
+        catch (KeyNotFoundException knfEx)
+        {
+            _logger.Error($"User retrieval error: {knfEx.Message}");
+            throw;
+        }
+        catch (ArgumentException argEx)
+        {
+            _logger.Error($"Invalid argument: {argEx.Message}");
+            throw;
+        }
+        catch (InvalidOperationException ioEx)
+        {
+            _logger.Error($"Invalid operation: {ioEx.Message}");
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.Error($"An unexpected error occurred while updating user with ID {userId}: {ex.Message}");
+            throw new Exception($"Error updating user profile: {ex.Message}", ex);
+        }
+    }
+
+    public async Task<UserProfileDto> GetPhotographerProfile(int photographerId)
+    {
+        if (photographerId <= 0)
+        {
+            _logger.Warn($"Attempted to fetch photographer with invalid ID: {photographerId}");
+            throw new ArgumentException("Invalid photographerId");
+        }
+
+        try
+        {
+            var user = await _unitOfWork.Users.GetByIdAsync(photographerId);
+
+            if (user == null)
+            {
+                _logger.Warn($"No user found with ID: {photographerId}");
+                throw new KeyNotFoundException($"User with ID {photographerId} not found.");
+            }
+
+            // Check if the user has the Photographer role
+            if (user.Role != UserRole.Photographer)
+            {
+                _logger.Warn($"User with ID {photographerId} is not a photographer. Role: {user.Role}");
+                throw new UnauthorizedAccessException($"User with ID {photographerId} is not a photographer.");
+            }
+
+            _logger.Info($"Successfully fetched photographer with ID: {photographerId}");
+
+            return new UserProfileDto
+            {
+                UserId = user.Id,
+                Username = user.Username,
+                Email = user.Email,
+                Role = user.Role,
+                Bio = user.Bio,
+                ProfilePictureUrl = user.ProfilePictureUrl
+            };
+        }
+        catch (KeyNotFoundException knfEx)
+        {
+            _logger.Error($"User retrieval error: {knfEx.Message}");
+            throw;
+        }
+        catch (ArgumentException argEx)
+        {
+            _logger.Error($"Invalid argument: {argEx.Message}");
+            throw;
+        }
+        catch (UnauthorizedAccessException uaEx)
+        {
+            _logger.Error($"Unauthorized access: {uaEx.Message}");
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(
+                $"An unexpected error occurred while fetching photographer details for ID {photographerId}: {ex.Message}");
+            throw new Exception($"Error retrieving photographer profile: {ex.Message}", ex);
+        }
+    }
+
     public async Task<UserProfileDto> GetUserDetailsById(int userId)
     {
         if (userId == null)
@@ -74,8 +212,10 @@ public class UserService : IUserService
 
             return new UserProfileDto
             {
+                UserId = userId,
                 Username = user.Username,
                 Email = user.Email,
+                Role = user.Role,
                 Bio = user.Bio,
                 ProfilePictureUrl = user.ProfilePictureUrl
             };
@@ -96,7 +236,6 @@ public class UserService : IUserService
             throw;
         }
     }
-
 
     public async Task<List<UserProfileDto>> GetAllUsers()
     {
@@ -144,6 +283,7 @@ public class UserService : IUserService
 
             return users.Select(user => new UserProfileDto
             {
+                UserId = user.Id,
                 Username = user.Username,
                 Email = user.Email,
                 Bio = user.Bio,

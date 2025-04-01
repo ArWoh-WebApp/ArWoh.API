@@ -10,10 +10,10 @@ namespace ArWoh.API.Controllers;
 [Route("api/admins")]
 public class AdminController : ControllerBase
 {
-    private readonly IPaymentService _paymentService;
     private readonly IClaimService _claimService;
-    private readonly IUserService _userService;
     private readonly ILoggerService _loggerService;
+    private readonly IPaymentService _paymentService;
+    private readonly IUserService _userService;
 
     public AdminController(IPaymentService paymentService, ILoggerService loggerService, IClaimService claimService,
         IUserService userService)

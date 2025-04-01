@@ -118,7 +118,6 @@ public class AuthController : ControllerBase
         }
     }
 
-
     [HttpPost("login")]
     [ProducesResponseType(typeof(ApiResult<string>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]

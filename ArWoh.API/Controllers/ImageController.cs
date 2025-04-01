@@ -10,9 +10,9 @@ namespace ArWoh.API.Controllers;
 [Route("api/images")]
 public class ImageController : ControllerBase
 {
+    private readonly IClaimService _claimService;
     private readonly IImageService _imageService;
     private readonly ILoggerService _loggerService;
-    private readonly IClaimService _claimService;
 
     public ImageController(IImageService imageService, IClaimService claimService, ILoggerService loggerService)
     {
@@ -20,7 +20,6 @@ public class ImageController : ControllerBase
         _claimService = claimService;
         _loggerService = loggerService;
     }
-
 
     [HttpGet]
     [ProducesResponseType(typeof(ApiResult<IEnumerable<ImageDto>>), 200)]
@@ -50,6 +49,33 @@ public class ImageController : ControllerBase
         }
     }
 
+    [HttpGet("random")]
+    [ProducesResponseType(typeof(ApiResult<IEnumerable<ImageDto>>), 200)]
+    [ProducesResponseType(typeof(ApiResult<object>), 500)]
+    public async Task<IActionResult> GetRandomImages()
+    {
+        try
+        {
+            _loggerService.Info("Fetching random images via API.");
+
+            var images = await _imageService.GetRandomImages();
+
+            if (!images.Any())
+            {
+                _loggerService.Warn("No images found for random selection.");
+                return Ok(ApiResult<IEnumerable<ImageDto>>.Success(new List<ImageDto>()));
+            }
+
+            _loggerService.Success($"Successfully retrieved {images.Count()} random images.");
+            return Ok(ApiResult<IEnumerable<ImageDto>>.Success(images));
+        }
+        catch (Exception ex)
+        {
+            _loggerService.Error($"Unexpected error in GetRandomImages: {ex.Message}");
+            return StatusCode(500, ApiResult<object>.Error("An unexpected error occurred"));
+        }
+    }
+
     [HttpGet("bought-by-user")]
     [ProducesResponseType(typeof(ApiResult<IEnumerable<ImageDto>>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]
@@ -68,7 +94,6 @@ public class ImageController : ControllerBase
             return StatusCode(500, ApiResult<object>.Error("An error occurred while processing your request."));
         }
     }
-
 
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(ApiResult<ImageDto>), 200)]
@@ -90,7 +115,6 @@ public class ImageController : ControllerBase
             return StatusCode(500, ApiResult<object>.Error("An unexpected error occurred"));
         }
     }
-
 
     [HttpPost("upload")]
     [Authorize(Policy = "PhotographerPolicy")]
@@ -125,20 +149,12 @@ public class ImageController : ControllerBase
                 Data = image
             });
         }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(new ApiResult<object>
-            {
-                IsSuccess = false,
-                Message = ex.Message
-            });
-        }
         catch (Exception ex)
         {
             return StatusCode(500, new ApiResult<object>
             {
                 IsSuccess = false,
-                Message = "An error occurred while uploading the image."
+                Message = $"An error occurred while uploading the image. {ex.Message}"
             });
         }
     }

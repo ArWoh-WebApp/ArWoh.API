@@ -1,8 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ArWoh.API.Utils;
 
@@ -35,7 +34,6 @@ public static class JwtUtils
             new(JwtRegisteredClaimNames.Iat, ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString(),
                 ClaimValueTypes.Integer64)
         };
-
 
         // Tạo mô tả token
         var tokenDescriptor = new SecurityTokenDescriptor

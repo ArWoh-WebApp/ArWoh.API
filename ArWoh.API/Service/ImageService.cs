@@ -7,8 +7,8 @@ namespace ArWoh.API.Service;
 
 public class ImageService : IImageService
 {
-    private readonly ILoggerService _loggerService;
     private readonly IBlobService _blobService;
+    private readonly ILoggerService _loggerService;
     private readonly IUnitOfWork _unitOfWork;
 
     public ImageService(ILoggerService loggerService, IBlobService blobService, IUnitOfWork unitOfWork)
@@ -18,30 +18,136 @@ public class ImageService : IImageService
         _unitOfWork = unitOfWork;
     }
 
+    /// <summary>
+    ///     Lấy tất cả ảnh trong hệ thống với thứ tự ngẫu nhiên
+    /// </summary>
+    /// <returns>Danh sách tất cả ảnh được sắp xếp ngẫu nhiên</returns>
+    public async Task<IEnumerable<ImageDto>> GetRandomImages()
+    {
+        try
+        {
+            _loggerService.Info("Fetching all images in random order from database.");
+
+            // Lấy tất cả các ảnh không bị xóa mềm
+            var imagesQuery = _unitOfWork.Images.GetQueryable();
+
+            // Include thông tin photographer
+            var allImages = await imagesQuery
+                .Include(i => i.Photographer)
+                .ToListAsync();
+
+            if (!allImages.Any())
+            {
+                _loggerService.Warn("No images found in the database.");
+                return new List<ImageDto>(); // Trả về danh sách rỗng thay vì null
+            }
+
+            // Tạo một Random instance
+            var random = new Random();
+
+            // Sắp xếp tất cả ảnh theo thứ tự ngẫu nhiên
+            var randomImages = allImages
+                .OrderBy(_ => random.Next())
+                .ToList();
+
+            var imageDtos = randomImages.Select(image => new ImageDto
+            {
+                Id = image.Id,
+                Title = image.Title,
+                Description = image.Description,
+                Price = image.Price,
+                StoryOfArt = image.StoryOfArt,
+                Orientation = image.Orientation,
+                Location = image.Location,
+                Tags = image.Tags,
+                FileName = image.FileName,
+                PhotographerId = image.PhotographerId,
+                Url = image.Url,
+                // Thêm thông tin photographer nếu có
+                PhotographerAvatar = image.Photographer.ProfilePictureUrl,
+                PhotographerName = image.Photographer?.Username ?? "Unknown",
+                PhotographerEmail = image.Photographer?.Email
+            }).ToList();
+
+            _loggerService.Success($"Successfully retrieved {imageDtos.Count} images in random order.");
+
+            return imageDtos;
+        }
+        catch (Exception ex)
+        {
+            _loggerService.Error($"Unexpected error in GetRandomImages: {ex.Message}");
+            throw new Exception("An error occurred while retrieving random images.", ex);
+        }
+    }
 
     /// <summary>
-    /// Lấy tất cả hình sau khi User đã mua dựa trên table PaymentTransaction
+    ///     Lấy list tất cả các images kèm theo thông tin photographer
     /// </summary>
-    /// <param name="userId"></param>
+    public async Task<IEnumerable<ImageDto>> GetAllImages()
+    {
+        try
+        {
+            _loggerService.Info("Fetching all images with photographer information from database.");
+
+            // Sử dụng GetQueryable để có thể thêm Include
+            var imagesQuery = _unitOfWork.Images.GetQueryable();
+
+            // Include thông tin photographer
+            var images = await imagesQuery
+                .Include(i => i.Photographer)
+                .ToListAsync();
+
+            if (!images.Any())
+            {
+                _loggerService.Warn("No images found in the database.");
+                return new List<ImageDto>(); // Trả về danh sách rỗng thay vì null
+            }
+
+            var imageDtos = images.Select(image => new ImageDto
+            {
+                Id = image.Id,
+                Title = image.Title,
+                Description = image.Description,
+                Price = image.Price,
+                StoryOfArt = image.StoryOfArt,
+                Orientation = image.Orientation,
+                Location = image.Location,
+                Tags = image.Tags,
+                FileName = image.FileName,
+                PhotographerId = image.PhotographerId,
+                Url = image.Url,
+                // Thêm thông tin photographer nếu có
+                PhotographerAvatar = image.Photographer?.ProfilePictureUrl,
+                PhotographerName = image.Photographer?.Username ?? "Unknown",
+                PhotographerEmail = image.Photographer?.Email
+            }).ToList();
+
+            _loggerService.Success($"Successfully retrieved {imageDtos.Count} images with photographer information.");
+
+            return imageDtos;
+        }
+        catch (Exception ex)
+        {
+            _loggerService.Error($"Unexpected error in GetAllImages: {ex.Message}");
+            throw new Exception("An error occurred while retrieving images.", ex);
+        }
+    }
+
     /// <summary>
-    /// Lấy tất cả hình sau khi User đã mua dựa trên table PaymentTransaction
+    ///     Lấy tất cả hình sau khi User đã mua dựa trên table PaymentTransaction
     /// </summary>
-    /// <param name="userId"></param>
-    /// <returns></returns>
     public async Task<IEnumerable<ImageDto>> GetAllImagesBoughtByUser(int userId)
     {
         try
         {
-            // Lấy dữ liệu PaymentTransaction với eager loading cho Image
-            var paymentTransactions = await _unitOfWork.Transactions
-                .GetQueryable() // Trả về IQueryable từ GenericRepository
+            var paymentTransactions = await _unitOfWork.PaymentTransactions
+                .GetQueryable()
                 .Where(pt => pt.CustomerId == userId)
-                .Include(pt => pt.Image) // Thực hiện eager loading với Image
+                .Include(pt => pt.Image)
                 .ToListAsync();
 
-            // Lọc các giao dịch có Image và chuyển đổi thành ImageDto
             var images = paymentTransactions
-                .Where(pt => pt.Image != null) // Kiểm tra Image có tồn tại
+                .Where(pt => pt.Image != null)
                 .Select(pt => new ImageDto
                 {
                     Id = pt.Image.Id,
@@ -68,19 +174,20 @@ public class ImageService : IImageService
     }
 
     /// <summary>
-    /// Lấy details của 1 tấm hình
+    ///     Lấy details của 1 tấm hình kèm thông tin photographer
     /// </summary>
-    /// <param name="imageId"></param>
-    /// <returns></returns>
-    /// <exception cref="KeyNotFoundException"></exception>
-    /// <exception cref="Exception"></exception>
     public async Task<ImageDto> GetImageById(int imageId)
     {
         _loggerService.Info($"Fetching image details for ID: {imageId}");
-
         try
         {
-            var image = await _unitOfWork.Images.GetByIdAsync(imageId);
+            // Sử dụng GetQueryable để có thể thêm Include
+            var imageQuery = _unitOfWork.Images.GetQueryable();
+
+            // Include thông tin photographer và lấy image theo id
+            var image = await imageQuery
+                .Include(i => i.Photographer)
+                .FirstOrDefaultAsync(i => i.Id == imageId && !i.IsDeleted);
 
             if (image == null)
             {
@@ -100,7 +207,11 @@ public class ImageService : IImageService
                 Tags = image.Tags,
                 FileName = image.FileName,
                 PhotographerId = image.PhotographerId,
-                Url = image.Url
+                Url = image.Url,
+                // Thêm thông tin photographer nếu có
+                PhotographerAvatar = image.Photographer?.ProfilePictureUrl,
+                PhotographerName = image.Photographer?.Username ?? "Unknown",
+                PhotographerEmail = image.Photographer?.Email
             };
 
             _loggerService.Success($"Successfully fetched image details for ID: {imageId}");
@@ -130,7 +241,8 @@ public class ImageService : IImageService
                 throw new KeyNotFoundException($"Photographer with ID {photographerId} not found.");
             }
 
-            var images = await _unitOfWork.Images.FindAsync(img => img.PhotographerId == photographerId);
+            var images =
+                await _unitOfWork.Images.FindAsync(img => img.PhotographerId == photographerId && !img.IsDeleted);
 
             if (images == null || !images.Any())
             {
@@ -157,59 +269,9 @@ public class ImageService : IImageService
     }
 
     /// <summary>
-    /// Lấy list tất cả các images lên
-    /// </summary>
-    /// <returns></returns>
-    /// <exception cref="Exception"></exception>
-    public async Task<IEnumerable<ImageDto>> GetAllImages()
-    {
-        try
-        {
-            _loggerService.Info("Fetching all images from database.");
-
-            var images = await _unitOfWork.Images.GetAllAsync();
-
-            if (!images.Any())
-            {
-                _loggerService.Warn("No images found in the database.");
-                return new List<ImageDto>(); // Trả về danh sách rỗng thay vì null
-            }
-
-            var imageDtos = images.Select(image => new ImageDto
-            {
-                Id = image.Id,
-                Title = image.Title,
-                Description = image.Description,
-                Price = image.Price,
-                StoryOfArt = image.StoryOfArt,
-                Orientation = image.Orientation,
-                Location = image.Location,
-                Tags = image.Tags,
-                FileName = image.FileName,
-                PhotographerId = image.PhotographerId,
-                Url = image.Url
-            }).ToList();
-
-            _loggerService.Success($"Successfully retrieved {imageDtos.Count} images.");
-
-            return imageDtos;
-        }
-        catch (Exception ex)
-        {
-            _loggerService.Error($"Unexpected error in GetAllImages: {ex.Message}");
-            throw new Exception("An error occurred while retrieving images.", ex);
-        }
-    }
-
-
-    /// <summary>
-    /// Dùng cho Photographer up hình ảnh lên system
+    ///     Dùng cho Photographer up hình ảnh lên system
     /// </summary>
     /// <param name="uploadDto"></param>
-    /// <param name="photographerId"></param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentException"></exception>
-    /// <exception cref="Exception"></exception>
     public async Task<ImageDto> UploadImageAsync(UploadImageDto uploadDto, int photographerId)
     {
         if (uploadDto == null || uploadDto.File == null || uploadDto.File.Length == 0)
@@ -220,7 +282,8 @@ public class ImageService : IImageService
 
         try
         {
-            var fileName = $"{Guid.NewGuid()}_{uploadDto.File.FileName}";
+            // Thay đổi đường dẫn thành artworks/
+            var fileName = $"artworks/{photographerId}_{Guid.NewGuid()}{Path.GetExtension(uploadDto.File.FileName)}";
 
             using (var stream = uploadDto.File.OpenReadStream())
             {
@@ -258,6 +321,7 @@ public class ImageService : IImageService
                 Price = image.Price,
                 StoryOfArt = image.StoryOfArt,
                 Orientation = image.Orientation,
+                Location = image.Location,
                 Tags = image.Tags,
                 FileName = image.FileName,
                 PhotographerId = image.PhotographerId,
@@ -274,13 +338,8 @@ public class ImageService : IImageService
     }
 
     /// <summary>
-    /// Cập nhật thông tin của 1 tấm ảnh
+    ///     Cập nhật thông tin của 1 tấm ảnh
     /// </summary>
-    /// <param name="imageId"></param>
-    /// <param name="updateDto"></param>
-    /// <returns></returns>
-    /// <exception cref="KeyNotFoundException"></exception>
-    /// <exception cref="Exception"></exception>
     public async Task<ImageDto> UpdateImageAsync(int imageId, UpdateImageDto updateDto)
     {
         try
@@ -348,13 +407,8 @@ public class ImageService : IImageService
     }
 
     /// <summary>
-    /// Xóa mềm 1 tấm ảnh trong DB
+    ///     Xóa mềm 1 tấm ảnh trong DB
     /// </summary>
-    /// <param name="imageId"></param>
-    /// <returns></returns>
-    /// <exception cref="KeyNotFoundException"></exception>
-    /// <exception cref="InvalidOperationException"></exception>
-    /// <exception cref="Exception"></exception>
     public async Task<bool> DeleteImageAsync(int imageId)
     {
         try

@@ -9,8 +9,8 @@ namespace ArWoh.API.Controllers;
 [Route("api/payment")]
 public class PaymentController : ControllerBase
 {
-    private readonly IPaymentService _paymentService;
     private readonly IClaimService _claimService;
+    private readonly IPaymentService _paymentService;
 
     public PaymentController(IPaymentService paymentService, IClaimService claimService)
     {
@@ -40,6 +40,36 @@ public class PaymentController : ControllerBase
     [HttpPost("webhook")]
     public async Task<IActionResult> Webhook([FromBody] WebhookData webhookData)
     {
+        return await _paymentService.PaymentWebhook(webhookData);
+    }
+
+    [HttpGet("webhook")]
+    public async Task<IActionResult> WebhookGet(
+        [FromQuery] string code,
+        [FromQuery] string id,
+        [FromQuery] bool cancel,
+        [FromQuery] string status,
+        [FromQuery] long orderCode)
+    {
+        var webhookData = new WebhookData(
+            orderCode,
+            0, // We don't have this information from the URL params
+            status,
+            "",
+            id,
+            DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+            "VND",
+            "",
+            code,
+            status,
+            null,
+            null,
+            null,
+            null,
+            null,
+            ""
+        );
+
         return await _paymentService.PaymentWebhook(webhookData);
     }
 }

@@ -10,10 +10,10 @@ namespace ArWoh.API.Controllers;
 [Route("api/users")]
 public class UserController : ControllerBase
 {
-    private readonly IUserService _userService;
     private readonly IClaimService _claimService;
     private readonly ILoggerService _logger;
     private readonly IPaymentService _paymentService;
+    private readonly IUserService _userService;
 
     public UserController(IUserService userService, IClaimService claimService, ILoggerService logger,
         IPaymentService paymentService)
@@ -26,8 +26,6 @@ public class UserController : ControllerBase
 
     [HttpGet("photographers")]
     [ProducesResponseType(typeof(ApiResult<List<UserProfileDto>>), 200)]
-    [ProducesResponseType(typeof(ApiResult<object>), 400)]
-    [ProducesResponseType(typeof(ApiResult<object>), 500)]
     public async Task<IActionResult> GetPhotographers()
     {
         try
@@ -47,40 +45,9 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPut("me/avatar")]
-    [Authorize]
-    [ProducesResponseType(typeof(ApiResult<UserProfileDto>), 200)]
-    [ProducesResponseType(typeof(ApiResult<object>), 400)]
-    [ProducesResponseType(typeof(ApiResult<object>), 401)]
-    [ProducesResponseType(typeof(ApiResult<object>), 500)]
-    public async Task<IActionResult> UpdateMyAvatar(IFormFile file)
-    {
-        if (file == null || file.Length == 0) return BadRequest(ApiResult<object>.Error("File is required"));
-
-        try
-        {
-            var userId = _claimService.GetCurrentUserId();
-            var updatedUser = await _userService.UserUpdateAvatar(userId, file);
-
-            return Ok(ApiResult<UserProfileDto>.Success(updatedUser, "User profile updated successfully"));
-        }
-        catch (KeyNotFoundException)
-        {
-            return NotFound(ApiResult<object>.Error("User not found"));
-        }
-        catch (Exception e)
-        {
-            _logger.Error($"Failed to update user avatar: {e.Message}");
-            return StatusCode(500, ApiResult<object>.Error("An error occurred while updating avatar"));
-        }
-    }
-
     [HttpGet("me/transactions")]
     [Authorize]
     [ProducesResponseType(typeof(ApiResult<UserProfileDto>), 200)]
-    [ProducesResponseType(typeof(ApiResult<object>), 400)]
-    [ProducesResponseType(typeof(ApiResult<object>), 401)]
-    [ProducesResponseType(typeof(ApiResult<object>), 500)]
     public async Task<IActionResult> GetMyTransactions()
     {
         try
@@ -99,9 +66,6 @@ public class UserController : ControllerBase
     [HttpGet("me/profile")]
     [Authorize]
     [ProducesResponseType(typeof(ApiResult<UserProfileDto>), 200)]
-    [ProducesResponseType(typeof(ApiResult<object>), 400)]
-    [ProducesResponseType(typeof(ApiResult<object>), 401)]
-    [ProducesResponseType(typeof(ApiResult<object>), 500)]
     public async Task<IActionResult> GetMyProfile()
     {
         try
@@ -123,6 +87,67 @@ public class UserController : ControllerBase
         {
             return StatusCode(500,
                 ApiResult<object>.Error($"An error occurred while retrieving user profile: {ex.Message}"));
+        }
+    }
+
+    [HttpPut("me/profile")]
+    [Authorize]
+    [ProducesResponseType(typeof(ApiResult<UserProfileDto>), 200)]
+    public async Task<IActionResult> UpdateMyProfile([FromBody] UserUpdateDto updateDto)
+    {
+        if (updateDto == null)
+            return BadRequest(ApiResult<object>.Error("User update data is required"));
+
+        try
+        {
+            var userId = _claimService.GetCurrentUserId();
+            if (userId <= 0)
+                return Unauthorized(ApiResult<object>.Error("User not authenticated."));
+
+            var updatedUser = await _userService.UpdateUserInfo(userId, updateDto);
+            return Ok(ApiResult<UserProfileDto>.Success(updatedUser, "User profile updated successfully"));
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound(ApiResult<object>.Error("User not found"));
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ApiResult<object>.Error(ex.Message));
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ApiResult<object>.Error(ex.Message));
+        }
+        catch (Exception ex)
+        {
+            _logger.Error($"Failed to update user profile: {ex.Message}");
+            return StatusCode(500, ApiResult<object>.Error("An error occurred while updating user profile"));
+        }
+    }
+
+    [HttpPut("me/avatar")]
+    [Authorize]
+    [ProducesResponseType(typeof(ApiResult<UserProfileDto>), 200)]
+    public async Task<IActionResult> UpdateMyAvatar(IFormFile file)
+    {
+        if (file == null || file.Length == 0) return BadRequest(ApiResult<object>.Error("File is required"));
+
+        try
+        {
+            var userId = _claimService.GetCurrentUserId();
+            var updatedUser = await _userService.UserUpdateAvatar(userId, file);
+
+            return Ok(ApiResult<UserProfileDto>.Success(updatedUser, "User profile updated successfully"));
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound(ApiResult<object>.Error("User not found"));
+        }
+        catch (Exception e)
+        {
+            _logger.Error($"Failed to update user avatar: {e.Message}");
+            return StatusCode(500, ApiResult<object>.Error("An error occurred while updating avatar"));
         }
     }
 }

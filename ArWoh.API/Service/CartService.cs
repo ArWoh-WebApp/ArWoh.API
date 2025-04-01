@@ -1,12 +1,8 @@
 ﻿using ArWoh.API.DTOs.CartDTOs;
 using ArWoh.API.DTOs.CartItemDTOs;
 using ArWoh.API.Entities;
-using ArWoh.API.Enums;
 using ArWoh.API.Interface;
-using ArWoh.API.Service.ThirdPartyService.Interfaces;
-using ArWoh.API.Service.ThirdPartyService.Types;
 using Microsoft.EntityFrameworkCore;
-using Net.payOS.Types;
 
 namespace ArWoh.API.Service;
 
@@ -22,7 +18,7 @@ public class CartService : ICartService
     }
 
     /// <summary>
-    /// Thêm ảnh vào giỏ hàng
+    ///     Thêm ảnh vào giỏ hàng
     /// </summary>
     /// <param name="addCartItemDto"></param>
     /// <param name="userId"></param>
@@ -83,7 +79,7 @@ public class CartService : ICartService
     }
 
     /// <summary>
-    /// Cập nhật số lượng ảnh trong giỏ hàng
+    ///     Cập nhật số lượng ảnh trong giỏ hàng
     /// </summary>
     /// <param name="updateCartItemDto"></param>
     /// <param name="userId"></param>
@@ -130,7 +126,7 @@ public class CartService : ICartService
     }
 
     /// <summary>
-    /// Xóa ảnh khỏi giỏ hàng
+    ///     Xóa ảnh khỏi giỏ hàng
     /// </summary>
     /// <param name="cartItemId"></param>
     /// <param name="userId"></param>
@@ -168,7 +164,7 @@ public class CartService : ICartService
     }
 
     /// <summary>
-    /// Lấy danh sách ảnh trong giỏ hàng của user
+    ///     Lấy danh sách ảnh trong giỏ hàng của user
     /// </summary>
     /// <param name="userId"></param>
     /// <returns></returns>
@@ -189,7 +185,7 @@ public class CartService : ICartService
             var cartDto = new CartDto
             {
                 UserId = cart.UserId,
-                CartItems = cart.CartItems.Select(ci => new CartItemDto()
+                CartItems = cart.CartItems.Select(ci => new CartItemDto
                 {
                     CartItemId = ci.Id,
                     ImageId = ci.ImageId,

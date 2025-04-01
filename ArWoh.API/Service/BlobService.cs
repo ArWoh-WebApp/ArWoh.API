@@ -1,5 +1,4 @@
-﻿using ArWoh.API.Entities;
-using ArWoh.API.Interface;
+﻿using ArWoh.API.Interface;
 using Minio;
 using Minio.DataModel.Args;
 using Minio.Exceptions;
@@ -8,9 +7,9 @@ namespace ArWoh.API.Service;
 
 public class BlobService : IBlobService
 {
-    private readonly IMinioClient _minioClient;
     private readonly string _bucketName = "arwoh-bucket";
     private readonly ILoggerService _logger;
+    private readonly IMinioClient _minioClient;
     private readonly IUnitOfWork _unitOfWork;
 
     public BlobService(ILoggerService logger, IUnitOfWork unitOfWork)
@@ -23,7 +22,7 @@ public class BlobService : IBlobService
         var accessKey = Environment.GetEnvironmentVariable("MINIO_ACCESS_KEY");
         var secretKey = Environment.GetEnvironmentVariable("MINIO_SECRET_KEY");
 
-        _logger.Info($"Initializing BlobService...");
+        _logger.Info("Initializing BlobService...");
         _logger.Info($"Connecting to MinIO at: {endpoint}");
 
         try
@@ -84,20 +83,6 @@ public class BlobService : IBlobService
         }
     }
 
-    private string GetContentType(string fileName)
-    {
-        _logger.Info($"Determining content type for file: {fileName}");
-        var extension = Path.GetExtension(fileName)?.ToLower();
-        return extension switch
-        {
-            ".jpg" or ".jpeg" => "image/jpeg",
-            ".png" => "image/png",
-            ".pdf" => "application/pdf",
-            ".mp4" => "video/mp4",
-            _ => "application/octet-stream"
-        };
-    }
-
     public async Task<string> GetPreviewUrlAsync(string fileName)
     {
         var minioHost = Environment.GetEnvironmentVariable("MINIO_HOST") ??
@@ -130,5 +115,19 @@ public class BlobService : IBlobService
             _logger.Error($"Error generating file URL: {ex.Message}");
             return null;
         }
+    }
+
+    private string GetContentType(string fileName)
+    {
+        _logger.Info($"Determining content type for file: {fileName}");
+        var extension = Path.GetExtension(fileName)?.ToLower();
+        return extension switch
+        {
+            ".jpg" or ".jpeg" => "image/jpeg",
+            ".png" => "image/png",
+            ".pdf" => "application/pdf",
+            ".mp4" => "video/mp4",
+            _ => "application/octet-stream"
+        };
     }
 }

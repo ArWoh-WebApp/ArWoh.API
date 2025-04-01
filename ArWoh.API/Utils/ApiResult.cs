@@ -7,7 +7,7 @@ public class ApiResult<T>
     public T Data { get; set; }
 
     /// <summary>
-    /// Creates a success response.
+    ///     Creates a success response.
     /// </summary>
     /// <param name="data">The response data.</param>
     /// <param name="message">Optional success message.</param>
@@ -23,7 +23,7 @@ public class ApiResult<T>
     }
 
     /// <summary>
-    /// Creates an error response.
+    ///     Creates an error response.
     /// </summary>
     /// <param name="message">The error message.</param>
     /// <returns>An ApiResult representing failure.</returns>

@@ -9,7 +9,7 @@ public class PaymentTransaction : BaseEntity
     public int ImageId { get; set; }
     public decimal Amount { get; set; }
     public PaymentTransactionStatusEnum PaymentStatus { get; set; } = PaymentTransactionStatusEnum.PENDING;
-    public bool IsPhysicalPrint { get; set; } // Đánh dấu nếu là ảnh in
+    public bool IsPhysicalPrint { get; set; }
 
     [ForeignKey("CustomerId")] public User Customer { get; set; }
 

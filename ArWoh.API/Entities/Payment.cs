@@ -1,6 +1,6 @@
-﻿using ArWoh.API.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ArWoh.API.Enums;
 
 namespace ArWoh.API.Entities;
 

@@ -234,7 +234,6 @@ public class PaymentService : IPaymentService
         {
             _logger.Info($"Nhận webhook từ PayOS {webhookData}");
 
-            // 1. Lấy thông tin đơn hàng từ webhook
             var orderCode = webhookData.orderCode; // ID của Payment trong hệ thống
             var statusCode = webhookData.code; // Mã trạng thái giao dịch từ PayOS
             var transactionId = webhookData.reference; // Mã giao dịch của PayOS
@@ -323,7 +322,7 @@ public class PaymentService : IPaymentService
         }
     }
 
-// Helper method to update related transactions
+    // Helper method to update related transactions
     private async Task UpdateRelatedTransactions(Payment payment, PaymentTransactionStatusEnum status)
     {
         if (payment.PaymentTransactionId.HasValue)
@@ -357,7 +356,7 @@ public class PaymentService : IPaymentService
         }
     }
 
-// Helper method to clear a user's cart after successful payment
+    // Helper method to clear a user's cart after successful payment
     private async Task ClearUserCart(int userId)
     {
         try

@@ -213,8 +213,8 @@ public class PaymentService : IPaymentService
             (int)cart.TotalPrice,
             "image payment",
             itemList,
-            returnUrl: "https://arwoh-fe.vercel.app/",
-            cancelUrl: "https://arwoh.ae-tao-fullstack-api.site/"
+            returnUrl: "http://localhost:9090/api/payment/webhook",
+            cancelUrl: "http://localhost:9090/api/payment/webhook"
         );
 
         var paymentResult = await _payOs.createPaymentLink(paymentData);
@@ -228,9 +228,6 @@ public class PaymentService : IPaymentService
         return paymentResult.checkoutUrl;
     }
 
-    /// <summary>
-    ///     Xử lý Webhook từ PayOS
-    /// </summary>
     public async Task<IActionResult> PaymentWebhook([FromBody] WebhookData webhookData)
     {
         try
@@ -256,14 +253,53 @@ public class PaymentService : IPaymentService
                 case "00": // Thanh toán thành công
                     payment.PaymentStatus = PaymentStatusEnum.COMPLETED;
                     payment.GatewayTransactionId = transactionId;
+
+                    // Update PaymentTransaction status
+                    if (payment.PaymentTransactionId.HasValue)
+                    {
+                        // Get the main transaction
+                        var mainTransaction =
+                            await _unitOfWork.PaymentTransactions.GetByIdAsync(payment.PaymentTransactionId.Value);
+                        if (mainTransaction != null)
+                        {
+                            mainTransaction.PaymentStatus = PaymentTransactionStatusEnum.COMPLETED;
+                            mainTransaction.UpdatedAt = DateTime.UtcNow;
+
+                            // Find and update all transactions related to the same order
+                            var relatedTransactions = await _unitOfWork.PaymentTransactions.FindAsync(
+                                t => t.CustomerId == mainTransaction.CustomerId &&
+                                     t.CreatedAt >= mainTransaction.CreatedAt.AddMinutes(-1) &&
+                                     t.CreatedAt <= mainTransaction.CreatedAt.AddMinutes(1) &&
+                                     t.PaymentStatus == PaymentTransactionStatusEnum.PENDING);
+
+                            foreach (var transaction in relatedTransactions)
+                            {
+                                transaction.PaymentStatus = PaymentTransactionStatusEnum.COMPLETED;
+                                transaction.UpdatedAt = DateTime.UtcNow;
+                            }
+
+                            _logger.Info(
+                                $"Updated {relatedTransactions.Count() + 1} payment transactions to COMPLETED status");
+                        }
+                        else
+                        {
+                            _logger.Warn(
+                                $"Không tìm thấy PaymentTransaction với ID: {payment.PaymentTransactionId.Value}");
+                        }
+                    }
+
                     break;
 
                 case "01": // Thanh toán thất bại
                     payment.PaymentStatus = PaymentStatusEnum.CANCELED;
+                    // Update related transactions to CANCELED
+                    UpdateRelatedTransactions(payment, PaymentTransactionStatusEnum.FAILED);
                     break;
 
                 case "02": // Người dùng huỷ thanh toán
                     payment.PaymentStatus = PaymentStatusEnum.CANCELED;
+                    // Update related transactions to CANCELED
+                    UpdateRelatedTransactions(payment, PaymentTransactionStatusEnum.FAILED);
                     break;
 
                 default:
@@ -272,7 +308,8 @@ public class PaymentService : IPaymentService
             }
 
             await _unitOfWork.CompleteAsync();
-            _logger.Success($"Cập nhật trạng thái thanh toán thành công: OrderCode {orderCode}, Status {statusCode}");
+            _logger.Success(
+                $"Cập nhật trạng thái thanh toán và giao dịch thành công: OrderCode {orderCode}, Status {statusCode}");
 
             return new OkObjectResult(new { success = true, message = "Webhook processed successfully" });
         }
@@ -280,6 +317,40 @@ public class PaymentService : IPaymentService
         {
             _logger.Error($"Lỗi khi xử lý webhook từ PayOS: {ex.Message}");
             return new StatusCodeResult(500);
+        }
+    }
+
+// Helper method to update related transactions
+    private async Task UpdateRelatedTransactions(Payment payment, PaymentTransactionStatusEnum status)
+    {
+        if (payment.PaymentTransactionId.HasValue)
+        {
+            var mainTransaction =
+                await _unitOfWork.PaymentTransactions.GetByIdAsync(payment.PaymentTransactionId.Value);
+            if (mainTransaction != null)
+            {
+                mainTransaction.PaymentStatus = status;
+                mainTransaction.UpdatedAt = DateTime.UtcNow;
+
+                // Find and update all transactions related to the same order
+                var relatedTransactions = await _unitOfWork.PaymentTransactions.FindAsync(
+                    t => t.CustomerId == mainTransaction.CustomerId &&
+                         t.CreatedAt >= mainTransaction.CreatedAt.AddMinutes(-1) &&
+                         t.CreatedAt <= mainTransaction.CreatedAt.AddMinutes(1) &&
+                         t.PaymentStatus == PaymentTransactionStatusEnum.PENDING);
+
+                foreach (var transaction in relatedTransactions)
+                {
+                    transaction.PaymentStatus = status;
+                    transaction.UpdatedAt = DateTime.UtcNow;
+                }
+
+                _logger.Info($"Updated {relatedTransactions.Count() + 1} payment transactions to {status} status");
+            }
+            else
+            {
+                _logger.Warn($"Không tìm thấy PaymentTransaction với ID: {payment.PaymentTransactionId.Value}");
+            }
         }
     }
 }

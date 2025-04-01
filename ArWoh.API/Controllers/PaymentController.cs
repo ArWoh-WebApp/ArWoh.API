@@ -42,4 +42,34 @@ public class PaymentController : ControllerBase
     {
         return await _paymentService.PaymentWebhook(webhookData);
     }
+    
+    [HttpGet("webhook")]
+    public async Task<IActionResult> WebhookGet(
+        [FromQuery] string code,
+        [FromQuery] string id,
+        [FromQuery] bool cancel,
+        [FromQuery] string status,
+        [FromQuery] long orderCode)
+    {
+        var webhookData = new WebhookData(
+            orderCode: orderCode,
+            amount: 0, // We don't have this information from the URL params
+            description: status,
+            accountNumber: "",
+            reference: id,
+            transactionDateTime: DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+            currency: "VND",
+            paymentLinkId: "",
+            code: code,
+            desc: status,
+            counterAccountBankId: null,
+            counterAccountBankName: null,
+            counterAccountName: null,
+            counterAccountNumber: null,
+            virtualAccountName: null,
+            virtualAccountNumber: ""
+        );
+
+        return await _paymentService.PaymentWebhook(webhookData);
+    }
 }

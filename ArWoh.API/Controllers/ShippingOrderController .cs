@@ -178,18 +178,15 @@ public class ShippingOrderController : ControllerBase
         }
         catch (UnauthorizedAccessException ex)
         {
-            _logger.Warn($"Không có quyền cập nhật: {ex.Message}");
             return Forbid(ApiResult<ShippingOrderDto>.Error(
                 "Bạn không có quyền cập nhật trạng thái đơn hàng").ToString());
         }
         catch (KeyNotFoundException ex)
         {
-            _logger.Warn($"Không tìm thấy đơn hàng: {ex.Message}");
             return NotFound(ApiResult<ShippingOrderDto>.Error(ex.Message));
         }
         catch (Exception ex)
         {
-            _logger.Error($"Lỗi khi cập nhật trạng thái đơn hàng: {ex.Message}");
             return StatusCode(500, ApiResult<ShippingOrderDto>.Error(
                 "Có lỗi xảy ra khi cập nhật trạng thái đơn hàng"));
         }

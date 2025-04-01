@@ -27,6 +27,30 @@ public class PhotographerController : ControllerBase
         _userService = userService;
     }
 
+    [HttpGet("me/images")]
+    [ProducesResponseType(typeof(ApiResult<IEnumerable<ImageDto>>), 200)]
+    public async Task<IActionResult> GetImagesByPhotographer()
+    {
+        var photographerId = _claimService.GetCurrentUserId();
+        try
+        {
+            var images = await _imageService.GetImagesUploadedByPhotographer(photographerId);
+
+            if (!images.Any()) return NotFound(ApiResult<object>.Error("No images found for this photographer"));
+
+            return Ok(ApiResult<IEnumerable<ImageDto>>.Success(images, "Images retrieved successfully"));
+        }
+        catch (KeyNotFoundException e)
+        {
+            _loggerService.Error(e.Message);
+            return NotFound(ApiResult<object>.Error(e.Message));
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, ApiResult<object>.Error("An error occurred while retrieving images"));
+        }
+    }
+    
     [HttpGet("{photographerId}/images")]
     [ProducesResponseType(typeof(ApiResult<IEnumerable<ImageDto>>), 200)]
     public async Task<IActionResult> GetImagesByPhotographer(int photographerId)
@@ -50,6 +74,8 @@ public class PhotographerController : ControllerBase
             return StatusCode(500, ApiResult<object>.Error("An error occurred while retrieving images"));
         }
     }
+
+
 
     [HttpGet("{photographerId}/profile")]
     [ProducesResponseType(typeof(ApiResult<UserProfileDto>), 200)]

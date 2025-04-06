@@ -208,7 +208,7 @@ public class CartService : ICartService
     }
 
     /// <summary>
-    /// Reset giỏ hàng của user sau khi thanh toán thành công.
+    ///     Reset giỏ hàng của user sau khi thanh toán thành công.
     /// </summary>
     /// <param name="userId"></param>
     /// <returns></returns>

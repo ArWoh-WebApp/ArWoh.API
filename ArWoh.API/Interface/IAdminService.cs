@@ -1,12 +1,11 @@
 ﻿using ArWoh.API.DTOs.AdminDtos;
 
-namespace ArWoh.API.Interface
+namespace ArWoh.API.Interface;
+
+public interface IAdminService
 {
-    public interface IAdminService
-    {
-        Task<OverviewDTO> GetOverviewAsync();
-        Task<UserSummaryDTO> GetUserSummaryAsync();
-        Task<ImageSummaryDTO> GetImageSummaryAsync();
-        Task<RevenueSummaryDTO> GetRevenueSummaryAsync();
-    }
+    Task<OverviewDTO> GetOverviewAsync();
+    Task<UserSummaryDTO> GetUserSummaryAsync();
+    Task<ImageSummaryDTO> GetImageSummaryAsync();
+    Task<RevenueSummaryDTO> GetRevenueSummaryAsync();
 }

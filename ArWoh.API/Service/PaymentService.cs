@@ -62,6 +62,7 @@ public class PaymentService : IPaymentService
         }
     }
 
+
     public async Task<RevenueDto> GetPhotographerRevenue(int photographerId)
     {
         _logger.Info($"Starting GetPhotographerRevenue for photographerId: {photographerId}");
@@ -246,13 +247,15 @@ public class PaymentService : IPaymentService
                 return new NotFoundObjectResult("Payment not found");
             }
 
-            var paymentTransaction = await _unitOfWork.PaymentTransactions.FirstOrDefaultAsync(t => t.Id == payment.PaymentTransactionId);
+            var paymentTransaction =
+                await _unitOfWork.PaymentTransactions.FirstOrDefaultAsync(t => t.Id == payment.PaymentTransactionId);
             if (paymentTransaction == null)
             {
                 _logger.Warn($"Không tìm thấy PaymentTransaction với ID: {payment.PaymentTransactionId}");
                 return new NotFoundObjectResult("PaymentTransaction not found");
             }
-            int userId = paymentTransaction.CustomerId;
+
+            var userId = paymentTransaction.CustomerId;
 
             // 3. Xử lý trạng thái thanh toán dựa trên statusCode từ PayOS
             switch (statusCode)

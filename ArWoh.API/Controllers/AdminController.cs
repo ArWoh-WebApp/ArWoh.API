@@ -57,7 +57,7 @@ public class AdminController : ControllerBase
 
             return Ok(new ApiResult<List<UserProfileDto>>
             {
-                IsSuccess = true,   
+                IsSuccess = true,
                 Message = "Users retrieved successfully",
                 Data = users
             });

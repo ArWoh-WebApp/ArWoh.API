@@ -1,10 +1,9 @@
-﻿namespace ArWoh.API.DTOs.AdminDtos
+﻿namespace ArWoh.API.DTOs.AdminDtos;
+
+public class UserSummaryDTO
 {
-    public class UserSummaryDTO
-    {
-        public int TotalUsers { get; set; }
-        public int AdminCount { get; set; }
-        public int UserCount { get; set; }
-        public int PhotographerCount { get; set; }
-    }
+    public int TotalUsers { get; set; }
+    public int AdminCount { get; set; }
+    public int UserCount { get; set; }
+    public int PhotographerCount { get; set; }
 }

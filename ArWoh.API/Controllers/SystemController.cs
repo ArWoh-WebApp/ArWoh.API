@@ -121,208 +121,8 @@ public class SystemController : ControllerBase
 
         var images = new List<Image>
         {
-            new()
-            {
-                Title = "Mountain Stream at Dawn",
-                Description = "Captured during the early hours of dawn...",
-                Url = "https://images.unsplash.com/photo-1548679847-1d4ff48016c7",
-                Orientation = OrientationType.Landscape,
-                Tags = new List<string> { "Water Stream", "Brook", "Natural Water", "Landscape", "Mountains" },
-                Location = "Rocky Mountains, Colorado",
-                Price = 2000,
-                FileName = "mountain_stream_dawn.jpg",
-                StoryOfArt =
-                    "<h2>The Journey of Light and Water</h2><br><br>1. Dawn's First Light. The photograph captures that magical moment when the first rays of sunlight pierce through the mountain mist, creating golden reflections on the flowing stream.\n\n2. Technical Challenges. Shooting in low-light conditions required a delicate balance between exposure time and aperture to maintain the crispness of the moving water while preserving the warm glow of dawn.\n\n3. Personal Connection. This location holds special significance as it marks the beginning of my journey as a landscape photographer, teaching me patience and the rewards of rising before the sun.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-            new()
-            {
-                Title = "City Skyline at Dusk",
-                Description = "As daylight fades, the city transforms...",
-                Url = "https://images.unsplash.com/photo-1502635994848-2eb3b4a38201",
-                Orientation = OrientationType.Portrait,
-                Tags = new List<string> { "Skyline", "City", "Nightlife", "Urban" },
-                Location = "New York City, USA",
-                Price = 30000,
-                FileName = "city_skyline_dusk.jpg",
-                StoryOfArt =
-                    "<h2>Urban Metamorphosis: A City's Twilight Tale</h2><br><br>1. The Transition Hour. This image was taken during the 'blue hour' - that brief window after sunset when artificial lights begin to glow but the sky still retains deep blue tones rather than complete darkness.\n\n2. Architectural Symphony. The composition deliberately juxtaposes historical buildings with modern skyscrapers, creating a visual narrative of the city's evolution through time.\n\n3. Human Element. Though no people are visible, the thousands of illuminated windows represent countless individual stories unfolding simultaneously across the urban landscape.\n\n4. Technical Approach. A long exposure of 15 seconds allowed me to capture the light trails of moving vehicles, adding dynamism to the otherwise static cityscape.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-            new()
-            {
-                Title = "Snowy Mountain Peaks",
-                Description = "Towering peaks dusted with pristine snow...",
-                Url = "https://images.unsplash.com/photo-1558089551-95d707e6c13c",
-                Orientation = OrientationType.Portrait,
-                Tags = new List<string> { "Mountains", "Snow", "Alps", "Winter" },
-                Location = "Swiss Alps, Switzerland",
-                Price = 20000,
-                FileName = "snowy_mountain_peaks.jpg",
-                StoryOfArt =
-                    "<h2>Silence in White: Alpine Majesty</h2><br><br>1. Nature's Monument. These ancient mountains, formed over millions of years, stand as silent sentinels covered in their winter blanket, untouched and pristine.\n\n2. The Climb. Reaching this vantage point required a three-day trek through increasingly harsh conditions, with temperatures dropping to -15°C on the final morning.\n\n3. Light's Perfection. The image was captured during the phenomenon known as 'alpenglow,' when the peaks are illuminated with a reddish glow while the valleys remain in shadow.\n\n4. Scale and Perspective. The vastness of these mountains reminds us of our place in the natural world - temporary visitors in an ancient landscape that will outlast generations.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-            new()
-            {
-                Title = "Vibrant Flower Garden",
-                Description = "Lush, blooming flowers create a lively mosaic...",
-                Url = "https://images.unsplash.com/photo-1428908728789-d2de25dbd4e2",
-                Orientation = OrientationType.Landscape,
-                Tags = new List<string> { "Flowers", "Garden", "Colorful", "Nature" },
-                Location = "Provence, France",
-                Price = 23000,
-                FileName = "vibrant_flower_garden.jpg",
-                StoryOfArt =
-                    "<h2>Nature's Color Palette: The Gardener's Canvas</h2><br><br>1. Historical Context. This garden has been maintained by five generations of the same family, with planting techniques passed down through oral tradition since the early 19th century.\n\n2. Biodiversity Focus. Over 45 different species of flowering plants are visible in this single frame, each selected not only for visual impact but also to support local pollinator populations.\n\n3. Compositional Technique. The seeming randomness of the garden belies the careful color theory application - complementary colors are strategically positioned to enhance visual vibrancy.\n\n4. Seasonal Storytelling. The image captures the garden at its peak bloom during the three-week window in late spring when all varieties reach their full expression simultaneously.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-            new()
-            {
-                Title = "Rainy City Street",
-                Description =
-                    "Rain-soaked streets reflect neon signs and city lights, creating an atmospheric urban landscape. The scene captures the reflective mood and charm of a rainy evening.",
-                Url =
-                    "https://images.unsplash.com/photo-1503348379917-758650634df4?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                Orientation = OrientationType.Portrait,
-                Tags = new List<string> { "Rain", "City", "Urban", "Night" },
-                Location = "Tokyo, Japan",
-                Price = 50000,
-                FileName = "rainy_city_street.jpg",
-                StoryOfArt =
-                    "<h2>Liquid Light: Tokyo After Rainfall</h2><br><br>1. Moment of Serendipity. This image was captured during an unexpected thunderstorm when most pedestrians had sought shelter, leaving the normally bustling street momentarily empty.\n\n2. Cultural Reflection. The neon signs displaying both Japanese characters and English text represent the unique cultural fusion that defines modern Tokyo.\n\n3. Technical Patience. I waited under an awning for nearly two hours for the precise moment when the rain intensity created perfect reflections without obscuring the distant details.\n\n4. Emotional Resonance. The scene evokes the distinctive feeling of being alone in a crowd - a common experience in mega-cities where millions live in close proximity yet often in emotional isolation.\n\n5. Visual Metaphor. The reflected lights create a parallel world beneath the surface, suggesting the duality between Tokyo's polished exterior and its complex undercurrents.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-            new()
-            {
-                Title = "Sunset Over the Lake",
-                Description =
-                    "The sky bursts into a palette of warm colors as the sun sets, casting a gentle glow over a tranquil lake. The peaceful scene invites relaxation and introspection.",
-                Url =
-                    "https://images.unsplash.com/photo-1514975440715-7b6852af4ee7?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                Orientation = OrientationType.Landscape,
-                Tags = new List<string> { "Sunset", "Lake", "Reflection", "Nature" },
-                Location = "Lake Tahoe, USA",
-                Price = 24000,
-                FileName = "sunset_over_the_lake.jpg",
-                StoryOfArt =
-                    "<h2>Day's End: The Lake's Sunset Symphony</h2><br><br>1. Perfect Stillness. After three days of strong winds, the lake surface became completely calm on this evening, creating a mirror-like reflection that doubles the visual impact of the sunset.\n\n2. Color Science. The exceptional pink and purple hues resulted from distant forest fire particles in the atmosphere, filtering the light wavelengths in a way rarely seen in this region.\n\n3. Sound Dimension. Though impossible to convey in a photograph, this moment was accompanied by the evening chorus of loons calling across the water - adding an auditory dimension to the visual experience.\n\n4. Conservation Message. This pristine view exists today thanks to conservation efforts that prevented commercial development along this shoreline in the 1970s, preserving the natural viewshed for future generations.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-            new()
-            {
-                Title = "Starry Night Sky",
-                Description =
-                    "Under the cloak of night, countless stars glitter against the deep blue backdrop. The image captures the infinite expanse of the universe, inspiring wonder and curiosity.",
-                Url =
-                    "https://images.unsplash.com/photo-1595246965570-9684145def50?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                Orientation = OrientationType.Portrait,
-                Tags = new List<string> { "Night", "Stars", "Astrophotography", "Universe" },
-                Location = "Atacama Desert, Chile",
-                Price = 40000,
-                FileName = "starry_night_sky.jpg",
-                StoryOfArt =
-                    "<h2>Cosmic Canvas: Windows to Infinity</h2><br><br>1. Light Years Away. What appears as simple points of light represents ancient photons that have traveled for centuries or millennia before reaching my camera sensor.\n\n2. Technical Excellence. This image is a composite of 85 separate 30-second exposures, meticulously aligned and stacked to reveal celestial details invisible to the naked eye.\n\n3. Geographic Advantage. The Atacama Desert's extreme altitude, dry air, and distance from light pollution make it one of only three locations on Earth where such clarity of the night sky is possible.\n\n4. Scientific Value. Several previously undocumented stellar phenomena were discovered in this image upon detailed analysis, leading to collaboration with astronomers from the European Southern Observatory.\n\n5. Human Context. The small silhouette of a traditional observatory dome in the lower frame provides scale, contrasting human endeavors with the incomprehensible vastness above.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-            new()
-            {
-                Title = "Countryside Road",
-                Description =
-                    "The rustic charm of the countryside is on full display with a solitary road stretching between rolling fields and quaint farmhouses. The image evokes a sense of freedom and simplicity.",
-                Url =
-                    "https://images.unsplash.com/photo-1499796683658-b659bc751db1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                Orientation = OrientationType.Landscape,
-                Tags = new List<string> { "Countryside", "Road", "Farms", "Landscape" },
-                Location = "Tuscany, Italy",
-                Price = 40000,
-                FileName = "countryside_road.jpg",
-                StoryOfArt =
-                    "<h2>The Winding Path: Tuscany's Timeless Journey</h2><br><br>1. Historical Pathway. This road follows the route of an ancient Roman trade path that has connected hillside villages for over two millennia.\n\n2. Agricultural Heritage. The distinctive pattern of cypress trees lining the road was established in the 15th century as wind protection for the valuable crops growing in adjacent fields.\n\n3. Light Study. The late afternoon sun position creates alternating patterns of light and shadow that emphasize the undulating topography of the landscape.\n\n4. Preservation Challenges. This iconic view now faces threats from modernization and climate change, with traditional farming practices giving way to more industrialized methods.\n\n5. Personal Discovery. I found this specific vantage point by getting completely lost while cycling through back roads, a reminder that sometimes the best compositions appear when we deviate from planned routes.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-            new()
-            {
-                Title = "Ancient Castle Ruins",
-                Description =
-                    "Weathered stone walls and crumbling towers speak of bygone eras. The dramatic sky adds to the eerie charm of these forgotten castle ruins.",
-                Url =
-                    "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                Orientation = OrientationType.Portrait,
-                Tags = new List<string> { "Castle", "Ruins", "History", "Mystery" },
-                Location = "Scotland, UK",
-                Price = 40000,
-                FileName = "ancient_castle_ruins.jpg",
-                StoryOfArt =
-                    "<h2>Echoes in Stone: A Fortress Remembers</h2><br><br>1. Archaeological Context. These ruins date to the 13th century and were once a strategic stronghold controlling passage through the valley below during the Scottish Wars of Independence.\n\n2. Dramatic Timing. The threatening storm clouds were approaching rapidly when this image was taken, with the first raindrops beginning to fall as I captured the final frame in the sequence.\n\n3. Compositional Intent. I deliberately positioned myself to frame the central tower against the brightest part of the sky, creating a silhouette effect that emphasizes the castle's imposing presence even in its deteriorated state.\n\n4. Hidden Details. Close examination reveals medieval mason marks still visible on several stones - the signatures of craftsmen who died nearly 800 years ago.\n\n5. Conservation Status. Though appearing untouched by modern intervention, these ruins underwent careful stabilization work in the 1990s to prevent complete collapse while maintaining their authentic weathered appearance.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-            new()
-            {
-                Title = "Lush Tropical Forest",
-                Description =
-                    "Dense foliage and a riot of green hues define this tropical forest. The light filters through the canopy, creating a magical interplay of shadow and brightness.",
-                Url =
-                    "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1744&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                Orientation = OrientationType.Landscape,
-                Tags = new List<string> { "Tropical", "Forest", "Green", "Nature" },
-                Location = "Costa Rica",
-                Price = 40000,
-                FileName = "lush_tropical_forest.jpg",
-                StoryOfArt =
-                    "<h2>Green Cathedral: The Rainforest's Secret World</h2><br><br>1. Biodiversity Hotspot. The small area captured in this single frame contains over 200 distinct plant species, representing one of the highest concentrations of botanical diversity on the planet.\n\n2. Light Phenomenon. The sunbeams visible in the image result from a rare alignment that occurs for only 20 minutes each day when the sun reaches a specific angle relative to the canopy gaps.\n\n3. Ecological Narrative. The varying shades of green represent different canopy layers, each creating its own microhabitat for specialized flora and fauna.\n\n4. Sensory Experience. The photograph cannot convey the accompanying sounds and smells - the constant dripping of condensation, the calls of unseen birds, and the rich earthy aroma of decomposition and growth.\n\n5. Conservation Status. This particular forest section stands in a protected biological corridor that connects larger preserves, allowing wildlife migration patterns to continue despite surrounding development pressure.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-            new()
-            {
-                Title = "Calm River Bend",
-                Description =
-                    "A meandering river reflects the soft hues of a fading day. The scene exudes tranquility and invites viewers to savor the simplicity of nature's flow.",
-                Url =
-                    "https://images.unsplash.com/photo-1483959651481-dc75b89291f1?q=80&w=1849&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                Orientation = OrientationType.Portrait,
-                Tags = new List<string> { "River", "Calm", "Landscape", "Nature" },
-                Location = "Loire Valley, France",
-                Price = 40000,
-                FileName = "calm_river_bend.jpg",
-                StoryOfArt =
-                    "<h2>Water's Patient Journey: The River's Narrative</h2><br><br>1. Geological Timekeeper. This gentle curve has been shaped over millennia, with the river slowly carving its path through soft limestone, revealing layers of Earth's history in the exposed banks.\n\n2. Historical Significance. For centuries, this bend served as a critical navigation point for trade vessels, with records of its use dating back to Roman times.\n\n3. Ecological Function. The slower water flow at this bend creates a natural deposition zone where nutrients collect, supporting the lush vegetation visible along the shoreline.\n\n4. Atmospheric Conditions. The unusual stillness of the water resulted from a rare weather phenomenon where air temperature and water temperature reached perfect equilibrium, eliminating all surface disturbance.\n\n5. Artistic Heritage. This same view has inspired painters since the Impressionist movement, with several notable works by Monet featuring this identical bend from slightly different angles.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-            new()
-            {
-                Title = "Modern Architecture",
-                Description =
-                    "This image highlights the intersection of art and engineering. Clean geometric forms and expansive glass surfaces define a modern structure set against a clear sky.",
-                Url =
-                    "https://images.unsplash.com/photo-1518599904199-0ca897819ddb?q=80&w=1734&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                Orientation = OrientationType.Landscape,
-                Tags = new List<string> { "Architecture", "Modern", "Design", "Urban" },
-                Location = "Dubai, UAE",
-                Price = 40000,
-                FileName = "modern_architecture.jpg",
-                StoryOfArt =
-                    "<h2>Geometry in Glass: The Future Manifested</h2><br><br>1. Architectural Innovation. This structure pioneered a revolutionary tensile support system that allows the seemingly impossible cantilevers to extend without visible external support.\n\n2. Environmental Design. Despite its location in one of Earth's hottest climates, the building achieves remarkable energy efficiency through smart glass technology and passive cooling systems integrated into its geometric design.\n\n3. Cultural Context. The angular forms reference traditional regional architectural motifs, modernized through contemporary materials and engineering.\n\n4. Photographic Challenge. Capturing this image required precise timing to avoid lens flare from the harsh desert sun while maintaining the clarity of both the reflective surfaces and the sky.\n\n5. Design Philosophy. The architect described this building as 'crystallized music' - an attempt to give physical form to mathematical harmonies through proportion and rhythm in the structural elements.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-            new()
-            {
-                Title = "Misty Morning in the Valley",
-                Description =
-                    "Early morning mist envelops the valley, softening the landscape and lending an ethereal quality to the rolling hills and scattered trees. The quiet ambiance is both soothing and mysterious.",
-                Url =
-                    "https://images.unsplash.com/photo-1582562478517-6f88924e668d?q=80&w=1827&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                Orientation = OrientationType.Portrait,
-                Tags = new List<string> { "Mist", "Morning", "Valley", "Nature" },
-                Location = "Yosemite Valley, USA",
-                Price = 40000,
-                FileName = "misty_morning_valley.jpg",
-                StoryOfArt =
-                    "<h2>Veiled Landscape: Dawn's Ethereal Moment</h2><br><br>1. Meteorological Marvel. The mist formation captured here results from a temperature inversion where cold air becomes trapped beneath warmer air, a phenomenon that occurs in this valley fewer than 20 days each year.\n\n2. Historical Perspective. This view closely resembles what the first European explorers would have witnessed upon discovering the valley in the 19th century, with minimal visible human intervention in the landscape.\n\n3. Compositional Patience. I visited this overlook for seven consecutive mornings before atmospheric conditions aligned perfectly with the ideal light angle.\n\n4. Acoustic Dimension. The mist created an unusual acoustic environment where distant sounds (birds, falling water) seemed amplified and closer than their actual locations.\n\n5. Ephemeral Nature. Within 30 minutes of taking this photograph, the mist had completely dissipated, revealing an entirely different landscape beneath - a reminder of nature's constant state of transition.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
+            #region CHÙA BÀ THIÊN HẬU
 
-            // hình tụi nó
             new()
             {
                 Title = "Desert Dunes at Sunset",
@@ -417,7 +217,18 @@ public class SystemController : ControllerBase
                 StoryOfArt =
                     "<h2>Living Monuments: The Olive Guardians</h2><br><br>1. Botanical Elders. Several trees in this grove have been carbon-dated to be over 1,500 years old, making them living links to the Byzantine period when they were first planted.\n\n2. Agricultural Continuity. The same families have harvested olives from these trees for 27 generations, maintaining traditional farming techniques passed down through centuries.\n\n3. Environmental Adaptation. The twisted forms of the trunks represent the trees' response to prevailing winds and periodic drought - a physical record of environmental conditions spanning millennia.\n\n4. Seasonal Selection. The photograph was taken during the two-week period before harvest when the olives have reached full maturity but remain on the branches.\n\n5. Conservation Challenge. This ancient grove now faces threats from a bacterial disease spreading through the region, potentially endangering trees that have survived countless previous challenges throughout history.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
-            },
+            }
+
+            #endregion
+            
+            #region METRO
+
+            #endregion
+
+            #region ĐẠI HỘI HUẾ
+
+            #endregion
+
         };
 
         await _context.Images.AddRangeAsync(images);

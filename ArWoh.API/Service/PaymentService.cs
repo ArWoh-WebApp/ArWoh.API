@@ -246,8 +246,7 @@ public class PaymentService : IPaymentService
                 return new NotFoundObjectResult("Payment not found");
             }
 
-            // (Thêm skibidi dab dab) Tìm UserId thông qua PaymentTransaction
-            var paymentTransaction = await _unitOfWork.Transactions.FirstOrDefaultAsync(t => t.Id == payment.PaymentTransactionId);
+            var paymentTransaction = await _unitOfWork.PaymentTransactions.FirstOrDefaultAsync(t => t.Id == payment.PaymentTransactionId);
             if (paymentTransaction == null)
             {
                 _logger.Warn($"Không tìm thấy PaymentTransaction với ID: {payment.PaymentTransactionId}");

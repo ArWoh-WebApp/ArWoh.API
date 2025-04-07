@@ -33,12 +33,10 @@ public class ImageController : ControllerBase
             var paginatedImages = await _imageService.GetAllImages(paginationParams);
 
             if (paginatedImages.TotalCount == 0)
-            {
                 return Ok(ApiResult<Pagination<ImageDto>>.Success(
                     new Pagination<ImageDto>(new List<ImageDto>(), 0, paginationParams.PageIndex,
                         paginationParams.PageSize)
                 ));
-            }
 
             return Ok(ApiResult<Pagination<ImageDto>>.Success(paginatedImages));
         }

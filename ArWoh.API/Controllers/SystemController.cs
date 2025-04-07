@@ -217,18 +217,186 @@ public class SystemController : ControllerBase
                 StoryOfArt =
                     "<h2>Living Monuments: The Olive Guardians</h2><br><br>1. Botanical Elders. Several trees in this grove have been carbon-dated to be over 1,500 years old, making them living links to the Byzantine period when they were first planted.\n\n2. Agricultural Continuity. The same families have harvested olives from these trees for 27 generations, maintaining traditional farming techniques passed down through centuries.\n\n3. Environmental Adaptation. The twisted forms of the trunks represent the trees' response to prevailing winds and periodic drought - a physical record of environmental conditions spanning millennia.\n\n4. Seasonal Selection. The photograph was taken during the two-week period before harvest when the olives have reached full maturity but remain on the branches.\n\n5. Conservation Challenge. This ancient grove now faces threats from a bacterial disease spreading through the region, potentially endangering trees that have survived countless previous challenges throughout history.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
-            }
+            },
 
             #endregion
-            
+
             #region METRO
 
             #endregion
 
             #region ĐẠI HỘI HUẾ
 
-            #endregion
+            new()
+            {
+                Title = "Bình Minh Tại Đại Nội Huế",
+                Description =
+                    "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-01.png&version_id=null",
+                Orientation = OrientationType.Portrait,
+                Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
+                Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
+                Price = 35000,
+                FileName = "dai_noi_hue_binh_minh.png",
+                StoryOfArt =
+                    "<h2>Dấu Ấn Hoàng Cung: Di Sản Văn Hóa Việt Nam</h2><br><br>1. Lịch Sử Trường Tồn. Đại Nội Huế được xây dựng từ năm 1805 dưới triều Gia Long, là trung tâm chính trị và văn hóa của triều đại nhà Nguyễn trong suốt 143 năm (1802-1945).\n\n2. Kiến Trúc Đặc Biệt. Công trình này là sự kết hợp hoàn hảo giữa nghệ thuật phương Đông truyền thống và các nguyên lý phong thủy, thể hiện qua việc bố trí các tòa nhà theo trục Bắc-Nam và được bao quanh bởi hệ thống sông Hương.\n\n3. Thách Thức Bảo Tồn. Bức ảnh này ghi lại một trong những góc còn nguyên vẹn của di sản, sau khi phần lớn công trình đã bị tàn phá qua hai cuộc chiến tranh và nhiều thập kỷ bị bỏ hoang.\n\n4. Giá Trị Biểu Tượng. Màu vàng hoàng gia trên các chi tiết kiến trúc là màu dành riêng cho hoàng tộc, tượng trưng cho quyền lực tối cao và sự thịnh vượng của triều đại.\n\n5. Góc Nhìn Nghệ Thuật. Bức ảnh được chụp vào thời điểm bình minh, khi ánh sáng đầu ngày tạo ra sự tương phản mạnh mẽ giữa bóng và sáng, làm nổi bật các đường nét kiến trúc tinh xảo - một khoảnh khắc hiếm có khi du khách chưa đến tham quan.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
 
+            new()
+            {
+                Title = "Bình Minh Tại Đại Nội Huế",
+                Description =
+                    "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-02.png&version_id=null",
+                Orientation = OrientationType.Portrait,
+                Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
+                Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
+                Price = 35000,
+                FileName = "dai_noi_hue_binh_minh.png",
+                StoryOfArt =
+                    "<h2>Dấu Ấn Hoàng Cung: Di Sản Văn Hóa Việt Nam</h2><br><br>1. Lịch Sử Trường Tồn. Đại Nội Huế được xây dựng từ năm 1805 dưới triều Gia Long, là trung tâm chính trị và văn hóa của triều đại nhà Nguyễn trong suốt 143 năm (1802-1945).\n\n2. Kiến Trúc Đặc Biệt. Công trình này là sự kết hợp hoàn hảo giữa nghệ thuật phương Đông truyền thống và các nguyên lý phong thủy, thể hiện qua việc bố trí các tòa nhà theo trục Bắc-Nam và được bao quanh bởi hệ thống sông Hương.\n\n3. Thách Thức Bảo Tồn. Bức ảnh này ghi lại một trong những góc còn nguyên vẹn của di sản, sau khi phần lớn công trình đã bị tàn phá qua hai cuộc chiến tranh và nhiều thập kỷ bị bỏ hoang.\n\n4. Giá Trị Biểu Tượng. Màu vàng hoàng gia trên các chi tiết kiến trúc là màu dành riêng cho hoàng tộc, tượng trưng cho quyền lực tối cao và sự thịnh vượng của triều đại.\n\n5. Góc Nhìn Nghệ Thuật. Bức ảnh được chụp vào thời điểm bình minh, khi ánh sáng đầu ngày tạo ra sự tương phản mạnh mẽ giữa bóng và sáng, làm nổi bật các đường nét kiến trúc tinh xảo - một khoảnh khắc hiếm có khi du khách chưa đến tham quan.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            
+            new()
+            {
+                Title = "Bình Minh Tại Đại Nội Huế",
+                Description =
+                    "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-03.png&version_id=null",
+                Orientation = OrientationType.Portrait,
+                Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
+                Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
+                Price = 35000,
+                FileName = "dai_noi_hue_binh_minh.png",
+                StoryOfArt =
+                    "<h2>Dấu Ấn Hoàng Cung: Di Sản Văn Hóa Việt Nam</h2><br><br>1. Lịch Sử Trường Tồn. Đại Nội Huế được xây dựng từ năm 1805 dưới triều Gia Long, là trung tâm chính trị và văn hóa của triều đại nhà Nguyễn trong suốt 143 năm (1802-1945).\n\n2. Kiến Trúc Đặc Biệt. Công trình này là sự kết hợp hoàn hảo giữa nghệ thuật phương Đông truyền thống và các nguyên lý phong thủy, thể hiện qua việc bố trí các tòa nhà theo trục Bắc-Nam và được bao quanh bởi hệ thống sông Hương.\n\n3. Thách Thức Bảo Tồn. Bức ảnh này ghi lại một trong những góc còn nguyên vẹn của di sản, sau khi phần lớn công trình đã bị tàn phá qua hai cuộc chiến tranh và nhiều thập kỷ bị bỏ hoang.\n\n4. Giá Trị Biểu Tượng. Màu vàng hoàng gia trên các chi tiết kiến trúc là màu dành riêng cho hoàng tộc, tượng trưng cho quyền lực tối cao và sự thịnh vượng của triều đại.\n\n5. Góc Nhìn Nghệ Thuật. Bức ảnh được chụp vào thời điểm bình minh, khi ánh sáng đầu ngày tạo ra sự tương phản mạnh mẽ giữa bóng và sáng, làm nổi bật các đường nét kiến trúc tinh xảo - một khoảnh khắc hiếm có khi du khách chưa đến tham quan.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            
+            new()
+            {
+                Title = "Bình Minh Tại Đại Nội Huế",
+                Description =
+                    "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-04.png&version_id=null",
+                Orientation = OrientationType.Portrait,
+                Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
+                Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
+                Price = 35000,
+                FileName = "dai_noi_hue_binh_minh.png",
+                StoryOfArt =
+                    "<h2>Dấu Ấn Hoàng Cung: Di Sản Văn Hóa Việt Nam</h2><br><br>1. Lịch Sử Trường Tồn. Đại Nội Huế được xây dựng từ năm 1805 dưới triều Gia Long, là trung tâm chính trị và văn hóa của triều đại nhà Nguyễn trong suốt 143 năm (1802-1945).\n\n2. Kiến Trúc Đặc Biệt. Công trình này là sự kết hợp hoàn hảo giữa nghệ thuật phương Đông truyền thống và các nguyên lý phong thủy, thể hiện qua việc bố trí các tòa nhà theo trục Bắc-Nam và được bao quanh bởi hệ thống sông Hương.\n\n3. Thách Thức Bảo Tồn. Bức ảnh này ghi lại một trong những góc còn nguyên vẹn của di sản, sau khi phần lớn công trình đã bị tàn phá qua hai cuộc chiến tranh và nhiều thập kỷ bị bỏ hoang.\n\n4. Giá Trị Biểu Tượng. Màu vàng hoàng gia trên các chi tiết kiến trúc là màu dành riêng cho hoàng tộc, tượng trưng cho quyền lực tối cao và sự thịnh vượng của triều đại.\n\n5. Góc Nhìn Nghệ Thuật. Bức ảnh được chụp vào thời điểm bình minh, khi ánh sáng đầu ngày tạo ra sự tương phản mạnh mẽ giữa bóng và sáng, làm nổi bật các đường nét kiến trúc tinh xảo - một khoảnh khắc hiếm có khi du khách chưa đến tham quan.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            //5
+            new()
+            {
+                Title = "Bình Minh Tại Đại Nội Huế",
+                Description =
+                    "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-05.png&version_id=null",
+                Orientation = OrientationType.Portrait,
+                Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
+                Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
+                Price = 35000,
+                FileName = "dai_noi_hue_binh_minh.png",
+                StoryOfArt =
+                    "<h2>Dấu Ấn Hoàng Cung: Di Sản Văn Hóa Việt Nam</h2><br><br>1. Lịch Sử Trường Tồn. Đại Nội Huế được xây dựng từ năm 1805 dưới triều Gia Long, là trung tâm chính trị và văn hóa của triều đại nhà Nguyễn trong suốt 143 năm (1802-1945).\n\n2. Kiến Trúc Đặc Biệt. Công trình này là sự kết hợp hoàn hảo giữa nghệ thuật phương Đông truyền thống và các nguyên lý phong thủy, thể hiện qua việc bố trí các tòa nhà theo trục Bắc-Nam và được bao quanh bởi hệ thống sông Hương.\n\n3. Thách Thức Bảo Tồn. Bức ảnh này ghi lại một trong những góc còn nguyên vẹn của di sản, sau khi phần lớn công trình đã bị tàn phá qua hai cuộc chiến tranh và nhiều thập kỷ bị bỏ hoang.\n\n4. Giá Trị Biểu Tượng. Màu vàng hoàng gia trên các chi tiết kiến trúc là màu dành riêng cho hoàng tộc, tượng trưng cho quyền lực tối cao và sự thịnh vượng của triều đại.\n\n5. Góc Nhìn Nghệ Thuật. Bức ảnh được chụp vào thời điểm bình minh, khi ánh sáng đầu ngày tạo ra sự tương phản mạnh mẽ giữa bóng và sáng, làm nổi bật các đường nét kiến trúc tinh xảo - một khoảnh khắc hiếm có khi du khách chưa đến tham quan.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            
+            new()
+            {
+                Title = "Bình Minh Tại Đại Nội Huế",
+                Description =
+                    "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-06.png&version_id=null",
+                Orientation = OrientationType.Portrait,
+                Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
+                Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
+                Price = 35000,
+                FileName = "dai_noi_hue_binh_minh.png",
+                StoryOfArt =
+                    "<h2>Dấu Ấn Hoàng Cung: Di Sản Văn Hóa Việt Nam</h2><br><br>1. Lịch Sử Trường Tồn. Đại Nội Huế được xây dựng từ năm 1805 dưới triều Gia Long, là trung tâm chính trị và văn hóa của triều đại nhà Nguyễn trong suốt 143 năm (1802-1945).\n\n2. Kiến Trúc Đặc Biệt. Công trình này là sự kết hợp hoàn hảo giữa nghệ thuật phương Đông truyền thống và các nguyên lý phong thủy, thể hiện qua việc bố trí các tòa nhà theo trục Bắc-Nam và được bao quanh bởi hệ thống sông Hương.\n\n3. Thách Thức Bảo Tồn. Bức ảnh này ghi lại một trong những góc còn nguyên vẹn của di sản, sau khi phần lớn công trình đã bị tàn phá qua hai cuộc chiến tranh và nhiều thập kỷ bị bỏ hoang.\n\n4. Giá Trị Biểu Tượng. Màu vàng hoàng gia trên các chi tiết kiến trúc là màu dành riêng cho hoàng tộc, tượng trưng cho quyền lực tối cao và sự thịnh vượng của triều đại.\n\n5. Góc Nhìn Nghệ Thuật. Bức ảnh được chụp vào thời điểm bình minh, khi ánh sáng đầu ngày tạo ra sự tương phản mạnh mẽ giữa bóng và sáng, làm nổi bật các đường nét kiến trúc tinh xảo - một khoảnh khắc hiếm có khi du khách chưa đến tham quan.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            //6
+            new()
+            {
+                Title = "Bình Minh Tại Đại Nội Huế",
+                Description =
+                    "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-07.png&version_id=null",
+                Orientation = OrientationType.Portrait,
+                Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
+                Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
+                Price = 35000,
+                FileName = "dai_noi_hue_binh_minh.png",
+                StoryOfArt =
+                    "<h2>Dấu Ấn Hoàng Cung: Di Sản Văn Hóa Việt Nam</h2><br><br>1. Lịch Sử Trường Tồn. Đại Nội Huế được xây dựng từ năm 1805 dưới triều Gia Long, là trung tâm chính trị và văn hóa của triều đại nhà Nguyễn trong suốt 143 năm (1802-1945).\n\n2. Kiến Trúc Đặc Biệt. Công trình này là sự kết hợp hoàn hảo giữa nghệ thuật phương Đông truyền thống và các nguyên lý phong thủy, thể hiện qua việc bố trí các tòa nhà theo trục Bắc-Nam và được bao quanh bởi hệ thống sông Hương.\n\n3. Thách Thức Bảo Tồn. Bức ảnh này ghi lại một trong những góc còn nguyên vẹn của di sản, sau khi phần lớn công trình đã bị tàn phá qua hai cuộc chiến tranh và nhiều thập kỷ bị bỏ hoang.\n\n4. Giá Trị Biểu Tượng. Màu vàng hoàng gia trên các chi tiết kiến trúc là màu dành riêng cho hoàng tộc, tượng trưng cho quyền lực tối cao và sự thịnh vượng của triều đại.\n\n5. Góc Nhìn Nghệ Thuật. Bức ảnh được chụp vào thời điểm bình minh, khi ánh sáng đầu ngày tạo ra sự tương phản mạnh mẽ giữa bóng và sáng, làm nổi bật các đường nét kiến trúc tinh xảo - một khoảnh khắc hiếm có khi du khách chưa đến tham quan.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            
+            new()
+            {
+                Title = "Bình Minh Tại Đại Nội Huế",
+                Description =
+                    "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-08.png&version_id=null",
+                Orientation = OrientationType.Portrait,
+                Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
+                Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
+                Price = 35000,
+                FileName = "dai_noi_hue_binh_minh.png",
+                StoryOfArt =
+                    "<h2>Dấu Ấn Hoàng Cung: Di Sản Văn Hóa Việt Nam</h2><br><br>1. Lịch Sử Trường Tồn. Đại Nội Huế được xây dựng từ năm 1805 dưới triều Gia Long, là trung tâm chính trị và văn hóa của triều đại nhà Nguyễn trong suốt 143 năm (1802-1945).\n\n2. Kiến Trúc Đặc Biệt. Công trình này là sự kết hợp hoàn hảo giữa nghệ thuật phương Đông truyền thống và các nguyên lý phong thủy, thể hiện qua việc bố trí các tòa nhà theo trục Bắc-Nam và được bao quanh bởi hệ thống sông Hương.\n\n3. Thách Thức Bảo Tồn. Bức ảnh này ghi lại một trong những góc còn nguyên vẹn của di sản, sau khi phần lớn công trình đã bị tàn phá qua hai cuộc chiến tranh và nhiều thập kỷ bị bỏ hoang.\n\n4. Giá Trị Biểu Tượng. Màu vàng hoàng gia trên các chi tiết kiến trúc là màu dành riêng cho hoàng tộc, tượng trưng cho quyền lực tối cao và sự thịnh vượng của triều đại.\n\n5. Góc Nhìn Nghệ Thuật. Bức ảnh được chụp vào thời điểm bình minh, khi ánh sáng đầu ngày tạo ra sự tương phản mạnh mẽ giữa bóng và sáng, làm nổi bật các đường nét kiến trúc tinh xảo - một khoảnh khắc hiếm có khi du khách chưa đến tham quan.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            
+            new()
+            {
+                Title = "Bình Minh Tại Đại Nội Huế",
+                Description =
+                    "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-09.png&version_id=null",
+                Orientation = OrientationType.Portrait,
+                Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
+                Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
+                Price = 35000,
+                FileName = "dai_noi_hue_binh_minh.png",
+                StoryOfArt =
+                    "<h2>Dấu Ấn Hoàng Cung: Di Sản Văn Hóa Việt Nam</h2><br><br>1. Lịch Sử Trường Tồn. Đại Nội Huế được xây dựng từ năm 1805 dưới triều Gia Long, là trung tâm chính trị và văn hóa của triều đại nhà Nguyễn trong suốt 143 năm (1802-1945).\n\n2. Kiến Trúc Đặc Biệt. Công trình này là sự kết hợp hoàn hảo giữa nghệ thuật phương Đông truyền thống và các nguyên lý phong thủy, thể hiện qua việc bố trí các tòa nhà theo trục Bắc-Nam và được bao quanh bởi hệ thống sông Hương.\n\n3. Thách Thức Bảo Tồn. Bức ảnh này ghi lại một trong những góc còn nguyên vẹn của di sản, sau khi phần lớn công trình đã bị tàn phá qua hai cuộc chiến tranh và nhiều thập kỷ bị bỏ hoang.\n\n4. Giá Trị Biểu Tượng. Màu vàng hoàng gia trên các chi tiết kiến trúc là màu dành riêng cho hoàng tộc, tượng trưng cho quyền lực tối cao và sự thịnh vượng của triều đại.\n\n5. Góc Nhìn Nghệ Thuật. Bức ảnh được chụp vào thời điểm bình minh, khi ánh sáng đầu ngày tạo ra sự tương phản mạnh mẽ giữa bóng và sáng, làm nổi bật các đường nét kiến trúc tinh xảo - một khoảnh khắc hiếm có khi du khách chưa đến tham quan.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            
+            new()
+            {
+                Title = "Bình Minh Tại Đại Nội Huế",
+                Description =
+                    "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-10.png&version_id=null",
+                Orientation = OrientationType.Portrait,
+                Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
+                Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
+                Price = 35000,
+                FileName = "dai_noi_hue_binh_minh.png",
+                StoryOfArt =
+                    "<h2>Dấu Ấn Hoàng Cung: Di Sản Văn Hóa Việt Nam</h2><br><br>1. Lịch Sử Trường Tồn. Đại Nội Huế được xây dựng từ năm 1805 dưới triều Gia Long, là trung tâm chính trị và văn hóa của triều đại nhà Nguyễn trong suốt 143 năm (1802-1945).\n\n2. Kiến Trúc Đặc Biệt. Công trình này là sự kết hợp hoàn hảo giữa nghệ thuật phương Đông truyền thống và các nguyên lý phong thủy, thể hiện qua việc bố trí các tòa nhà theo trục Bắc-Nam và được bao quanh bởi hệ thống sông Hương.\n\n3. Thách Thức Bảo Tồn. Bức ảnh này ghi lại một trong những góc còn nguyên vẹn của di sản, sau khi phần lớn công trình đã bị tàn phá qua hai cuộc chiến tranh và nhiều thập kỷ bị bỏ hoang.\n\n4. Giá Trị Biểu Tượng. Màu vàng hoàng gia trên các chi tiết kiến trúc là màu dành riêng cho hoàng tộc, tượng trưng cho quyền lực tối cao và sự thịnh vượng của triều đại.\n\n5. Góc Nhìn Nghệ Thuật. Bức ảnh được chụp vào thời điểm bình minh, khi ánh sáng đầu ngày tạo ra sự tương phản mạnh mẽ giữa bóng và sáng, làm nổi bật các đường nét kiến trúc tinh xảo - một khoảnh khắc hiếm có khi du khách chưa đến tham quan.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            #endregion
         };
 
         await _context.Images.AddRangeAsync(images);

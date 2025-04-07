@@ -30,27 +30,21 @@ public class ImageController : ControllerBase
     {
         try
         {
-            _loggerService.Info("Fetching all images via API with pagination.");
-
             var paginatedImages = await _imageService.GetAllImages(paginationParams);
 
             if (paginatedImages.TotalCount == 0)
             {
-                _loggerService.Warn("No images found.");
                 return Ok(ApiResult<Pagination<ImageDto>>.Success(
                     new Pagination<ImageDto>(new List<ImageDto>(), 0, paginationParams.PageIndex,
                         paginationParams.PageSize)
                 ));
             }
 
-            _loggerService.Success(
-                $"Successfully retrieved {paginatedImages.Count} images (page {paginationParams.PageIndex}/{paginatedImages.TotalPages}).");
             return Ok(ApiResult<Pagination<ImageDto>>.Success(paginatedImages));
         }
         catch (Exception ex)
         {
-            _loggerService.Error($"Unexpected error in GetAllImages: {ex.Message}");
-            return StatusCode(500, ApiResult<object>.Error("An unexpected error occurred"));
+            return StatusCode(500, ApiResult<object>.Error($"An unexpected error occurred {ex}"));
         }
     }
 

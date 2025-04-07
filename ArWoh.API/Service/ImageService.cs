@@ -1,3 +1,4 @@
+using ArWoh.API.Commons;
 using ArWoh.API.DTOs.ImageDTOs;
 using ArWoh.API.Entities;
 using ArWoh.API.Interface;
@@ -81,29 +82,49 @@ public class ImageService : IImageService
     }
 
     /// <summary>
-    ///     Lấy list tất cả các images kèm theo thông tin photographer
+    ///     Lấy list tất cả các images kèm theo thông tin photographer với phân trang
     /// </summary>
-    public async Task<IEnumerable<ImageDto>> GetAllImages()
+    public async Task<Pagination<ImageDto>> GetAllImages(PaginationParameter paginationParams)
     {
         try
         {
-            _loggerService.Info("Fetching all images with photographer information from database.");
+            _loggerService.Info(
+                $"Fetching images with pagination (Page {paginationParams.PageIndex}, Size {paginationParams.PageSize}).");
 
             // Sử dụng GetQueryable để có thể thêm Include
             var imagesQuery = _unitOfWork.Images.GetQueryable();
 
             // Include thông tin photographer
-            var images = await imagesQuery
-                .Include(i => i.Photographer)
+            imagesQuery = imagesQuery.Include(i => i.Photographer);
+
+            // Đếm tổng số records trước khi phân trang
+            var totalCount = await imagesQuery.CountAsync();
+
+            // Áp dụng phân trang
+            var pagedImages = await imagesQuery
+                .Skip((paginationParams.PageIndex - 1) * paginationParams.PageSize)
+                .Take(paginationParams.PageSize)
                 .ToListAsync();
 
-            if (!images.Any())
+            if (!pagedImages.Any() && totalCount > 0)
+            {
+                _loggerService.Warn(
+                    $"No images found for page {paginationParams.PageIndex}. Total records: {totalCount}");
+                // Nếu không có dữ liệu ở trang hiện tại nhưng có dữ liệu trong DB, trả về trang cuối cùng
+                paginationParams.PageIndex = (int)Math.Ceiling(totalCount / (double)paginationParams.PageSize);
+                pagedImages = await imagesQuery
+                    .Skip((paginationParams.PageIndex - 1) * paginationParams.PageSize)
+                    .Take(paginationParams.PageSize)
+                    .ToListAsync();
+            }
+            else if (!pagedImages.Any())
             {
                 _loggerService.Warn("No images found in the database.");
-                return new List<ImageDto>(); // Trả về danh sách rỗng thay vì null
+                return new Pagination<ImageDto>(new List<ImageDto>(), 0, paginationParams.PageIndex,
+                    paginationParams.PageSize);
             }
 
-            var imageDtos = images.Select(image => new ImageDto
+            var imageDtos = pagedImages.Select(image => new ImageDto
             {
                 Id = image.Id,
                 Title = image.Title,
@@ -122,9 +143,18 @@ public class ImageService : IImageService
                 PhotographerEmail = image.Photographer?.Email
             }).ToList();
 
-            _loggerService.Success($"Successfully retrieved {imageDtos.Count} images with photographer information.");
+            _loggerService.Success(
+                $"Successfully retrieved {imageDtos.Count} images from page {paginationParams.PageIndex} (total records: {totalCount}).");
 
-            return imageDtos;
+            // Tạo đối tượng phân trang chứa dữ liệu và thông tin phân trang
+            var paginatedResult = new Pagination<ImageDto>(
+                imageDtos,
+                totalCount,
+                paginationParams.PageIndex,
+                paginationParams.PageSize
+            );
+
+            return paginatedResult;
         }
         catch (Exception ex)
         {

@@ -1,3 +1,4 @@
+using ArWoh.API.Commons;
 using ArWoh.API.DTOs.ImageDTOs;
 using ArWoh.API.Interface;
 using ArWoh.API.Utils;
@@ -22,25 +23,29 @@ public class ImageController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(ApiResult<IEnumerable<ImageDto>>), 200)]
+    [ProducesResponseType(typeof(ApiResult<Pagination<ImageDto>>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]
     [ProducesResponseType(typeof(ApiResult<object>), 500)]
-    public async Task<IActionResult> GetAllImages()
+    public async Task<IActionResult> GetAllImages([FromQuery] PaginationParameter paginationParams)
     {
         try
         {
-            _loggerService.Info("Fetching all images via API.");
+            _loggerService.Info("Fetching all images via API with pagination.");
 
-            var images = await _imageService.GetAllImages();
+            var paginatedImages = await _imageService.GetAllImages(paginationParams);
 
-            if (!images.Any())
+            if (paginatedImages.TotalCount == 0)
             {
                 _loggerService.Warn("No images found.");
-                return Ok(ApiResult<IEnumerable<ImageDto>>.Success(new List<ImageDto>()));
+                return Ok(ApiResult<Pagination<ImageDto>>.Success(
+                    new Pagination<ImageDto>(new List<ImageDto>(), 0, paginationParams.PageIndex,
+                        paginationParams.PageSize)
+                ));
             }
 
-            _loggerService.Success($"Successfully retrieved {images.Count()} images.");
-            return Ok(ApiResult<IEnumerable<ImageDto>>.Success(images));
+            _loggerService.Success(
+                $"Successfully retrieved {paginatedImages.Count} images (page {paginationParams.PageIndex}/{paginatedImages.TotalPages}).");
+            return Ok(ApiResult<Pagination<ImageDto>>.Success(paginatedImages));
         }
         catch (Exception ex)
         {

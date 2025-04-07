@@ -222,7 +222,239 @@ public class SystemController : ControllerBase
             #endregion
 
             #region METRO
-
+            new()
+            {
+                Title = "Nhịp Sống Metro Sài Gòn",
+                Description =
+                    "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(1).jpg&version_id=null",
+                Orientation = OrientationType.Landscape,
+                Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
+                Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
+                Price = 42000,
+                FileName = "saigon_metro_line1.jpg",
+                StoryOfArt =
+                    "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            
+            //2
+            new()
+            {
+                Title = "Nhịp Sống Metro Sài Gòn",
+                Description =
+                    "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(13).jpg&version_id=null",
+                Orientation = OrientationType.Landscape,
+                Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
+                Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
+                Price = 42000,
+                FileName = "saigon_metro_line1.jpg",
+                StoryOfArt =
+                    "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            
+            
+            new()
+            {
+                Title = "Nhịp Sống Metro Sài Gòn",
+                Description =
+                    "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(14).jpg&version_id=null",
+                Orientation = OrientationType.Landscape,
+                Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
+                Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
+                Price = 42000,
+                FileName = "saigon_metro_line1.jpg",
+                StoryOfArt =
+                    "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            
+            
+            new()
+            {
+                Title = "Nhịp Sống Metro Sài Gòn",
+                Description =
+                    "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(15).jpg&version_id=null",
+                Orientation = OrientationType.Landscape,
+                Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
+                Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
+                Price = 42000,
+                FileName = "saigon_metro_line1.jpg",
+                StoryOfArt =
+                    "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            
+            
+            new()
+            {
+                Title = "Nhịp Sống Metro Sài Gòn",
+                Description =
+                    "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(16).jpg&version_id=null",
+                Orientation = OrientationType.Landscape,
+                Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
+                Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
+                Price = 42000,
+                FileName = "saigon_metro_line1.jpg",
+                StoryOfArt =
+                    "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            
+            
+            new()
+            {
+                Title = "Nhịp Sống Metro Sài Gòn",
+                Description =
+                    "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(17).jpg&version_id=null",
+                Orientation = OrientationType.Landscape,
+                Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
+                Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
+                Price = 42000,
+                FileName = "saigon_metro_line1.jpg",
+                StoryOfArt =
+                    "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            
+            
+            new()
+            {
+                Title = "Nhịp Sống Metro Sài Gòn",
+                Description =
+                    "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(18).jpg&version_id=null",
+                Orientation = OrientationType.Landscape,
+                Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
+                Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
+                Price = 42000,
+                FileName = "saigon_metro_line1.jpg",
+                StoryOfArt =
+                    "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            
+            
+            new()
+            {
+                Title = "Nhịp Sống Metro Sài Gòn",
+                Description =
+                    "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(19).jpg&version_id=null",
+                Orientation = OrientationType.Landscape,
+                Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
+                Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
+                Price = 42000,
+                FileName = "saigon_metro_line1.jpg",
+                StoryOfArt =
+                    "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            
+            
+            new()
+            {
+                Title = "Nhịp Sống Metro Sài Gòn",
+                Description =
+                    "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(20).jpg&version_id=null",
+                Orientation = OrientationType.Landscape,
+                Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
+                Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
+                Price = 42000,
+                FileName = "saigon_metro_line1.jpg",
+                StoryOfArt =
+                    "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            
+            
+            new()
+            {
+                Title = "Nhịp Sống Metro Sài Gòn",
+                Description =
+                    "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(21).jpg&version_id=null",
+                Orientation = OrientationType.Landscape,
+                Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
+                Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
+                Price = 42000,
+                FileName = "saigon_metro_line1.jpg",
+                StoryOfArt =
+                    "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            
+            
+            new()
+            {
+                Title = "Nhịp Sống Metro Sài Gòn",
+                Description =
+                    "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(22).jpg&version_id=null",
+                Orientation = OrientationType.Landscape,
+                Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
+                Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
+                Price = 42000,
+                FileName = "saigon_metro_line1.jpg",
+                StoryOfArt =
+                    "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            
+            
+            new()
+            {
+                Title = "Nhịp Sống Metro Sài Gòn",
+                Description =
+                    "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(23).jpg&version_id=null",
+                Orientation = OrientationType.Landscape,
+                Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
+                Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
+                Price = 42000,
+                FileName = "saigon_metro_line1.jpg",
+                StoryOfArt =
+                    "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            
+            
+            new()
+            {
+                Title = "Nhịp Sống Metro Sài Gòn",
+                Description =
+                    "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(24).jpg&version_id=null",
+                Orientation = OrientationType.Landscape,
+                Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
+                Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
+                Price = 42000,
+                FileName = "saigon_metro_line1.jpg",
+                StoryOfArt =
+                    "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            
             #endregion
 
             #region ĐẠI HỘI HUẾ

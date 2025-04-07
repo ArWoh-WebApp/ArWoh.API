@@ -222,6 +222,7 @@ public class SystemController : ControllerBase
             #endregion
 
             #region METRO
+
             new()
             {
                 Title = "Nhịp Sống Metro Sài Gòn",
@@ -238,7 +239,7 @@ public class SystemController : ControllerBase
                     "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
             },
-            
+
             //2
             new()
             {
@@ -256,8 +257,8 @@ public class SystemController : ControllerBase
                     "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
             },
-            
-            
+
+
             new()
             {
                 Title = "Nhịp Sống Metro Sài Gòn",
@@ -274,8 +275,8 @@ public class SystemController : ControllerBase
                     "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
             },
-            
-            
+
+
             new()
             {
                 Title = "Nhịp Sống Metro Sài Gòn",
@@ -292,8 +293,8 @@ public class SystemController : ControllerBase
                     "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
             },
-            
-            
+
+
             new()
             {
                 Title = "Nhịp Sống Metro Sài Gòn",
@@ -310,8 +311,8 @@ public class SystemController : ControllerBase
                     "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
             },
-            
-            
+
+
             new()
             {
                 Title = "Nhịp Sống Metro Sài Gòn",
@@ -328,8 +329,8 @@ public class SystemController : ControllerBase
                     "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
             },
-            
-            
+
+
             new()
             {
                 Title = "Nhịp Sống Metro Sài Gòn",
@@ -346,8 +347,8 @@ public class SystemController : ControllerBase
                     "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
             },
-            
-            
+
+
             new()
             {
                 Title = "Nhịp Sống Metro Sài Gòn",
@@ -364,8 +365,8 @@ public class SystemController : ControllerBase
                     "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
             },
-            
-            
+
+
             new()
             {
                 Title = "Nhịp Sống Metro Sài Gòn",
@@ -382,8 +383,8 @@ public class SystemController : ControllerBase
                     "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
             },
-            
-            
+
+
             new()
             {
                 Title = "Nhịp Sống Metro Sài Gòn",
@@ -400,8 +401,8 @@ public class SystemController : ControllerBase
                     "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
             },
-            
-            
+
+
             new()
             {
                 Title = "Nhịp Sống Metro Sài Gòn",
@@ -418,8 +419,8 @@ public class SystemController : ControllerBase
                     "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
             },
-            
-            
+
+
             new()
             {
                 Title = "Nhịp Sống Metro Sài Gòn",
@@ -436,8 +437,8 @@ public class SystemController : ControllerBase
                     "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
             },
-            
-            
+
+
             new()
             {
                 Title = "Nhịp Sống Metro Sài Gòn",
@@ -454,7 +455,7 @@ public class SystemController : ControllerBase
                     "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
             },
-            
+
             #endregion
 
             #region ĐẠI HỘI HUẾ
@@ -492,7 +493,7 @@ public class SystemController : ControllerBase
                     "<h2>Dấu Ấn Hoàng Cung: Di Sản Văn Hóa Việt Nam</h2><br><br>1. Lịch Sử Trường Tồn. Đại Nội Huế được xây dựng từ năm 1805 dưới triều Gia Long, là trung tâm chính trị và văn hóa của triều đại nhà Nguyễn trong suốt 143 năm (1802-1945).\n\n2. Kiến Trúc Đặc Biệt. Công trình này là sự kết hợp hoàn hảo giữa nghệ thuật phương Đông truyền thống và các nguyên lý phong thủy, thể hiện qua việc bố trí các tòa nhà theo trục Bắc-Nam và được bao quanh bởi hệ thống sông Hương.\n\n3. Thách Thức Bảo Tồn. Bức ảnh này ghi lại một trong những góc còn nguyên vẹn của di sản, sau khi phần lớn công trình đã bị tàn phá qua hai cuộc chiến tranh và nhiều thập kỷ bị bỏ hoang.\n\n4. Giá Trị Biểu Tượng. Màu vàng hoàng gia trên các chi tiết kiến trúc là màu dành riêng cho hoàng tộc, tượng trưng cho quyền lực tối cao và sự thịnh vượng của triều đại.\n\n5. Góc Nhìn Nghệ Thuật. Bức ảnh được chụp vào thời điểm bình minh, khi ánh sáng đầu ngày tạo ra sự tương phản mạnh mẽ giữa bóng và sáng, làm nổi bật các đường nét kiến trúc tinh xảo - một khoảnh khắc hiếm có khi du khách chưa đến tham quan.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
             },
-            
+
             new()
             {
                 Title = "Bình Minh Tại Đại Nội Huế",
@@ -509,7 +510,7 @@ public class SystemController : ControllerBase
                     "<h2>Dấu Ấn Hoàng Cung: Di Sản Văn Hóa Việt Nam</h2><br><br>1. Lịch Sử Trường Tồn. Đại Nội Huế được xây dựng từ năm 1805 dưới triều Gia Long, là trung tâm chính trị và văn hóa của triều đại nhà Nguyễn trong suốt 143 năm (1802-1945).\n\n2. Kiến Trúc Đặc Biệt. Công trình này là sự kết hợp hoàn hảo giữa nghệ thuật phương Đông truyền thống và các nguyên lý phong thủy, thể hiện qua việc bố trí các tòa nhà theo trục Bắc-Nam và được bao quanh bởi hệ thống sông Hương.\n\n3. Thách Thức Bảo Tồn. Bức ảnh này ghi lại một trong những góc còn nguyên vẹn của di sản, sau khi phần lớn công trình đã bị tàn phá qua hai cuộc chiến tranh và nhiều thập kỷ bị bỏ hoang.\n\n4. Giá Trị Biểu Tượng. Màu vàng hoàng gia trên các chi tiết kiến trúc là màu dành riêng cho hoàng tộc, tượng trưng cho quyền lực tối cao và sự thịnh vượng của triều đại.\n\n5. Góc Nhìn Nghệ Thuật. Bức ảnh được chụp vào thời điểm bình minh, khi ánh sáng đầu ngày tạo ra sự tương phản mạnh mẽ giữa bóng và sáng, làm nổi bật các đường nét kiến trúc tinh xảo - một khoảnh khắc hiếm có khi du khách chưa đến tham quan.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
             },
-            
+
             new()
             {
                 Title = "Bình Minh Tại Đại Nội Huế",
@@ -543,7 +544,7 @@ public class SystemController : ControllerBase
                     "<h2>Dấu Ấn Hoàng Cung: Di Sản Văn Hóa Việt Nam</h2><br><br>1. Lịch Sử Trường Tồn. Đại Nội Huế được xây dựng từ năm 1805 dưới triều Gia Long, là trung tâm chính trị và văn hóa của triều đại nhà Nguyễn trong suốt 143 năm (1802-1945).\n\n2. Kiến Trúc Đặc Biệt. Công trình này là sự kết hợp hoàn hảo giữa nghệ thuật phương Đông truyền thống và các nguyên lý phong thủy, thể hiện qua việc bố trí các tòa nhà theo trục Bắc-Nam và được bao quanh bởi hệ thống sông Hương.\n\n3. Thách Thức Bảo Tồn. Bức ảnh này ghi lại một trong những góc còn nguyên vẹn của di sản, sau khi phần lớn công trình đã bị tàn phá qua hai cuộc chiến tranh và nhiều thập kỷ bị bỏ hoang.\n\n4. Giá Trị Biểu Tượng. Màu vàng hoàng gia trên các chi tiết kiến trúc là màu dành riêng cho hoàng tộc, tượng trưng cho quyền lực tối cao và sự thịnh vượng của triều đại.\n\n5. Góc Nhìn Nghệ Thuật. Bức ảnh được chụp vào thời điểm bình minh, khi ánh sáng đầu ngày tạo ra sự tương phản mạnh mẽ giữa bóng và sáng, làm nổi bật các đường nét kiến trúc tinh xảo - một khoảnh khắc hiếm có khi du khách chưa đến tham quan.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
             },
-            
+
             new()
             {
                 Title = "Bình Minh Tại Đại Nội Huế",
@@ -577,7 +578,7 @@ public class SystemController : ControllerBase
                     "<h2>Dấu Ấn Hoàng Cung: Di Sản Văn Hóa Việt Nam</h2><br><br>1. Lịch Sử Trường Tồn. Đại Nội Huế được xây dựng từ năm 1805 dưới triều Gia Long, là trung tâm chính trị và văn hóa của triều đại nhà Nguyễn trong suốt 143 năm (1802-1945).\n\n2. Kiến Trúc Đặc Biệt. Công trình này là sự kết hợp hoàn hảo giữa nghệ thuật phương Đông truyền thống và các nguyên lý phong thủy, thể hiện qua việc bố trí các tòa nhà theo trục Bắc-Nam và được bao quanh bởi hệ thống sông Hương.\n\n3. Thách Thức Bảo Tồn. Bức ảnh này ghi lại một trong những góc còn nguyên vẹn của di sản, sau khi phần lớn công trình đã bị tàn phá qua hai cuộc chiến tranh và nhiều thập kỷ bị bỏ hoang.\n\n4. Giá Trị Biểu Tượng. Màu vàng hoàng gia trên các chi tiết kiến trúc là màu dành riêng cho hoàng tộc, tượng trưng cho quyền lực tối cao và sự thịnh vượng của triều đại.\n\n5. Góc Nhìn Nghệ Thuật. Bức ảnh được chụp vào thời điểm bình minh, khi ánh sáng đầu ngày tạo ra sự tương phản mạnh mẽ giữa bóng và sáng, làm nổi bật các đường nét kiến trúc tinh xảo - một khoảnh khắc hiếm có khi du khách chưa đến tham quan.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
             },
-            
+
             new()
             {
                 Title = "Bình Minh Tại Đại Nội Huế",
@@ -594,7 +595,7 @@ public class SystemController : ControllerBase
                     "<h2>Dấu Ấn Hoàng Cung: Di Sản Văn Hóa Việt Nam</h2><br><br>1. Lịch Sử Trường Tồn. Đại Nội Huế được xây dựng từ năm 1805 dưới triều Gia Long, là trung tâm chính trị và văn hóa của triều đại nhà Nguyễn trong suốt 143 năm (1802-1945).\n\n2. Kiến Trúc Đặc Biệt. Công trình này là sự kết hợp hoàn hảo giữa nghệ thuật phương Đông truyền thống và các nguyên lý phong thủy, thể hiện qua việc bố trí các tòa nhà theo trục Bắc-Nam và được bao quanh bởi hệ thống sông Hương.\n\n3. Thách Thức Bảo Tồn. Bức ảnh này ghi lại một trong những góc còn nguyên vẹn của di sản, sau khi phần lớn công trình đã bị tàn phá qua hai cuộc chiến tranh và nhiều thập kỷ bị bỏ hoang.\n\n4. Giá Trị Biểu Tượng. Màu vàng hoàng gia trên các chi tiết kiến trúc là màu dành riêng cho hoàng tộc, tượng trưng cho quyền lực tối cao và sự thịnh vượng của triều đại.\n\n5. Góc Nhìn Nghệ Thuật. Bức ảnh được chụp vào thời điểm bình minh, khi ánh sáng đầu ngày tạo ra sự tương phản mạnh mẽ giữa bóng và sáng, làm nổi bật các đường nét kiến trúc tinh xảo - một khoảnh khắc hiếm có khi du khách chưa đến tham quan.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
             },
-            
+
             new()
             {
                 Title = "Bình Minh Tại Đại Nội Huế",
@@ -611,7 +612,7 @@ public class SystemController : ControllerBase
                     "<h2>Dấu Ấn Hoàng Cung: Di Sản Văn Hóa Việt Nam</h2><br><br>1. Lịch Sử Trường Tồn. Đại Nội Huế được xây dựng từ năm 1805 dưới triều Gia Long, là trung tâm chính trị và văn hóa của triều đại nhà Nguyễn trong suốt 143 năm (1802-1945).\n\n2. Kiến Trúc Đặc Biệt. Công trình này là sự kết hợp hoàn hảo giữa nghệ thuật phương Đông truyền thống và các nguyên lý phong thủy, thể hiện qua việc bố trí các tòa nhà theo trục Bắc-Nam và được bao quanh bởi hệ thống sông Hương.\n\n3. Thách Thức Bảo Tồn. Bức ảnh này ghi lại một trong những góc còn nguyên vẹn của di sản, sau khi phần lớn công trình đã bị tàn phá qua hai cuộc chiến tranh và nhiều thập kỷ bị bỏ hoang.\n\n4. Giá Trị Biểu Tượng. Màu vàng hoàng gia trên các chi tiết kiến trúc là màu dành riêng cho hoàng tộc, tượng trưng cho quyền lực tối cao và sự thịnh vượng của triều đại.\n\n5. Góc Nhìn Nghệ Thuật. Bức ảnh được chụp vào thời điểm bình minh, khi ánh sáng đầu ngày tạo ra sự tương phản mạnh mẽ giữa bóng và sáng, làm nổi bật các đường nét kiến trúc tinh xảo - một khoảnh khắc hiếm có khi du khách chưa đến tham quan.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
             },
-            
+
             new()
             {
                 Title = "Bình Minh Tại Đại Nội Huế",
@@ -628,6 +629,7 @@ public class SystemController : ControllerBase
                     "<h2>Dấu Ấn Hoàng Cung: Di Sản Văn Hóa Việt Nam</h2><br><br>1. Lịch Sử Trường Tồn. Đại Nội Huế được xây dựng từ năm 1805 dưới triều Gia Long, là trung tâm chính trị và văn hóa của triều đại nhà Nguyễn trong suốt 143 năm (1802-1945).\n\n2. Kiến Trúc Đặc Biệt. Công trình này là sự kết hợp hoàn hảo giữa nghệ thuật phương Đông truyền thống và các nguyên lý phong thủy, thể hiện qua việc bố trí các tòa nhà theo trục Bắc-Nam và được bao quanh bởi hệ thống sông Hương.\n\n3. Thách Thức Bảo Tồn. Bức ảnh này ghi lại một trong những góc còn nguyên vẹn của di sản, sau khi phần lớn công trình đã bị tàn phá qua hai cuộc chiến tranh và nhiều thập kỷ bị bỏ hoang.\n\n4. Giá Trị Biểu Tượng. Màu vàng hoàng gia trên các chi tiết kiến trúc là màu dành riêng cho hoàng tộc, tượng trưng cho quyền lực tối cao và sự thịnh vượng của triều đại.\n\n5. Góc Nhìn Nghệ Thuật. Bức ảnh được chụp vào thời điểm bình minh, khi ánh sáng đầu ngày tạo ra sự tương phản mạnh mẽ giữa bóng và sáng, làm nổi bật các đường nét kiến trúc tinh xảo - một khoảnh khắc hiếm có khi du khách chưa đến tham quan.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
             },
+
             #endregion
         };
 

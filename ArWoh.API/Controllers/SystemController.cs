@@ -129,7 +129,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Rolling sand dunes catch the last golden rays of sunset, creating a mesmerizing pattern of light and shadow across the desert landscape.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FIMG_2318.jpg&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FChuaBa%2FIMG_2318.jpg&version_id=null",
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Desert", "Dunes", "Sunset", "Sand", "Minimalist" },
                 Location = "Sahara Desert, Morocco",
@@ -145,7 +145,7 @@ public class SystemController : ControllerBase
                 Description =
                     "A winding path cuts through a forest ablaze with autumn colors, creating a tunnel of golden and crimson foliage.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FIMG_2319.jpg&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FChuaBa%2FIMG_2319.jpg&version_id=null",
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Autumn", "Forest", "Path", "Fall Colors", "Trees" },
                 Location = "Vermont, USA",
@@ -161,7 +161,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Dramatic sea cliffs catch the first light of day as waves crash against their base, showcasing the raw power of where land meets sea.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FIMG_2320.jpg&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FChuaBa%2FIMG_2320.jpg&version_id=null",
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Coast", "Cliffs", "Ocean", "Sunrise", "Waves" },
                 Location = "Moher, Ireland",
@@ -176,7 +176,7 @@ public class SystemController : ControllerBase
                 Title = "Mountain Lake Reflection",
                 Description =
                     "A pristine alpine lake perfectly mirrors the surrounding mountains and sky, creating a symmetrical landscape of extraordinary beauty.",
-                Url = "https://images.unsplash.com/photo-1439853949127-fa647821eba0",
+                Url = "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FChuaBa%2FIMG_2321.jpg&version_id=null",
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Lake", "Mountains", "Reflection", "Alpine", "Symmetry" },
                 Location = "Banff National Park, Canada",
@@ -192,7 +192,7 @@ public class SystemController : ControllerBase
                 Description =
                     "A busy city intersection glistens with reflections from neon signs and traffic lights, as rain transforms an ordinary urban scene into a colorful abstract canvas.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FIMG_2321.jpg&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FChuaBa%2FIMG_2325.jpg&version_id=null",
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Urban", "Rain", "Night", "City Lights", "Reflection" },
                 Location = "Seoul, South Korea",
@@ -208,7 +208,55 @@ public class SystemController : ControllerBase
                 Description =
                     "Centuries-old olive trees with gnarled trunks stand in formation across a Mediterranean hillside, their silver-green leaves shimmering in the warm light.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FIMG_2392.jpg&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FChuaBa%2FIMG_2329.jpg&version_id=null",
+                Orientation = OrientationType.Landscape,
+                Tags = new List<string> { "Olives", "Trees", "Mediterranean", "Agriculture", "Ancient" },
+                Location = "Puglia, Italy",
+                Price = 32000,
+                FileName = "ancient_olive_grove.jpg",
+                StoryOfArt =
+                    "<h2>Living Monuments: The Olive Guardians</h2><br><br>1. Botanical Elders. Several trees in this grove have been carbon-dated to be over 1,500 years old, making them living links to the Byzantine period when they were first planted.\n\n2. Agricultural Continuity. The same families have harvested olives from these trees for 27 generations, maintaining traditional farming techniques passed down through centuries.\n\n3. Environmental Adaptation. The twisted forms of the trunks represent the trees' response to prevailing winds and periodic drought - a physical record of environmental conditions spanning millennia.\n\n4. Seasonal Selection. The photograph was taken during the two-week period before harvest when the olives have reached full maturity but remain on the branches.\n\n5. Conservation Challenge. This ancient grove now faces threats from a bacterial disease spreading through the region, potentially endangering trees that have survived countless previous challenges throughout history.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            new()
+            {
+                Title = "Ancient Olive Grove",
+                Description =
+                    "Centuries-old olive trees with gnarled trunks stand in formation across a Mediterranean hillside, their silver-green leaves shimmering in the warm light.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FChuaBa%2FIMG_2334.jpg&version_id=null",
+                Orientation = OrientationType.Landscape,
+                Tags = new List<string> { "Olives", "Trees", "Mediterranean", "Agriculture", "Ancient" },
+                Location = "Puglia, Italy",
+                Price = 32000,
+                FileName = "ancient_olive_grove.jpg",
+                StoryOfArt =
+                    "<h2>Living Monuments: The Olive Guardians</h2><br><br>1. Botanical Elders. Several trees in this grove have been carbon-dated to be over 1,500 years old, making them living links to the Byzantine period when they were first planted.\n\n2. Agricultural Continuity. The same families have harvested olives from these trees for 27 generations, maintaining traditional farming techniques passed down through centuries.\n\n3. Environmental Adaptation. The twisted forms of the trunks represent the trees' response to prevailing winds and periodic drought - a physical record of environmental conditions spanning millennia.\n\n4. Seasonal Selection. The photograph was taken during the two-week period before harvest when the olives have reached full maturity but remain on the branches.\n\n5. Conservation Challenge. This ancient grove now faces threats from a bacterial disease spreading through the region, potentially endangering trees that have survived countless previous challenges throughout history.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            new()
+            {
+                Title = "Ancient Olive Grove",
+                Description =
+                    "Centuries-old olive trees with gnarled trunks stand in formation across a Mediterranean hillside, their silver-green leaves shimmering in the warm light.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FChuaBa%2FIMG_2391.jpg&version_id=null",
+                Orientation = OrientationType.Landscape,
+                Tags = new List<string> { "Olives", "Trees", "Mediterranean", "Agriculture", "Ancient" },
+                Location = "Puglia, Italy",
+                Price = 32000,
+                FileName = "ancient_olive_grove.jpg",
+                StoryOfArt =
+                    "<h2>Living Monuments: The Olive Guardians</h2><br><br>1. Botanical Elders. Several trees in this grove have been carbon-dated to be over 1,500 years old, making them living links to the Byzantine period when they were first planted.\n\n2. Agricultural Continuity. The same families have harvested olives from these trees for 27 generations, maintaining traditional farming techniques passed down through centuries.\n\n3. Environmental Adaptation. The twisted forms of the trunks represent the trees' response to prevailing winds and periodic drought - a physical record of environmental conditions spanning millennia.\n\n4. Seasonal Selection. The photograph was taken during the two-week period before harvest when the olives have reached full maturity but remain on the branches.\n\n5. Conservation Challenge. This ancient grove now faces threats from a bacterial disease spreading through the region, potentially endangering trees that have survived countless previous challenges throughout history.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+            new()
+            {
+                Title = "Ancient Olive Grove",
+                Description =
+                    "Centuries-old olive trees with gnarled trunks stand in formation across a Mediterranean hillside, their silver-green leaves shimmering in the warm light.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FChuaBa%2FIMG_2463.jpg&version_id=null",
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Olives", "Trees", "Mediterranean", "Agriculture", "Ancient" },
                 Location = "Puglia, Italy",
@@ -229,7 +277,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(1).jpg&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FMetro%2FIMG_5722-min.jpg&version_id=null",
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
                 Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
@@ -247,7 +295,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(13).jpg&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FMetro%2FIMG_5723-min.jpg&version_id=null",
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
                 Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
@@ -265,7 +313,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(14).jpg&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FMetro%2FIMG_5724-min.jpg&version_id=null",
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
                 Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
@@ -283,7 +331,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(15).jpg&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FMetro%2FIMG_5726-min.jpg&version_id=null",
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
                 Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
@@ -301,7 +349,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(16).jpg&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FMetro%2FIMG_5734-min.jpg&version_id=null",
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
                 Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
@@ -337,7 +385,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(18).jpg&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FMetro%2FIMG_5739-min.jpg&version_id=null",
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
                 Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
@@ -355,7 +403,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(19).jpg&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FMetro%2FIMG_5741-min.png&version_id=null",
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
                 Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
@@ -373,7 +421,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(20).jpg&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FMetro%2FIMG_5764-min.jpg&version_id=null",
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
                 Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
@@ -391,7 +439,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(21).jpg&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FMetro%2FIMG_5765-min.jpg&version_id=null",
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
                 Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
@@ -409,7 +457,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(22).jpg&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FMetro%2FIMG_5767-min.jpg&version_id=null",
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
                 Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
@@ -445,7 +493,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(24).jpg&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FMetro%2FIMG_5768-min.jpg&version_id=null",
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
                 Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
@@ -466,7 +514,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-01.png&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-01-min.png&version_id=null",
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
                 Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
@@ -483,7 +531,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-02.png&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-02-min.png&version_id=null",
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
                 Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
@@ -500,7 +548,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-03.png&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-03-min.png&version_id=null",
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
                 Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
@@ -517,7 +565,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-04.png&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-04-min.png&version_id=null",
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
                 Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
@@ -534,7 +582,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-05.png&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-05-min.png&version_id=null",
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
                 Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
@@ -551,7 +599,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-06.png&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-06-min.png&version_id=null",
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
                 Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
@@ -568,7 +616,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-07.png&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-07-min.png&version_id=null",
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
                 Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
@@ -585,7 +633,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-08.png&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-08-min.png&version_id=null",
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
                 Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
@@ -602,7 +650,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-09.png&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-10-min.png&version_id=null",
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
                 Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
@@ -619,7 +667,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-10.png&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-09-min.png&version_id=null",
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
                 Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",

@@ -108,7 +108,7 @@ public class PhotographerController : ControllerBase
         try
         {
             var photographerId = _claimService.GetCurrentUserId();
-            var revenue = await _paymentService.GetPhotographerRevenue(photographerId);
+            var revenue = await _userService.GetPhotographerRevenue(photographerId);
             return Ok(ApiResult<object>.Success(revenue));
         }
         catch (Exception ex)

@@ -53,7 +53,7 @@ public class UserController : ControllerBase
         try
         {
             var userId = _claimService.GetCurrentUserId();
-            var transactions = _paymentService.GetUserTransactions(userId);
+            var transactions = _userService.GetUserTransactions(userId);
 
             return Ok(ApiResult<object>.Success(transactions, "Transactions retrieved successfully"));
         }

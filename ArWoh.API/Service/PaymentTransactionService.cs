@@ -3,7 +3,7 @@ using ArWoh.API.Interface;
 
 namespace ArWoh.API.Service;
 
-public class PaymentTransactionService
+public class PaymentTransactionService : IPaymentTransactionService
 {
     private readonly ILoggerService _logger;
     private readonly IUnitOfWork _unitOfWork;

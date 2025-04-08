@@ -97,9 +97,9 @@ public class PaymentService : IPaymentService
         {
             _logger.Info($"Nhận webhook từ PayOS {webhookData}");
 
-            var orderCode = webhookData.orderCode; // ID của Payment trong hệ thống
-            var statusCode = webhookData.code; // Mã trạng thái giao dịch từ PayOS
-            var transactionId = webhookData.reference; // Mã giao dịch của PayOS
+            var orderCode = webhookData.orderCode; 
+            var statusCode = webhookData.code;
+            var transactionId = webhookData.reference;
 
             // 2. Tìm Payment tương ứng trong database
             var payment = await _unitOfWork.Payments.FirstOrDefaultAsync(p => p.Id == orderCode);

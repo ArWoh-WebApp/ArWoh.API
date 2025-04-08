@@ -74,6 +74,7 @@ public static class IOCContainer
         services.AddScoped<IPayOSService, PayOSService>();
         services.AddScoped<ICartService, CartService>();
         services.AddScoped<IAdminService, AdminService>();
+        services.AddScoped<IPaymentTransactionService, PaymentTransactionService>();
         services.AddScoped<IShippingOrderService, ShippingOrderService>();
 
         services.AddHttpContextAccessor();

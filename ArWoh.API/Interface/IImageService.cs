@@ -8,8 +8,9 @@ public interface IImageService
     Task<IEnumerable<ImageDto>> GetImagesUploadedByPhotographer(int photographerId);
 
     Task<IEnumerable<ImageDto>> GetRandomImages();
+
     Task<Pagination<ImageDto>> GetAllImages(PaginationParameter paginationParams);
-    Task<IEnumerable<ImageDto>> GetAllImagesBoughtByUser(int userId);
+    // Task<IEnumerable<ImageDto>> GetAllImagesBoughtByUser(int userId);
 
     Task<ImageDto> GetImageById(int imageId);
 

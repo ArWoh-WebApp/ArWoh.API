@@ -4,8 +4,9 @@ namespace ArWoh.API.Interface;
 
 public interface IAdminService
 {
-    Task<OverviewDTO> GetOverviewAsync();
+    // Task<OverviewDTO> GetOverviewAsync();
     Task<UserSummaryDTO> GetUserSummaryAsync();
+
     Task<ImageSummaryDTO> GetImageSummaryAsync();
-    Task<RevenueSummaryDTO> GetRevenueSummaryAsync();
+    // Task<RevenueSummaryDTO> GetRevenueSummaryAsync();
 }

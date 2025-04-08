@@ -6,16 +6,18 @@ namespace ArWoh.API.Entities;
 
 public class Payment : BaseEntity
 {
-    public int? PaymentTransactionId { get; set; } // Cho phép null ban đầu
+    [Required] public int OrderId { get; set; }
 
     [Required] public decimal Amount { get; set; }
 
     [Required] public PaymentGatewayEnum PaymentGateway { get; set; } // "PAYOS" hoặc "VNPAY"
 
-    [Required] public PaymentStatusEnum PaymentStatus { get; set; } = PaymentStatusEnum.PENDING;
+    [Required] public PaymentStatusEnum Status { get; set; } = PaymentStatusEnum.PENDING;
 
-    public string? GatewayTransactionId { get; set; } // ID từ PAYOS/VNPAY nếu có
+    public string? GatewayTransactionId { get; set; } // ID từ cổng thanh toán
+    public string? GatewayResponse { get; set; } // Response JSON từ cổng thanh toán
+    public string? PaymentUrl { get; set; } // URL để chuyển hướng thanh toán
+    public string? RedirectUrl { get; set; } // URL callback sau khi thanh toán
 
-    [ForeignKey("PaymentTransactionId")]
-    public PaymentTransaction? PaymentTransaction { get; set; } // Có thể null ban đầu
+    [ForeignKey("OrderId")] public Order Order { get; set; }
 }

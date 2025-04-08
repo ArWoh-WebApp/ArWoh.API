@@ -3,9 +3,11 @@
 // Enums/ShippingStatusEnum.cs
 public enum ShippingStatusEnum
 {
-    Pending, // Đang chờ
-    Confirmed, // Đã xác nhận
-    Packaging, // Đang đóng gói
-    Shipping, // Đang vận chuyển
-    Delivered // Đã giao hàng
+    NotApplicable,
+    Pending,
+    Confirmed,
+    Packaging,
+    Shipping,
+    Delivered,
+    Cancelled
 }

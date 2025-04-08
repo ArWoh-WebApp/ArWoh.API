@@ -45,23 +45,23 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpGet("me/transactions")]
-    [Authorize]
-    [ProducesResponseType(typeof(ApiResult<UserProfileDto>), 200)]
-    public async Task<IActionResult> GetMyTransactions()
-    {
-        try
-        {
-            var userId = _claimService.GetCurrentUserId();
-            var transactions = _userService.GetUserTransactions(userId);
-
-            return Ok(ApiResult<object>.Success(transactions, "Transactions retrieved successfully"));
-        }
-        catch (Exception e)
-        {
-            return Ok(ApiResult<object>.Error(e.Message));
-        }
-    }
+    // [HttpGet("me/transactions")]
+    // [Authorize]
+    // [ProducesResponseType(typeof(ApiResult<UserProfileDto>), 200)]
+    // public async Task<IActionResult> GetMyTransactions()
+    // {
+    //     try
+    //     {
+    //         var userId = _claimService.GetCurrentUserId();
+    //         var transactions = _userService.GetUserTransactions(userId);
+    //
+    //         return Ok(ApiResult<object>.Success(transactions, "Transactions retrieved successfully"));
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         return Ok(ApiResult<object>.Error(e.Message));
+    //     }
+    // }
 
     [HttpGet("me/profile")]
     [Authorize]

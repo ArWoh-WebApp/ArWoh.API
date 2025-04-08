@@ -2,7 +2,6 @@ using ArWoh.API.DTOs.ImageDTOs;
 using ArWoh.API.DTOs.UserDTOs;
 using ArWoh.API.Interface;
 using ArWoh.API.Utils;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ArWoh.API.Controllers;
@@ -100,20 +99,20 @@ public class PhotographerController : ControllerBase
     }
 
 
-    [HttpGet("revenue/me")]
-    [Authorize(Policy = "PhotographerPolicy")]
-    [ProducesResponseType(typeof(ApiResult<object>), 200)]
-    public async Task<IActionResult> GetPhotographerRevenue()
-    {
-        try
-        {
-            var photographerId = _claimService.GetCurrentUserId();
-            var revenue = await _userService.GetPhotographerRevenue(photographerId);
-            return Ok(ApiResult<object>.Success(revenue));
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, ApiResult<object>.Error("An error occurred while retrieving images"));
-        }
-    }
+    // [HttpGet("revenue/me")]
+    // [Authorize(Policy = "PhotographerPolicy")]
+    // [ProducesResponseType(typeof(ApiResult<object>), 200)]
+    // public async Task<IActionResult> GetPhotographerRevenue()
+    // {
+    //     try
+    //     {
+    //         var photographerId = _claimService.GetCurrentUserId();
+    //         var revenue = await _userService.GetPhotographerRevenue(photographerId);
+    //         return Ok(ApiResult<object>.Success(revenue));
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         return StatusCode(500, ApiResult<object>.Error("An error occurred while retrieving images"));
+    //     }
+    // }
 }

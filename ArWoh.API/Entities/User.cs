@@ -12,5 +12,4 @@ public class User : BaseEntity
     public string ProfilePictureUrl { get; set; } // Ảnh đại diện
 
     public ICollection<Image> Images { get; set; }
-    public ICollection<PaymentTransaction> Transactions { get; set; }
 }

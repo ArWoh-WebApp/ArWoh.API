@@ -4,8 +4,6 @@ using ArWoh.API.Entities;
 using ArWoh.API.Interface;
 using ArWoh.API.Repository;
 using ArWoh.API.Service;
-using ArWoh.API.Service.ThirdPartyService.Interfaces;
-using ArWoh.API.Service.ThirdPartyService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -71,11 +69,8 @@ public static class IOCContainer
         services.AddScoped<ILoggerService, LoggerService>();
         services.AddScoped<IClaimService, ClaimService>();
         services.AddScoped<IPaymentService, PaymentService>();
-        services.AddScoped<IPayOSService, PayOSService>();
         services.AddScoped<ICartService, CartService>();
         services.AddScoped<IAdminService, AdminService>();
-        services.AddScoped<IPaymentTransactionService, PaymentTransactionService>();
-        services.AddScoped<IShippingOrderService, ShippingOrderService>();
 
         services.AddHttpContextAccessor();
 

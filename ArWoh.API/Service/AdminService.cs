@@ -17,22 +17,22 @@ public class AdminService : IAdminService
     }
 
     // Lấy tổng quan dữ liệu
-    public async Task<OverviewDTO> GetOverviewAsync()
-    {
-        var totalUsers = await _unitOfWork.Users.CountAsync();
-        var totalImages = await _unitOfWork.Images.CountAsync();
-
-        var totalRevenue = await _unitOfWork.Payments.GetQueryable()
-            .Where(p => p.PaymentStatus == PaymentStatusEnum.COMPLETED)
-            .SumAsync(p => p.Amount);
-
-        return new OverviewDTO
-        {
-            TotalUsers = totalUsers,
-            TotalImages = totalImages,
-            TotalRevenue = totalRevenue
-        };
-    }
+    // public async Task<OverviewDTO> GetOverviewAsync()
+    // {
+    //     var totalUsers = await _unitOfWork.Users.CountAsync();
+    //     var totalImages = await _unitOfWork.Images.CountAsync();
+    //
+    //     var totalRevenue = await _unitOfWork.Payments.GetQueryable()
+    //         .Where(p => p.PaymentStatus == PaymentStatusEnum.COMPLETED)
+    //         .SumAsync(p => p.Amount);
+    //
+    //     return new OverviewDTO
+    //     {
+    //         TotalUsers = totalUsers,
+    //         TotalImages = totalImages,
+    //         TotalRevenue = totalRevenue
+    //     };
+    // }
 
     // Lấy thống kê user
     public async Task<UserSummaryDTO> GetUserSummaryAsync()
@@ -70,27 +70,27 @@ public class AdminService : IAdminService
         };
     }
 
-    // Lấy doanh thu theo từng tháng
-    public async Task<RevenueSummaryDTO> GetRevenueSummaryAsync()
-    {
-        var payments = _unitOfWork.Payments.GetQueryable()
-            .Where(p => p.PaymentStatus == PaymentStatusEnum.COMPLETED);
-
-        var totalRevenue = await payments.SumAsync(p => p.Amount);
-
-        var monthlyRevenue = await payments
-            .GroupBy(p => new { p.CreatedAt.Year, p.CreatedAt.Month })
-            .Select(g => new
-            {
-                Month = $"{g.Key.Year}-{g.Key.Month:D2}",
-                Revenue = g.Sum(p => p.Amount)
-            })
-            .ToDictionaryAsync(x => x.Month, x => x.Revenue);
-
-        return new RevenueSummaryDTO
-        {
-            TotalRevenue = totalRevenue,
-            MonthlyRevenue = monthlyRevenue
-        };
-    }
+    // // Lấy doanh thu theo từng tháng
+    // public async Task<RevenueSummaryDTO> GetRevenueSummaryAsync()
+    // {
+    //     var payments = _unitOfWork.Payments.GetQueryable()
+    //         .Where(p => p.PaymentStatus == PaymentStatusEnum.COMPLETED);
+    //
+    //     var totalRevenue = await payments.SumAsync(p => p.Amount);
+    //
+    //     var monthlyRevenue = await payments
+    //         .GroupBy(p => new { p.CreatedAt.Year, p.CreatedAt.Month })
+    //         .Select(g => new
+    //         {
+    //             Month = $"{g.Key.Year}-{g.Key.Month:D2}",
+    //             Revenue = g.Sum(p => p.Amount)
+    //         })
+    //         .ToDictionaryAsync(x => x.Month, x => x.Revenue);
+    //
+    //     return new RevenueSummaryDTO
+    //     {
+    //         TotalRevenue = totalRevenue,
+    //         MonthlyRevenue = monthlyRevenue
+    //     };
+    // }
 }

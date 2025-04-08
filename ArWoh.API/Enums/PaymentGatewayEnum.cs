@@ -2,6 +2,6 @@
 
 public enum PaymentGatewayEnum
 {
-    PAYOS = 0,
-    VNPAY = 1
+    PAYOS,
+    VNPAY
 }

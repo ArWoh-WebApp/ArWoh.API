@@ -1,5 +1,4 @@
 using ArWoh.API.DTOs.UserDTOs;
-using ArWoh.API.Entities;
 using ArWoh.API.Interface;
 using ArWoh.API.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -15,40 +14,38 @@ public class AdminController : ControllerBase
     private readonly ILoggerService _loggerService;
     private readonly IPaymentService _paymentService;
     private readonly IUserService _userService;
-    private readonly IPaymentTransactionService _paymentTransactionService;
-    
+
 
     public AdminController(IPaymentService paymentService, ILoggerService loggerService, IClaimService claimService,
-        IUserService userService, IPaymentTransactionService paymentTransactionService)
+        IUserService userService)
     {
         _paymentService = paymentService;
         _loggerService = loggerService;
         _claimService = claimService;
         _userService = userService;
-        _paymentTransactionService = paymentTransactionService;
     }
 
-    [Authorize(Policy = "AdminPolicy")]
-    [HttpGet("transactions")]
-    [ProducesResponseType(typeof(ApiResult<IEnumerable<PaymentTransaction>>), 200)]
-    [ProducesResponseType(typeof(ApiResult<object>), 404)]
-    [ProducesResponseType(typeof(ApiResult<object>), 500)]
-    public async Task<IActionResult> GetAllTransactions()
-    {
-        try
-        {
-            var transactions = await _paymentTransactionService.GetAllTransactions();
-            return Ok(ApiResult<IEnumerable<PaymentTransaction>>.Success(transactions, "Transactions retrieved successfully."));
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound(ApiResult<object>.Error(ex.Message));
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, ApiResult<object>.Error($"An unexpected error occurred: {ex.Message}"));
-        }
-    }
+    // [Authorize(Policy = "AdminPolicy")]
+    // [HttpGet("transactions")]
+    // [ProducesResponseType(typeof(ApiResult<IEnumerable<PaymentTransaction>>), 200)]
+    // [ProducesResponseType(typeof(ApiResult<object>), 404)]
+    // [ProducesResponseType(typeof(ApiResult<object>), 500)]
+    // public async Task<IActionResult> GetAllTransactions()
+    // {
+    //     try
+    //     {
+    //         var transactions = await _paymentTransactionService.GetAllTransactions();
+    //         return Ok(ApiResult<IEnumerable<PaymentTransaction>>.Success(transactions, "Transactions retrieved successfully."));
+    //     }
+    //     catch (KeyNotFoundException ex)
+    //     {
+    //         return NotFound(ApiResult<object>.Error(ex.Message));
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         return StatusCode(500, ApiResult<object>.Error($"An unexpected error occurred: {ex.Message}"));
+    //     }
+    // }
 
     [Authorize(Policy = "AdminPolicy")]
     [HttpGet("users")]

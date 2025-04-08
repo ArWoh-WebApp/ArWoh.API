@@ -73,24 +73,24 @@ public class ImageController : ControllerBase
         }
     }
 
-    [HttpGet("bought-by-user")]
-    [ProducesResponseType(typeof(ApiResult<IEnumerable<ImageDto>>), 200)]
-    [ProducesResponseType(typeof(ApiResult<object>), 400)]
-    [ProducesResponseType(typeof(ApiResult<object>), 500)]
-    public async Task<IActionResult> GetAllImagesBoughtByUser()
-    {
-        try
-        {
-            var userId = _claimService.GetCurrentUserId();
-            var images = await _imageService.GetAllImagesBoughtByUser(userId);
-
-            return Ok(ApiResult<IEnumerable<ImageDto>>.Success(images));
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, ApiResult<object>.Error("An error occurred while processing your request."));
-        }
-    }
+    // [HttpGet("bought-by-user")]
+    // [ProducesResponseType(typeof(ApiResult<IEnumerable<ImageDto>>), 200)]
+    // [ProducesResponseType(typeof(ApiResult<object>), 400)]
+    // [ProducesResponseType(typeof(ApiResult<object>), 500)]
+    // public async Task<IActionResult> GetAllImagesBoughtByUser()
+    // {
+    //     try
+    //     {
+    //         var userId = _claimService.GetCurrentUserId();
+    //         var images = await _imageService.GetAllImagesBoughtByUser(userId);
+    //
+    //         return Ok(ApiResult<IEnumerable<ImageDto>>.Success(images));
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         return StatusCode(500, ApiResult<object>.Error("An error occurred while processing your request."));
+    //     }
+    // }
 
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(ApiResult<ImageDto>), 200)]

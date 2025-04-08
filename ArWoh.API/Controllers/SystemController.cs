@@ -698,13 +698,11 @@ public class SystemController : ControllerBase
             // Danh sách các bảng cần xóa theo thứ tự FK
             var tablesToDelete = new List<Func<Task>>
             {
-                async () => await context.ShippingOrders.ExecuteDeleteAsync(),
                 async () => await context.CartItems.ExecuteDeleteAsync(),
                 async () => await context.AdminActions.ExecuteDeleteAsync(),
                 async () => await context.Carts.ExecuteDeleteAsync(),
                 async () => await context.Payments.ExecuteDeleteAsync(),
                 async () => await context.Orders.ExecuteDeleteAsync(),
-                async () => await context.PaymentTransactions.ExecuteDeleteAsync(),
                 async () => await context.Images.ExecuteDeleteAsync(),
                 async () => await context.Users.ExecuteDeleteAsync()
             };

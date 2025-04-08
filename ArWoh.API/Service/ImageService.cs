@@ -163,45 +163,45 @@ public class ImageService : IImageService
         }
     }
 
-    /// <summary>
-    ///     Lấy tất cả hình sau khi User đã mua dựa trên table PaymentTransaction
-    /// </summary>
-    public async Task<IEnumerable<ImageDto>> GetAllImagesBoughtByUser(int userId)
-    {
-        try
-        {
-            var paymentTransactions = await _unitOfWork.PaymentTransactions
-                .GetQueryable()
-                .Where(pt => pt.CustomerId == userId)
-                .Include(pt => pt.Image)
-                .ToListAsync();
-
-            var images = paymentTransactions
-                .Where(pt => pt.Image != null)
-                .Select(pt => new ImageDto
-                {
-                    Id = pt.Image.Id,
-                    PhotographerId = pt.Image.PhotographerId,
-                    Title = pt.Image.Title,
-                    Description = pt.Image.Description,
-                    Price = pt.Image.Price,
-                    StoryOfArt = pt.Image.StoryOfArt,
-                    Orientation = pt.Image.Orientation,
-                    Tags = pt.Image.Tags,
-                    Location = pt.Image.Location,
-                    FileName = pt.Image.FileName,
-                    Url = pt.Image.Url
-                })
-                .ToList();
-
-            return images;
-        }
-        catch (Exception ex)
-        {
-            _loggerService.Error($"Error fetching images for user {userId}: {ex.Message}");
-            throw;
-        }
-    }
+    // /// <summary>
+    // ///     Lấy tất cả hình sau khi User đã mua dựa trên table PaymentTransaction
+    // /// </summary>
+    // public async Task<IEnumerable<ImageDto>> GetAllImagesBoughtByUser(int userId)
+    // {
+    //     try
+    //     {
+    //         var paymentTransactions = await _unitOfWork.PaymentTransactions
+    //             .GetQueryable()
+    //             .Where(pt => pt.CustomerId == userId)
+    //             .Include(pt => pt.Image)
+    //             .ToListAsync();
+    //
+    //         var images = paymentTransactions
+    //             .Where(pt => pt.Image != null)
+    //             .Select(pt => new ImageDto
+    //             {
+    //                 Id = pt.Image.Id,
+    //                 PhotographerId = pt.Image.PhotographerId,
+    //                 Title = pt.Image.Title,
+    //                 Description = pt.Image.Description,
+    //                 Price = pt.Image.Price,
+    //                 StoryOfArt = pt.Image.StoryOfArt,
+    //                 Orientation = pt.Image.Orientation,
+    //                 Tags = pt.Image.Tags,
+    //                 Location = pt.Image.Location,
+    //                 FileName = pt.Image.FileName,
+    //                 Url = pt.Image.Url
+    //             })
+    //             .ToList();
+    //
+    //         return images;
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         _loggerService.Error($"Error fetching images for user {userId}: {ex.Message}");
+    //         throw;
+    //     }
+    // }
 
     /// <summary>
     ///     Lấy details của 1 tấm hình kèm thông tin photographer

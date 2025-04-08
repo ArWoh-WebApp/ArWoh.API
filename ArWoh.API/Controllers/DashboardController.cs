@@ -60,25 +60,25 @@ public class DashboardController : ControllerBase
         }
     }
 
-    [Authorize(Policy = "AdminPolicy")]
-    [HttpGet("revenue/summary")]
-    [ProducesResponseType(typeof(ApiResult<object>), 200)]
-    [ProducesResponseType(typeof(ApiResult<object>), 500)]
-    public async Task<IActionResult> GetRevenueSummary()
-    {
-        try
-        {
-            var data = await _adminService.GetRevenueSummaryAsync();
-            return Ok(ApiResult<object>.Success(data, "Revenue summary retrieved successfully."));
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, new ApiResult<object>
-            {
-                IsSuccess = false,
-                Message = $"An unexpected error occurred: {ex.Message}",
-                Data = null
-            });
-        }
-    }
+    // [Authorize(Policy = "AdminPolicy")]
+    // [HttpGet("revenue/summary")]
+    // [ProducesResponseType(typeof(ApiResult<object>), 200)]
+    // [ProducesResponseType(typeof(ApiResult<object>), 500)]
+    // public async Task<IActionResult> GetRevenueSummary()
+    // {
+    //     try
+    //     {
+    //         var data = await _adminService.GetRevenueSummaryAsync();
+    //         return Ok(ApiResult<object>.Success(data, "Revenue summary retrieved successfully."));
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         return StatusCode(500, new ApiResult<object>
+    //         {
+    //             IsSuccess = false,
+    //             Message = $"An unexpected error occurred: {ex.Message}",
+    //             Data = null
+    //         });
+    //     }
+    // }
 }

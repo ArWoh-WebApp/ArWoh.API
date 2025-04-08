@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ArWoh.API.Migrations
 {
     [DbContext(typeof(ArWohDbContext))]
-    [Migration("20250303014929_add-noti-Appointment-id")]
-    partial class addnotiAppointmentid
+    [Migration("20250408140411_adfasd")]
+    partial class adfasd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -119,6 +119,9 @@ namespace ArWoh.API.Migrations
                     b.Property<int>("ImageId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ImageTitle")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -205,11 +208,23 @@ namespace ArWoh.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ConfirmNote")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("DeliveryNote")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DeliveryProofImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -217,15 +232,68 @@ namespace ArWoh.API.Migrations
                     b.Property<bool>("IsPhysicalPrint")
                         .HasColumnType("bit");
 
+                    b.Property<string>("PackagingNote")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ShippingAddress")
-                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("ShippingFee")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ShippingNote")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ShippingStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TransactionId")
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("ArWoh.API.Entities.OrderDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ImageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -233,13 +301,14 @@ namespace ArWoh.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TransactionId")
-                        .IsUnique();
+                    b.HasIndex("ImageId");
 
-                    b.ToTable("Orders");
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderDetails");
                 });
 
-            modelBuilder.Entity("ArWoh.API.Entities.Transaction", b =>
+            modelBuilder.Entity("ArWoh.API.Entities.Payment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -253,39 +322,43 @@ namespace ArWoh.API.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ImageId")
-                        .HasColumnType("int");
+                    b.Property<string>("GatewayResponse")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GatewayTransactionId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsPhysicalPrint")
-                        .HasColumnType("bit");
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("PaymentStatus")
+                    b.Property<string>("PaymentGateway")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RedirectUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("VnPayTransactionId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("OrderId");
 
-                    b.HasIndex("ImageId");
-
-                    b.ToTable("Transactions");
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("ArWoh.API.Entities.User", b =>
@@ -391,32 +464,43 @@ namespace ArWoh.API.Migrations
 
             modelBuilder.Entity("ArWoh.API.Entities.Order", b =>
                 {
-                    b.HasOne("ArWoh.API.Entities.Transaction", "Transaction")
-                        .WithOne()
-                        .HasForeignKey("ArWoh.API.Entities.Order", "TransactionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Transaction");
-                });
-
-            modelBuilder.Entity("ArWoh.API.Entities.Transaction", b =>
-                {
                     b.HasOne("ArWoh.API.Entities.User", "Customer")
-                        .WithMany("Transactions")
+                        .WithMany()
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("ArWoh.API.Entities.OrderDetail", b =>
+                {
                     b.HasOne("ArWoh.API.Entities.Image", "Image")
-                        .WithMany("Transactions")
+                        .WithMany()
                         .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ArWoh.API.Entities.Order", "Order")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
-
                     b.Navigation("Image");
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("ArWoh.API.Entities.Payment", b =>
+                {
+                    b.HasOne("ArWoh.API.Entities.Order", "Order")
+                        .WithMany("Payments")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("ArWoh.API.Entities.Cart", b =>
@@ -424,16 +508,16 @@ namespace ArWoh.API.Migrations
                     b.Navigation("CartItems");
                 });
 
-            modelBuilder.Entity("ArWoh.API.Entities.Image", b =>
+            modelBuilder.Entity("ArWoh.API.Entities.Order", b =>
                 {
-                    b.Navigation("Transactions");
+                    b.Navigation("OrderDetails");
+
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("ArWoh.API.Entities.User", b =>
                 {
                     b.Navigation("Images");
-
-                    b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
         }

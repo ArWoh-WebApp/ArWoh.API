@@ -81,17 +81,12 @@ public class ArWohDbContext : DbContext
             .WithMany()
             .HasForeignKey(a => a.AdminId);
 
-        // Cart & CartItem relationships
-        modelBuilder.Entity<CartItem>()
-            .HasOne(ci => ci.Cart)
-            .WithMany()
-            .HasForeignKey(ci => ci.CartId)
-            .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
 
-        modelBuilder.Entity<CartItem>()
-            .HasOne(ci => ci.Image)
-            .WithMany()
-            .HasForeignKey(ci => ci.ImageId)
-            .OnDelete(DeleteBehavior.Restrict);
+        modelBuilder.Entity<Image>()
+            .Property(i => i.Orientation)
+            .HasConversion<string>();
     }
 }

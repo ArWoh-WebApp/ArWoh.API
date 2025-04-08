@@ -107,9 +107,6 @@ namespace ArWoh.API.Migrations
                     b.Property<int>("CartId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CartId1")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -137,8 +134,6 @@ namespace ArWoh.API.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CartId");
-
-                    b.HasIndex("CartId1");
 
                     b.HasIndex("ImageId");
 
@@ -439,19 +434,15 @@ namespace ArWoh.API.Migrations
             modelBuilder.Entity("ArWoh.API.Entities.CartItem", b =>
                 {
                     b.HasOne("ArWoh.API.Entities.Cart", "Cart")
-                        .WithMany()
+                        .WithMany("CartItems")
                         .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ArWoh.API.Entities.Cart", null)
-                        .WithMany("CartItems")
-                        .HasForeignKey("CartId1");
-
                     b.HasOne("ArWoh.API.Entities.Image", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Cart");

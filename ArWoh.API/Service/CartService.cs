@@ -17,12 +17,6 @@ public class CartService : ICartService
         _unitOfWork = unitOfWork;
     }
 
-    /// <summary>
-    ///     Thêm ảnh vào giỏ hàng
-    /// </summary>
-    /// <param name="addCartItemDto"></param>
-    /// <param name="userId"></param>
-    /// <returns></returns>
     public async Task<CartDto> CreateCartAsync(AddCartItemDto addCartItemDto, int userId)
     {
         try
@@ -78,12 +72,6 @@ public class CartService : ICartService
         }
     }
 
-    /// <summary>
-    ///     Cập nhật số lượng ảnh trong giỏ hàng
-    /// </summary>
-    /// <param name="updateCartItemDto"></param>
-    /// <param name="userId"></param>
-    /// <returns></returns>
     public async Task<CartDto> UpdateCartAsync(UpdateCartItemDto updateCartItemDto, int userId)
     {
         try
@@ -125,12 +113,6 @@ public class CartService : ICartService
         }
     }
 
-    /// <summary>
-    ///     Xóa ảnh khỏi giỏ hàng
-    /// </summary>
-    /// <param name="cartItemId"></param>
-    /// <param name="userId"></param>
-    /// <returns></returns>
     public async Task<CartDto> DeleteCartItemAsync(int cartItemId, int userId)
     {
         try
@@ -163,11 +145,6 @@ public class CartService : ICartService
         }
     }
 
-    /// <summary>
-    ///     Lấy danh sách ảnh trong giỏ hàng của user
-    /// </summary>
-    /// <param name="userId"></param>
-    /// <returns></returns>
     public async Task<CartDto> GetCartByUserId(int userId)
     {
         try
@@ -207,45 +184,4 @@ public class CartService : ICartService
         }
     }
 
-    /// <summary>
-    ///     Reset giỏ hàng của user sau khi thanh toán thành công.
-    /// </summary>
-    /// <param name="userId"></param>
-    /// <returns></returns>
-    public async Task<bool> ResetCartAfterPayment(int userId)
-    {
-        try
-        {
-            _loggerService.Info($"Resetting cart for user {userId} after successful payment");
-
-            var cart = await _unitOfWork.Carts
-                .GetQueryable()
-                .Include(c => c.CartItems)
-                .FirstOrDefaultAsync(c => c.UserId == userId);
-
-            if (cart == null)
-            {
-                _loggerService.Warn($"Cart not found for user {userId}, nothing to reset.");
-                return false;
-            }
-
-            if (cart.CartItems.Any())
-            {
-                _unitOfWork.CartItems.DeleteRange(cart.CartItems);
-                await _unitOfWork.CompleteAsync();
-                _loggerService.Success($"Cart items for user {userId} have been deleted.");
-            }
-            else
-            {
-                _loggerService.Warn($"No items in cart to delete for user {userId}.");
-            }
-
-            return true;
-        }
-        catch (Exception ex)
-        {
-            _loggerService.Error($"Unexpected error in ResetCartAfterPayment: {ex.Message}");
-            throw new Exception("An error occurred while resetting the cart after payment.", ex);
-        }
-    }
 }

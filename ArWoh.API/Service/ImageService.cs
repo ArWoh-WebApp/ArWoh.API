@@ -1,6 +1,7 @@
 using ArWoh.API.Commons;
 using ArWoh.API.DTOs.ImageDTOs;
 using ArWoh.API.Entities;
+using ArWoh.API.Enums;
 using ArWoh.API.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -82,86 +83,98 @@ public class ImageService : IImageService
     }
 
     /// <summary>
-    ///     Lấy list tất cả các images kèm theo thông tin photographer với phân trang
-    /// </summary>
-    public async Task<Pagination<ImageDto>> GetAllImages(PaginationParameter paginationParams)
+///     Lấy list tất cả các images kèm theo thông tin photographer với phân trang và filter theo orientation
+/// </summary>
+public async Task<Pagination<ImageDto>> GetAllImages(PaginationParameter paginationParams, OrientationType? orientation = null)
+{
+    try
     {
-        try
+        _loggerService.Info(
+            $"Fetching images with pagination (Page {paginationParams.PageIndex}, Size {paginationParams.PageSize}) " + 
+            (orientation.HasValue ? $"and orientation filter: {orientation}" : "without orientation filter"));
+
+        // Sử dụng GetQueryable để có thể thêm Include
+        var imagesQuery = _unitOfWork.Images.GetQueryable();
+
+        // Include thông tin photographer
+        imagesQuery = imagesQuery.Include(i => i.Photographer);
+        
+        // Áp dụng filter theo orientation nếu có
+        if (orientation.HasValue)
         {
-            _loggerService.Info(
-                $"Fetching images with pagination (Page {paginationParams.PageIndex}, Size {paginationParams.PageSize}).");
+            imagesQuery = imagesQuery.Where(i => i.Orientation == orientation);
+        }
 
-            // Sử dụng GetQueryable để có thể thêm Include
-            var imagesQuery = _unitOfWork.Images.GetQueryable();
+        // Đếm tổng số records trước khi phân trang
+        var totalCount = await imagesQuery.CountAsync();
 
-            // Include thông tin photographer
-            imagesQuery = imagesQuery.Include(i => i.Photographer);
+        // Áp dụng phân trang
+        var pagedImages = await imagesQuery
+            .Skip((paginationParams.PageIndex - 1) * paginationParams.PageSize)
+            .Take(paginationParams.PageSize)
+            .ToListAsync();
 
-            // Đếm tổng số records trước khi phân trang
-            var totalCount = await imagesQuery.CountAsync();
-
-            // Áp dụng phân trang
-            var pagedImages = await imagesQuery
+        if (!pagedImages.Any() && totalCount > 0)
+        {
+            _loggerService.Warn(
+                $"No images found for page {paginationParams.PageIndex}. Total records: {totalCount}");
+            // Nếu không có dữ liệu ở trang hiện tại nhưng có dữ liệu trong DB, trả về trang cuối cùng
+            paginationParams.PageIndex = (int)Math.Ceiling(totalCount / (double)paginationParams.PageSize);
+            pagedImages = await imagesQuery
                 .Skip((paginationParams.PageIndex - 1) * paginationParams.PageSize)
                 .Take(paginationParams.PageSize)
                 .ToListAsync();
-
-            if (!pagedImages.Any() && totalCount > 0)
-            {
-                _loggerService.Warn(
-                    $"No images found for page {paginationParams.PageIndex}. Total records: {totalCount}");
-                // Nếu không có dữ liệu ở trang hiện tại nhưng có dữ liệu trong DB, trả về trang cuối cùng
-                paginationParams.PageIndex = (int)Math.Ceiling(totalCount / (double)paginationParams.PageSize);
-                pagedImages = await imagesQuery
-                    .Skip((paginationParams.PageIndex - 1) * paginationParams.PageSize)
-                    .Take(paginationParams.PageSize)
-                    .ToListAsync();
-            }
-            else if (!pagedImages.Any())
-            {
-                _loggerService.Warn("No images found in the database.");
-                return new Pagination<ImageDto>(new List<ImageDto>(), 0, paginationParams.PageIndex,
-                    paginationParams.PageSize);
-            }
-
-            var imageDtos = pagedImages.Select(image => new ImageDto
-            {
-                Id = image.Id,
-                Title = image.Title,
-                Description = image.Description,
-                Price = image.Price,
-                StoryOfArt = image.StoryOfArt,
-                Orientation = image.Orientation,
-                Location = image.Location,
-                Tags = image.Tags,
-                FileName = image.FileName,
-                PhotographerId = image.PhotographerId,
-                Url = image.Url,
-                // Thêm thông tin photographer nếu có
-                PhotographerAvatar = image.Photographer?.ProfilePictureUrl,
-                PhotographerName = image.Photographer?.Username ?? "Unknown",
-                PhotographerEmail = image.Photographer?.Email
-            }).ToList();
-
-            _loggerService.Success(
-                $"Successfully retrieved {imageDtos.Count} images from page {paginationParams.PageIndex} (total records: {totalCount}).");
-
-            // Tạo đối tượng phân trang chứa dữ liệu và thông tin phân trang
-            var paginatedResult = new Pagination<ImageDto>(
-                imageDtos,
-                totalCount,
-                paginationParams.PageIndex,
-                paginationParams.PageSize
-            );
-
-            return paginatedResult;
         }
-        catch (Exception ex)
+        else if (!pagedImages.Any())
         {
-            _loggerService.Error($"Unexpected error in GetAllImages: {ex.Message}");
-            throw new Exception("An error occurred while retrieving images.", ex);
+            _loggerService.Warn(orientation.HasValue 
+                ? $"No images found with orientation {orientation}" 
+                : "No images found in the database.");
+            
+            return new Pagination<ImageDto>(new List<ImageDto>(), 0, paginationParams.PageIndex,
+                paginationParams.PageSize);
         }
+
+        var imageDtos = pagedImages.Select(image => new ImageDto
+        {
+            Id = image.Id,
+            Title = image.Title,
+            Description = image.Description,
+            Price = image.Price,
+            StoryOfArt = image.StoryOfArt,
+            Orientation = image.Orientation,
+            Location = image.Location,
+            Tags = image.Tags,
+            FileName = image.FileName,
+            PhotographerId = image.PhotographerId,
+            Url = image.Url,
+            // Thêm thông tin photographer nếu có
+            PhotographerAvatar = image.Photographer?.ProfilePictureUrl,
+            PhotographerName = image.Photographer?.Username ?? "Unknown",
+            PhotographerEmail = image.Photographer?.Email
+        }).ToList();
+
+        _loggerService.Success(
+            $"Successfully retrieved {imageDtos.Count} images from page {paginationParams.PageIndex} " + 
+            (orientation.HasValue ? $"with orientation {orientation} " : "") +
+            $"(total records: {totalCount}).");
+
+        // Tạo đối tượng phân trang chứa dữ liệu và thông tin phân trang
+        var paginatedResult = new Pagination<ImageDto>(
+            imageDtos,
+            totalCount,
+            paginationParams.PageIndex,
+            paginationParams.PageSize
+        );
+
+        return paginatedResult;
     }
+    catch (Exception ex)
+    {
+        _loggerService.Error($"Unexpected error in GetAllImages: {ex.Message}");
+        throw new Exception("An error occurred while retrieving images.", ex);
+    }
+}
 
     // /// <summary>
     // ///     Lấy tất cả hình sau khi User đã mua dựa trên table PaymentTransaction

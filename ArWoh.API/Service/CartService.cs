@@ -9,12 +9,62 @@ namespace ArWoh.API.Service;
 public class CartService : ICartService
 {
     private readonly ILoggerService _loggerService;
+    private readonly IClaimService _claimService;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CartService(ILoggerService loggerService, IUnitOfWork unitOfWork)
+    public CartService(ILoggerService loggerService, IUnitOfWork unitOfWork, IClaimService claimService)
     {
         _loggerService = loggerService;
         _unitOfWork = unitOfWork;
+        _claimService = claimService;
+    }
+
+    public async Task<CartDto> GetCartByUserId(int userId)
+    {
+        try
+        {
+            _loggerService.Info($"Fetching cart for user {userId}");
+
+            var cart = await _unitOfWork.Carts.FirstOrDefaultAsync(
+                c => c.UserId == userId && !c.IsDeleted,
+                c => c.CartItems.Where(ci => !ci.IsDeleted)
+            );
+
+            if (cart == null)
+            {
+                _loggerService.Info($"No cart found for user {userId}. Creating a new one.");
+
+                cart = new Cart { UserId = userId };
+                await _unitOfWork.Carts.AddAsync(cart);
+                await _unitOfWork.CompleteAsync();
+
+                // Giờ đây cart đã được tạo với ID
+                _loggerService.Success($"Created new cart for user {userId}");
+            }
+
+            // Map entity to DTO
+            var cartDto = new CartDto
+            {
+                UserId = cart.UserId,
+                CartItems = cart.CartItems?.Select(ci => new CartItemDto
+                {
+                    CartItemId = ci.Id,
+                    ImageId = ci.ImageId,
+                    ImageTitle = ci.ImageTitle,
+                    Price = ci.Price,
+                    Quantity = ci.Quantity
+                }).ToList() ?? new List<CartItemDto>(),
+                TotalPrice = cart.TotalPrice // Sử dụng computed property từ entity
+            };
+
+            _loggerService.Success($"Successfully fetched cart for user {userId}");
+            return cartDto;
+        }
+        catch (Exception ex)
+        {
+            _loggerService.Error($"Unexpected error in GetCartByUserId: {ex.Message}");
+            throw new Exception("An error occurred while fetching the cart.", ex);
+        }
     }
 
     public async Task<CartDto> CreateCartAsync(AddCartItemDto addCartItemDto, int userId)
@@ -144,44 +194,4 @@ public class CartService : ICartService
             throw new Exception("An error occurred while removing item from the cart.", ex);
         }
     }
-
-    public async Task<CartDto> GetCartByUserId(int userId)
-    {
-        try
-        {
-            _loggerService.Info($"Fetching cart for user {userId}");
-
-            var cart = await _unitOfWork.Carts
-                .GetQueryable()
-                .Include(c => c.CartItems.Where(ci => !ci.IsDeleted))
-                .FirstOrDefaultAsync(c => c.UserId == userId);
-
-            if (cart == null)
-                throw new KeyNotFoundException("Cart not found for this user.");
-
-            var cartDto = new CartDto
-            {
-                UserId = cart.UserId,
-                CartItems = cart.CartItems.Select(ci => new CartItemDto
-                {
-                    CartItemId = ci.Id,
-                    ImageId = ci.ImageId,
-                    ImageTitle = ci.ImageTitle,
-                    Price = ci.Price,
-                    Quantity = ci.Quantity
-                }).ToList(),
-                TotalPrice = cart.CartItems.Sum(ci => ci.Price * ci.Quantity)
-            };
-
-            _loggerService.Success($"Successfully fetched cart for user {userId}");
-
-            return cartDto;
-        }
-        catch (Exception ex)
-        {
-            _loggerService.Error($"Unexpected error in GetCartByUserId: {ex.Message}");
-            throw new Exception("An error occurred while fetching the cart.", ex);
-        }
-    }
-
 }

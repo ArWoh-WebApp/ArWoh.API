@@ -116,7 +116,7 @@ public class UserService : IUserService
             throw new Exception($"Error retrieving photographer revenue details: {ex.Message}", ex);
         }
     }
-    
+
     public async Task<IEnumerable<PaymentTransaction>> GetUserTransactions(int userId)
     {
         try
@@ -137,7 +137,7 @@ public class UserService : IUserService
             throw new Exception($"Error retrieving user transactions: {ex.Message}", ex);
         }
     }
-    
+
     public async Task<UserProfileDto> UserUpdateAvatar(int userId, IFormFile file)
     {
         if (file == null || file.Length == 0) throw new ArgumentException("File is required");

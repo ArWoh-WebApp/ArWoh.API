@@ -1,5 +1,4 @@
-﻿using ArWoh.API.DTOs.PaymentDTOs;
-using ArWoh.API.Entities;
+﻿using ArWoh.API.Entities;
 using ArWoh.API.Enums;
 using ArWoh.API.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -23,28 +22,6 @@ public class PaymentService : IPaymentService
         _unitOfWork = unitOfWork;
     }
 
-
-   
-
-    public async Task<IEnumerable<PaymentTransaction>> GetAllTransactions()
-    {
-        try
-        {
-            var transactions = await _unitOfWork.PaymentTransactions.GetAllAsync();
-
-            if (transactions == null || !transactions.Any())
-                throw new KeyNotFoundException("No transactions found");
-
-            return transactions;
-        }
-        catch (Exception ex)
-        {
-            throw new Exception($"Error retrieving all transactions: {ex.Message}", ex);
-        }
-    }
-
-
-    
 
     public async Task<string> ProcessPayment(int userId)
     {

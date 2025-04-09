@@ -108,29 +108,16 @@ public class OrderService : IOrderService
             await _unitOfWork.Orders.AddAsync(order);
             await _unitOfWork.CompleteAsync();
 
-            // PHASE 6: TẠO PAYMENT CHO ĐƠN HÀNG
-            // Tạo bản ghi thanh toán với trạng thái chờ
-            var payment = new Payment
-            {
-                OrderId = order.Id,
-                Amount = order.TotalAmount,
-                PaymentGateway = createOrderDto.PaymentGateway,
-                Status = PaymentStatusEnum.PENDING,
-                RedirectUrl = createOrderDto.RedirectUrl
-            };
+            // BỎ PHASE 6 (TẠO PAYMENT)
 
-            await _unitOfWork.Payments.AddAsync(payment);
-            await _unitOfWork.CompleteAsync();
-
-            // PHASE 7: XÓA GIỎ HÀNG SAU KHI TẠO ĐƠN HÀNG
-            // Xóa các item trong giỏ hàng đã được chuyển đổi
+            // PHASE 7: XÓA GIỎ HÀNG 
             await _cartService.ClearCartItems(userId);
 
             _loggerService.Success($"Successfully created order {order.Id} for user {userId}");
 
             // PHASE 8: MAPPING KẾT QUẢ THÀNH DTO
-            // Chuyển đổi dữ liệu sang DTO để trả về client
-            return MapToOrderDto(order, payment);
+            // Trả về DTO không có thông tin payment
+            return MapToOrderDtoWithoutPayment(order);
         }
         catch (Exception ex)
         {
@@ -208,6 +195,32 @@ public class OrderService : IOrderService
                 Status = payment.Status.ToString(),
                 PaymentUrl = payment.PaymentUrl
             }
+        };
+    }
+
+    // Thêm phương thức mapping mới không cần payment
+    private OrderDto MapToOrderDtoWithoutPayment(Order order)
+    {
+        return new OrderDto
+        {
+            Id = order.Id,
+            CustomerId = order.CustomerId,
+            TotalAmount = order.TotalAmount,
+            Status = order.Status.ToString(),
+            IsPhysicalPrint = order.IsPhysicalPrint,
+            ShippingAddress = order.ShippingAddress,
+            ShippingStatus = order.ShippingStatus?.ToString(),
+            ShippingFee = order.ShippingFee,
+            OrderDetails = order.OrderDetails.Select(od => new OrderDetailDto
+            {
+                Id = od.Id,
+                OrderId = od.OrderId,
+                ImageId = od.ImageId,
+                Quantity = od.Quantity,
+                Price = od.Price,
+                ImageTitle = od.ImageTitle
+            }).ToList(),
+            PaymentInfo = null // Không có thông tin payment
         };
     }
 }

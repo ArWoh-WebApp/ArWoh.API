@@ -24,6 +24,7 @@ public class PaymentService : IPaymentService
         _unitOfWork = unitOfWork;
         _orderService = orderService;
     }
+
     public async Task<string> ProcessPayment(int userId, CreateOrderDto createOrderDto)
     {
         try
@@ -38,7 +39,7 @@ public class PaymentService : IPaymentService
                 Amount = order.TotalAmount,
                 PaymentGateway = PaymentGatewayEnum.PAYOS,
                 Status = PaymentStatusEnum.PENDING,
-                RedirectUrl = "http://localhost:9090/"
+                RedirectUrl = "https://vaccina-care-fe.vercel.app/payment-success"
             };
 
             await _unitOfWork.Payments.AddAsync(payment);
@@ -52,10 +53,13 @@ public class PaymentService : IPaymentService
                     detail.Quantity,
                     (int)detail.Price
                 ));
+            
+            // dùng ID đơn hàng kết hợp với timestamp ngắn
+            var orderCode = order.Id * 1000 + (DateTime.Now.Second + DateTime.Now.Minute * 60);
 
             // Tạo dữ liệu thanh toán
             var paymentData = new PaymentData(
-                payment.Id, // Sử dụng payment ID làm orderCode
+                orderCode, // Sử dụng orderCode mới thay vì payment.Id
                 (int)order.TotalAmount,
                 $"Thanh toán đơn hàng #{order.Id}",
                 itemList,

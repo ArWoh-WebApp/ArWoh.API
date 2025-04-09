@@ -19,6 +19,37 @@ public class CartService : ICartService
         _claimService = claimService;
     }
 
+    public async Task ClearCartItems(int userId)
+    {
+        try
+        {
+            _loggerService.Info($"Clearing cart items for user {userId}");
+        
+            // Lấy giỏ hàng của người dùng
+            var cart = await _unitOfWork.Carts
+                .GetQueryable()
+                .Include(c => c.CartItems.Where(ci => !ci.IsDeleted))
+                .FirstOrDefaultAsync(c => c.UserId == userId);
+            
+            if (cart == null || !cart.CartItems.Any())
+            {
+                _loggerService.Info($"No cart items found for user {userId}");
+                return;
+            }
+        
+            // Đánh dấu tất cả CartItems là đã xóa
+            _unitOfWork.CartItems.DeleteRange(cart.CartItems);
+        
+            await _unitOfWork.CompleteAsync();
+            _loggerService.Success($"Successfully cleared cart items for user {userId}");
+        }
+        catch (Exception ex)
+        {
+            _loggerService.Error($"Error clearing cart items: {ex.Message}");
+            throw new Exception("An error occurred while clearing the cart items.", ex);
+        }
+    }
+    
     public async Task<CartDto> GetCartByUserId(int userId)
     {
         try

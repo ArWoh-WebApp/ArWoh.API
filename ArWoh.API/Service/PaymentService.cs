@@ -26,12 +26,10 @@ public class PaymentService : IPaymentService
     }
 
 
-    public async Task<string> ProcessPayment(CreateOrderDto createOrderDto)
+    public async Task<string> ProcessPayment(int userId, CreateOrderDto createOrderDto)
     {
         try
         {
-            var userId = _claimService.GetCurrentUserId();
-            
             // Tạo order từ giỏ hàng
             var order = await _orderService.CreateOrderFromCart(createOrderDto);
 

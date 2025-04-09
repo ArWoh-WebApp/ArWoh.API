@@ -1,5 +1,6 @@
 using ArWoh.API.DTOs.OrderDTOs;
 using ArWoh.API.DTOs.PaymentDTOs;
+using ArWoh.API.Enums;
 using ArWoh.API.Interface;
 using ArWoh.API.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -24,13 +25,21 @@ public class PaymentController : ControllerBase
    /// <summary>
    /// Tạo link thanh toán từ giỏ hàng hiện tại của người dùng
    /// </summary>
-   [HttpPost("create")]
+   [HttpGet("create-link")]
    [Authorize]
-   public async Task<IActionResult> CreatePayment([FromBody] CreateOrderDto createOrderDto)
+   public async Task<IActionResult> CreatePaymentLink()
    {
        try
        {
            var userId = _claimService.GetCurrentUserId();
+           // Tạo createOrderDto mặc định
+           var createOrderDto = new CreateOrderDto
+           {
+               IsPhysicalPrint = false,
+               PaymentGateway = PaymentGatewayEnum.PAYOS,
+               RedirectUrl = "https://vaccina-care-fe.vercel.app/payment-success"
+           };
+        
            var paymentUrl = await _paymentService.ProcessPayment(userId, createOrderDto);
            return Ok(new ApiResult<string>
            {

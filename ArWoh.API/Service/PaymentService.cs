@@ -53,9 +53,9 @@ public class PaymentService : IPaymentService
                     detail.Quantity,
                     (int)detail.Price
                 ));
-            
+
             // dùng ID đơn hàng kết hợp với timestamp ngắn
-            var orderCode = order.Id * 1000 + (DateTime.Now.Second + DateTime.Now.Minute * 60);
+            var orderCode = order.Id * 1000 + DateTime.Now.Second + DateTime.Now.Minute * 60;
 
             // Tạo dữ liệu thanh toán
             var paymentData = new PaymentData(
@@ -128,7 +128,6 @@ public class PaymentService : IPaymentService
 
         // Nếu payment chưa hoàn thành, kiểm tra với PayOS
         if (payment.Status == PaymentStatusEnum.PENDING)
-        {
             try
             {
                 var paymentInfo = await _payOs.getPaymentLinkInformation(long.Parse(payment.GatewayTransactionId));
@@ -155,7 +154,6 @@ public class PaymentService : IPaymentService
             {
                 _logger.Error($"Error checking payment status: {ex.Message}");
             }
-        }
 
         return new PaymentStatusDto
         {

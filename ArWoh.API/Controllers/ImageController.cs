@@ -1,5 +1,6 @@
 using ArWoh.API.Commons;
 using ArWoh.API.DTOs.ImageDTOs;
+using ArWoh.API.Enums;
 using ArWoh.API.Interface;
 using ArWoh.API.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -26,23 +27,36 @@ public class ImageController : ControllerBase
     [ProducesResponseType(typeof(ApiResult<Pagination<ImageDto>>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]
     [ProducesResponseType(typeof(ApiResult<object>), 500)]
-    public async Task<IActionResult> GetAllImages([FromQuery] PaginationParameter paginationParams)
+    public async Task<IActionResult> GetAllImages(
+        [FromQuery] PaginationParameter paginationParams,
+        [FromQuery] OrientationType? orientation = null)
     {
         try
         {
-            var paginatedImages = await _imageService.GetAllImages(paginationParams);
+            var paginatedImages = await _imageService.GetAllImages(paginationParams, orientation);
 
             if (paginatedImages.TotalCount == 0)
+            {
+                var message = orientation.HasValue
+                    ? $"No images found with orientation {orientation}"
+                    : "No images found";
+
                 return Ok(ApiResult<Pagination<ImageDto>>.Success(
                     new Pagination<ImageDto>(new List<ImageDto>(), 0, paginationParams.PageIndex,
-                        paginationParams.PageSize)
+                        paginationParams.PageSize),
+                    message
                 ));
+            }
 
-            return Ok(ApiResult<Pagination<ImageDto>>.Success(paginatedImages));
+            var successMessage = orientation.HasValue
+                ? $"Successfully retrieved images with orientation {orientation}"
+                : "Successfully retrieved images";
+
+            return Ok(ApiResult<Pagination<ImageDto>>.Success(paginatedImages, successMessage));
         }
         catch (Exception ex)
         {
-            return StatusCode(500, ApiResult<object>.Error($"An unexpected error occurred {ex}"));
+            return StatusCode(500, ApiResult<object>.Error($"An unexpected error occurred: {ex.Message}"));
         }
     }
 

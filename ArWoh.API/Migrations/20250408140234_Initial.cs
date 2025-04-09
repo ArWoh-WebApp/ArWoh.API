@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -66,6 +67,7 @@ namespace ArWoh.API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
+                    UserId1 = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -77,6 +79,12 @@ namespace ArWoh.API.Migrations
                     table.ForeignKey(
                         name: "FK_Carts_Users_UserId",
                         column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Carts_Users_UserId1",
+                        column: x => x.UserId1,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -114,6 +122,40 @@ namespace ArWoh.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsPhysicalPrint = table.Column<bool>(type: "bit", nullable: false),
+                    ShippingAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ShippingStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ShippingFee = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    ConfirmNote = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PackagingNote = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ShippingNote = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeliveryNote = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeliveryProofImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Orders_Users_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CartItems",
                 columns: table => new
                 {
@@ -143,52 +185,20 @@ namespace ArWoh.API.Migrations
                         column: x => x.ImageId,
                         principalTable: "Images",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Transactions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
-                    ImageId = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PaymentStatus = table.Column<int>(type: "int", nullable: false),
-                    IsPhysicalPrint = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Transactions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Transactions_Images_ImageId",
-                        column: x => x.ImageId,
-                        principalTable: "Images",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Transactions_Users_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Orders",
+                name: "OrderDetails",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TransactionId = table.Column<int>(type: "int", nullable: false),
-                    IsPhysicalPrint = table.Column<bool>(type: "bit", nullable: false),
-                    ShippingAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ShippingStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    ImageId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ImageTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -196,11 +206,17 @@ namespace ArWoh.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
+                    table.PrimaryKey("PK_OrderDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Orders_Transactions_TransactionId",
-                        column: x => x.TransactionId,
-                        principalTable: "Transactions",
+                        name: "FK_OrderDetails_Images_ImageId",
+                        column: x => x.ImageId,
+                        principalTable: "Images",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -211,11 +227,14 @@ namespace ArWoh.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PaymentTransactionId = table.Column<int>(type: "int", nullable: true),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PaymentGateway = table.Column<int>(type: "int", nullable: false),
-                    PaymentStatus = table.Column<int>(type: "int", nullable: false),
+                    PaymentGateway = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GatewayTransactionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    GatewayResponse = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PaymentUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RedirectUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -225,10 +244,11 @@ namespace ArWoh.API.Migrations
                 {
                     table.PrimaryKey("PK_Payments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Payments_Transactions_PaymentTransactionId",
-                        column: x => x.PaymentTransactionId,
-                        principalTable: "Transactions",
-                        principalColumn: "Id");
+                        name: "FK_Payments_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -252,30 +272,34 @@ namespace ArWoh.API.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Carts_UserId1",
+                table: "Carts",
+                column: "UserId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Images_PhotographerId",
                 table: "Images",
                 column: "PhotographerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_TransactionId",
+                name: "IX_OrderDetails_ImageId",
+                table: "OrderDetails",
+                column: "ImageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_OrderId",
+                table: "OrderDetails",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_CustomerId",
                 table: "Orders",
-                column: "TransactionId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Payments_PaymentTransactionId",
-                table: "Payments",
-                column: "PaymentTransactionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Transactions_CustomerId",
-                table: "Transactions",
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transactions_ImageId",
-                table: "Transactions",
-                column: "ImageId");
+                name: "IX_Payments_OrderId",
+                table: "Payments",
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
@@ -294,7 +318,7 @@ namespace ArWoh.API.Migrations
                 name: "CartItems");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "OrderDetails");
 
             migrationBuilder.DropTable(
                 name: "Payments");
@@ -303,10 +327,10 @@ namespace ArWoh.API.Migrations
                 name: "Carts");
 
             migrationBuilder.DropTable(
-                name: "Transactions");
+                name: "Images");
 
             migrationBuilder.DropTable(
-                name: "Images");
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Users");

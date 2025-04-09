@@ -1,6 +1,7 @@
 using ArWoh.API.Commons;
 using ArWoh.API.DTOs.ImageDTOs;
 using ArWoh.API.Entities;
+using ArWoh.API.Enums;
 using ArWoh.API.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -82,20 +83,25 @@ public class ImageService : IImageService
     }
 
     /// <summary>
-    ///     Lấy list tất cả các images kèm theo thông tin photographer với phân trang
+    ///     Lấy list tất cả các images kèm theo thông tin photographer với phân trang và filter theo orientation
     /// </summary>
-    public async Task<Pagination<ImageDto>> GetAllImages(PaginationParameter paginationParams)
+    public async Task<Pagination<ImageDto>> GetAllImages(PaginationParameter paginationParams,
+        OrientationType? orientation = null)
     {
         try
         {
             _loggerService.Info(
-                $"Fetching images with pagination (Page {paginationParams.PageIndex}, Size {paginationParams.PageSize}).");
+                $"Fetching images with pagination (Page {paginationParams.PageIndex}, Size {paginationParams.PageSize}) " +
+                (orientation.HasValue ? $"and orientation filter: {orientation}" : "without orientation filter"));
 
             // Sử dụng GetQueryable để có thể thêm Include
             var imagesQuery = _unitOfWork.Images.GetQueryable();
 
             // Include thông tin photographer
             imagesQuery = imagesQuery.Include(i => i.Photographer);
+
+            // Áp dụng filter theo orientation nếu có
+            if (orientation.HasValue) imagesQuery = imagesQuery.Where(i => i.Orientation == orientation);
 
             // Đếm tổng số records trước khi phân trang
             var totalCount = await imagesQuery.CountAsync();
@@ -119,7 +125,10 @@ public class ImageService : IImageService
             }
             else if (!pagedImages.Any())
             {
-                _loggerService.Warn("No images found in the database.");
+                _loggerService.Warn(orientation.HasValue
+                    ? $"No images found with orientation {orientation}"
+                    : "No images found in the database.");
+
                 return new Pagination<ImageDto>(new List<ImageDto>(), 0, paginationParams.PageIndex,
                     paginationParams.PageSize);
             }
@@ -144,7 +153,9 @@ public class ImageService : IImageService
             }).ToList();
 
             _loggerService.Success(
-                $"Successfully retrieved {imageDtos.Count} images from page {paginationParams.PageIndex} (total records: {totalCount}).");
+                $"Successfully retrieved {imageDtos.Count} images from page {paginationParams.PageIndex} " +
+                (orientation.HasValue ? $"with orientation {orientation} " : "") +
+                $"(total records: {totalCount}).");
 
             // Tạo đối tượng phân trang chứa dữ liệu và thông tin phân trang
             var paginatedResult = new Pagination<ImageDto>(

@@ -8,21 +8,96 @@ namespace ArWoh.API.Service;
 
 public class CartService : ICartService
 {
+    private readonly IClaimService _claimService;
     private readonly ILoggerService _loggerService;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CartService(ILoggerService loggerService, IUnitOfWork unitOfWork)
+    public CartService(ILoggerService loggerService, IUnitOfWork unitOfWork, IClaimService claimService)
     {
         _loggerService = loggerService;
         _unitOfWork = unitOfWork;
+        _claimService = claimService;
     }
 
-    /// <summary>
-    ///     Thêm ảnh vào giỏ hàng
-    /// </summary>
-    /// <param name="addCartItemDto"></param>
-    /// <param name="userId"></param>
-    /// <returns></returns>
+    public async Task ClearCartItems(int userId)
+    {
+        try
+        {
+            _loggerService.Info($"Clearing cart items for user {userId}");
+
+            // Lấy giỏ hàng của người dùng
+            var cart = await _unitOfWork.Carts
+                .GetQueryable()
+                .Include(c => c.CartItems.Where(ci => !ci.IsDeleted))
+                .FirstOrDefaultAsync(c => c.UserId == userId);
+
+            if (cart == null || !cart.CartItems.Any())
+            {
+                _loggerService.Info($"No cart items found for user {userId}");
+                return;
+            }
+
+            // Đánh dấu tất cả CartItems là đã xóa
+            _unitOfWork.CartItems.DeleteRange(cart.CartItems);
+
+            await _unitOfWork.CompleteAsync();
+            _loggerService.Success($"Successfully cleared cart items for user {userId}");
+        }
+        catch (Exception ex)
+        {
+            _loggerService.Error($"Error clearing cart items: {ex.Message}");
+            throw new Exception("An error occurred while clearing the cart items.", ex);
+        }
+    }
+
+    public async Task<CartDto> GetCartByUserId(int userId)
+    {
+        try
+        {
+            _loggerService.Info($"Fetching cart for user {userId}");
+
+            var cart = await _unitOfWork.Carts.FirstOrDefaultAsync(
+                c => c.UserId == userId && !c.IsDeleted,
+                c => c.CartItems.Where(ci => !ci.IsDeleted)
+            );
+
+            if (cart == null)
+            {
+                _loggerService.Info($"No cart found for user {userId}. Creating a new one.");
+
+                cart = new Cart { UserId = userId };
+                await _unitOfWork.Carts.AddAsync(cart);
+                await _unitOfWork.CompleteAsync();
+
+                // Giờ đây cart đã được tạo với ID
+                _loggerService.Success($"Created new cart for user {userId}");
+            }
+
+            // Map entity to DTO
+            var cartDto = new CartDto
+            {
+                UserId = cart.UserId,
+                CartItems = cart.CartItems?.Select(ci => new CartItemDto
+                {
+                    CartItemId = ci.Id,
+                    ImageId = ci.ImageId,
+                    ImageTitle = ci.ImageTitle,
+                    Price = ci.Price,
+                    Quantity = ci.Quantity
+                }).ToList() ?? new List<CartItemDto>(),
+                TotalPrice = cart.TotalPrice // Sử dụng computed property từ entity
+            };
+
+            _loggerService.Success($"Successfully fetched cart for user {userId}");
+            return cartDto;
+        }
+        catch (Exception ex)
+        {
+            _loggerService.Error($"Unexpected error in GetCartByUserId: {ex.Message}");
+            throw new Exception("An error occurred while fetching the cart.", ex);
+        }
+    }
+
     public async Task<CartDto> CreateCartAsync(AddCartItemDto addCartItemDto, int userId)
     {
         try
@@ -78,12 +153,6 @@ public class CartService : ICartService
         }
     }
 
-    /// <summary>
-    ///     Cập nhật số lượng ảnh trong giỏ hàng
-    /// </summary>
-    /// <param name="updateCartItemDto"></param>
-    /// <param name="userId"></param>
-    /// <returns></returns>
     public async Task<CartDto> UpdateCartAsync(UpdateCartItemDto updateCartItemDto, int userId)
     {
         try
@@ -125,12 +194,6 @@ public class CartService : ICartService
         }
     }
 
-    /// <summary>
-    ///     Xóa ảnh khỏi giỏ hàng
-    /// </summary>
-    /// <param name="cartItemId"></param>
-    /// <param name="userId"></param>
-    /// <returns></returns>
     public async Task<CartDto> DeleteCartItemAsync(int cartItemId, int userId)
     {
         try
@@ -160,92 +223,6 @@ public class CartService : ICartService
         {
             _loggerService.Error($"Unexpected error in DeleteCart: {ex.Message}");
             throw new Exception("An error occurred while removing item from the cart.", ex);
-        }
-    }
-
-    /// <summary>
-    ///     Lấy danh sách ảnh trong giỏ hàng của user
-    /// </summary>
-    /// <param name="userId"></param>
-    /// <returns></returns>
-    public async Task<CartDto> GetCartByUserId(int userId)
-    {
-        try
-        {
-            _loggerService.Info($"Fetching cart for user {userId}");
-
-            var cart = await _unitOfWork.Carts
-                .GetQueryable()
-                .Include(c => c.CartItems.Where(ci => !ci.IsDeleted))
-                .FirstOrDefaultAsync(c => c.UserId == userId);
-
-            if (cart == null)
-                throw new KeyNotFoundException("Cart not found for this user.");
-
-            var cartDto = new CartDto
-            {
-                UserId = cart.UserId,
-                CartItems = cart.CartItems.Select(ci => new CartItemDto
-                {
-                    CartItemId = ci.Id,
-                    ImageId = ci.ImageId,
-                    ImageTitle = ci.ImageTitle,
-                    Price = ci.Price,
-                    Quantity = ci.Quantity
-                }).ToList(),
-                TotalPrice = cart.CartItems.Sum(ci => ci.Price * ci.Quantity)
-            };
-
-            _loggerService.Success($"Successfully fetched cart for user {userId}");
-
-            return cartDto;
-        }
-        catch (Exception ex)
-        {
-            _loggerService.Error($"Unexpected error in GetCartByUserId: {ex.Message}");
-            throw new Exception("An error occurred while fetching the cart.", ex);
-        }
-    }
-
-    /// <summary>
-    ///     Reset giỏ hàng của user sau khi thanh toán thành công.
-    /// </summary>
-    /// <param name="userId"></param>
-    /// <returns></returns>
-    public async Task<bool> ResetCartAfterPayment(int userId)
-    {
-        try
-        {
-            _loggerService.Info($"Resetting cart for user {userId} after successful payment");
-
-            var cart = await _unitOfWork.Carts
-                .GetQueryable()
-                .Include(c => c.CartItems)
-                .FirstOrDefaultAsync(c => c.UserId == userId);
-
-            if (cart == null)
-            {
-                _loggerService.Warn($"Cart not found for user {userId}, nothing to reset.");
-                return false;
-            }
-
-            if (cart.CartItems.Any())
-            {
-                _unitOfWork.CartItems.DeleteRange(cart.CartItems);
-                await _unitOfWork.CompleteAsync();
-                _loggerService.Success($"Cart items for user {userId} have been deleted.");
-            }
-            else
-            {
-                _loggerService.Warn($"No items in cart to delete for user {userId}.");
-            }
-
-            return true;
-        }
-        catch (Exception ex)
-        {
-            _loggerService.Error($"Unexpected error in ResetCartAfterPayment: {ex.Message}");
-            throw new Exception("An error occurred while resetting the cart after payment.", ex);
         }
     }
 }

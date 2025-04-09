@@ -4,7 +4,7 @@ using ArWoh.API.Enums;
 
 namespace ArWoh.API.Entities;
 
-public class Payment : BaseEntity
+public class  Payment : BaseEntity
 {
     [Required] public int OrderId { get; set; }
 

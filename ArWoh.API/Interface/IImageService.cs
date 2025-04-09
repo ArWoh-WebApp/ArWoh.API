@@ -10,7 +10,9 @@ public interface IImageService
 
     Task<IEnumerable<ImageDto>> GetRandomImages();
 
-    Task<Pagination<ImageDto>> GetAllImages(PaginationParameter paginationParams, OrientationType? orientation = null);    // Task<IEnumerable<ImageDto>> GetAllImagesBoughtByUser(int userId);
+    Task<Pagination<ImageDto>>
+        GetAllImages(PaginationParameter paginationParams,
+            OrientationType? orientation = null); // Task<IEnumerable<ImageDto>> GetAllImagesBoughtByUser(int userId);
 
     Task<ImageDto> GetImageById(int imageId);
 

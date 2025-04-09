@@ -10,7 +10,7 @@ public class OrderDto
     public string? ShippingAddress { get; set; }
     public string? ShippingStatus { get; set; }
     public decimal? ShippingFee { get; set; }
-    
+
     // Thông tin ghi chú vận chuyển
     public string? ConfirmNote { get; set; }
     public string? PackagingNote { get; set; }
@@ -19,10 +19,10 @@ public class OrderDto
     public string? DeliveryProofImageUrl { get; set; }
 
     // Các thông tin liên kết
-    public List<OrderDetailDto> OrderDetails { get; set; } = new List<OrderDetailDto>();
+    public List<OrderDetailDto> OrderDetails { get; set; } = new();
     public PaymentInfoDto PaymentInfo { get; set; }
     public UserBasicInfoDto Customer { get; set; }
-    
+
     // Thông tin bổ sung
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }

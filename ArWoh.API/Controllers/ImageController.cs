@@ -37,10 +37,10 @@ public class ImageController : ControllerBase
 
             if (paginatedImages.TotalCount == 0)
             {
-                var message = orientation.HasValue 
-                    ? $"No images found with orientation {orientation}" 
+                var message = orientation.HasValue
+                    ? $"No images found with orientation {orientation}"
                     : "No images found";
-                
+
                 return Ok(ApiResult<Pagination<ImageDto>>.Success(
                     new Pagination<ImageDto>(new List<ImageDto>(), 0, paginationParams.PageIndex,
                         paginationParams.PageSize),
@@ -48,10 +48,10 @@ public class ImageController : ControllerBase
                 ));
             }
 
-            var successMessage = orientation.HasValue 
-                ? $"Successfully retrieved images with orientation {orientation}" 
+            var successMessage = orientation.HasValue
+                ? $"Successfully retrieved images with orientation {orientation}"
                 : "Successfully retrieved images";
-            
+
             return Ok(ApiResult<Pagination<ImageDto>>.Success(paginatedImages, successMessage));
         }
         catch (Exception ex)

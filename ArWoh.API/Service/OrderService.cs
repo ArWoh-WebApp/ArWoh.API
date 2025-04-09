@@ -7,10 +7,10 @@ namespace ArWoh.API.Service;
 
 public class OrderService : IOrderService
 {
-    private readonly ILoggerService _loggerService;
-    private readonly IClaimService _claimService;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly ICartService _cartService;
+    private readonly IClaimService _claimService;
+    private readonly ILoggerService _loggerService;
+    private readonly IUnitOfWork _unitOfWork;
 
     public OrderService(ILoggerService loggerService, IClaimService claimService, IUnitOfWork unitOfWork,
         ICartService cartService)
@@ -23,7 +23,7 @@ public class OrderService : IOrderService
 
 
     /// <summary>
-    /// Lấy thông tin đơn hàng
+    ///     Lấy thông tin đơn hàng
     /// </summary>
     public async Task<OrderDto> GetOrderById(int orderId)
     {
@@ -57,8 +57,7 @@ public class OrderService : IOrderService
         }
     }
 
-    
-    
+
     public async Task<OrderDto> CreateOrderFromCart(int userId, CreateOrderDto createOrderDto)
     {
         try
@@ -69,9 +68,7 @@ public class OrderService : IOrderService
             var cart = await _cartService.GetCartByUserId(userId);
 
             if (cart.CartItems == null || !cart.CartItems.Any())
-            {
                 throw new InvalidOperationException("Cart is empty. Cannot create order.");
-            }
 
             // PHASE 2: TẠO ĐƠN HÀNG
             // Tạo Order với thông tin cơ bản
@@ -105,9 +102,7 @@ public class OrderService : IOrderService
             // Tính tổng tiền sản phẩm + phí vận chuyển (nếu có)
             order.TotalAmount = order.OrderDetails.Sum(od => od.Price * od.Quantity);
             if (createOrderDto.IsPhysicalPrint && createOrderDto.ShippingFee.HasValue)
-            {
                 order.TotalAmount += createOrderDto.ShippingFee.Value;
-            }
 
             // PHASE 5: LƯU ĐƠN HÀNG VÀO DATABASE
             await _unitOfWork.Orders.AddAsync(order);
@@ -146,7 +141,7 @@ public class OrderService : IOrderService
 
 
     /// <summary>
-    /// Cập nhật trạng thái đơn hàng
+    ///     Cập nhật trạng thái đơn hàng
     /// </summary>
     public async Task<OrderDto> UpdateOrderStatus(int orderId, OrderStatusEnum status)
     {
@@ -181,6 +176,7 @@ public class OrderService : IOrderService
             throw;
         }
     }
+
     // Helper method để mapping từ model sang DTO
     private OrderDto MapToOrderDto(Order order, Payment payment)
     {

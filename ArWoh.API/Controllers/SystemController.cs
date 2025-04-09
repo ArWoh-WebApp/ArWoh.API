@@ -176,7 +176,8 @@ public class SystemController : ControllerBase
                 Title = "Mountain Lake Reflection",
                 Description =
                     "A pristine alpine lake perfectly mirrors the surrounding mountains and sky, creating a symmetrical landscape of extraordinary beauty.",
-                Url = "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FChuaBa%2FIMG_2321.jpg&version_id=null",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FChuaBa%2FIMG_2321.jpg&version_id=null",
                 Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Lake", "Mountains", "Reflection", "Alpine", "Symmetry" },
                 Location = "Banff National Park, Canada",

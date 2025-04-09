@@ -21,6 +21,9 @@ public class PaymentController : ControllerBase
        _claimService = claimService;
    }
 
+   /// <summary>
+   /// Tạo link thanh toán từ giỏ hàng hiện tại của người dùng
+   /// </summary>
    [HttpPost("create")]
    [Authorize]
    public async Task<IActionResult> CreatePayment([FromBody] CreateOrderDto createOrderDto)
@@ -46,13 +49,16 @@ public class PaymentController : ControllerBase
        }
    }
 
-   [HttpGet("{id}")]
+   /// <summary>
+   /// Lấy thông tin trạng thái thanh toán theo paymentId
+   /// </summary>
+   [HttpGet("{paymentId}")]
    [Authorize]
-   public async Task<IActionResult> GetPaymentStatus(int id)
+   public async Task<IActionResult> GetPaymentStatus(int paymentId)
    {
        try
        {
-           var status = await _paymentService.GetPaymentStatus(id);
+           var status = await _paymentService.GetPaymentStatus(paymentId);
            return Ok(new ApiResult<PaymentStatusDto>
            {
                IsSuccess = true,
@@ -69,6 +75,9 @@ public class PaymentController : ControllerBase
        }
    }
 
+   /// <summary>
+   /// Endpoint nhận callback từ PayOS sau khi thanh toán
+   /// </summary>
    [HttpPost("webhook")]
    [AllowAnonymous] // Webhook từ PayOS không cần xác thực
    public async Task<IActionResult> ProcessWebhook([FromBody] WebhookType webhookData)
@@ -86,13 +95,16 @@ public class PaymentController : ControllerBase
        }
    }
 
-   [HttpPost("{id}/cancel")]
+   /// <summary>
+   /// Hủy thanh toán đang chờ xử lý
+   /// </summary>
+   [HttpPost("{paymentId}/cancel")]
    [Authorize]
-   public async Task<IActionResult> CancelPayment(int id, [FromBody] CancelPaymentDto cancelPaymentDto)
+   public async Task<IActionResult> CancelPayment(int paymentId, [FromBody] CancelPaymentDto cancelPaymentDto)
    {
        try
        {
-           await _paymentService.CancelPayment(id, cancelPaymentDto.Reason);
+           await _paymentService.CancelPayment(paymentId, cancelPaymentDto.Reason);
            return Ok(new ApiResult<bool>
            {
                IsSuccess = true,
@@ -110,6 +122,9 @@ public class PaymentController : ControllerBase
        }
    }
 
+   /// <summary>
+   /// Lấy lịch sử thanh toán của một đơn hàng
+   /// </summary>
    [HttpGet("order/{orderId}")]
    [Authorize]
    public async Task<IActionResult> GetPaymentsByOrderId(int orderId)

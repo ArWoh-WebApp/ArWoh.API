@@ -234,7 +234,7 @@ public class SystemController : ControllerBase
                 StoryOfArt =
                     "<h2>Living Monuments: The Olive Guardians</h2><br><br>1. Botanical Elders. Several trees in this grove have been carbon-dated to be over 1,500 years old, making them living links to the Byzantine period when they were first planted.\n\n2. Agricultural Continuity. The same families have harvested olives from these trees for 27 generations, maintaining traditional farming techniques passed down through centuries.\n\n3. Environmental Adaptation. The twisted forms of the trunks represent the trees' response to prevailing winds and periodic drought - a physical record of environmental conditions spanning millennia.\n\n4. Seasonal Selection. The photograph was taken during the two-week period before harvest when the olives have reached full maturity but remain on the branches.\n\n5. Conservation Challenge. This ancient grove now faces threats from a bacterial disease spreading through the region, potentially endangering trees that have survived countless previous challenges throughout history.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
-            }
+            },
 
             #endregion
 

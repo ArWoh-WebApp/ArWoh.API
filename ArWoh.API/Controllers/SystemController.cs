@@ -145,8 +145,8 @@ public class SystemController : ControllerBase
                 Description =
                     "A winding path cuts through a forest ablaze with autumn colors, creating a tunnel of golden and crimson foliage.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FChuaBa%2FIMG_2319.jpg&version_id=null",
-                Orientation = OrientationType.Portrait,
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FChuaBa%2FIMG_2318.jpg&version_id=null",
+                Orientation = OrientationType.Landscape,
                 Tags = new List<string> { "Autumn", "Forest", "Path", "Fall Colors", "Trees" },
                 Location = "Vermont, USA",
                 Price = 28000,
@@ -162,7 +162,7 @@ public class SystemController : ControllerBase
                     "Dramatic sea cliffs catch the first light of day as waves crash against their base, showcasing the raw power of where land meets sea.",
                 Url =
                     "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FChuaBa%2FIMG_2320.jpg&version_id=null",
-                Orientation = OrientationType.Landscape,
+                Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Coast", "Cliffs", "Ocean", "Sunrise", "Waves" },
                 Location = "Moher, Ireland",
                 Price = 45000,
@@ -193,7 +193,7 @@ public class SystemController : ControllerBase
                 Description =
                     "A busy city intersection glistens with reflections from neon signs and traffic lights, as rain transforms an ordinary urban scene into a colorful abstract canvas.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FChuaBa%2FIMG_2325.jpg&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FChuaBa%2FIMG_2321.jpg&version_id=null",
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Urban", "Rain", "Night", "City Lights", "Reflection" },
                 Location = "Seoul, South Korea",
@@ -225,8 +225,8 @@ public class SystemController : ControllerBase
                 Description =
                     "Centuries-old olive trees with gnarled trunks stand in formation across a Mediterranean hillside, their silver-green leaves shimmering in the warm light.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FChuaBa%2FIMG_2334.jpg&version_id=null",
-                Orientation = OrientationType.Landscape,
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FChuaBa%2FIMG_2329.jpg&version_id=null",
+                Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Olives", "Trees", "Mediterranean", "Agriculture", "Ancient" },
                 Location = "Puglia, Italy",
                 Price = 32000,
@@ -234,39 +234,7 @@ public class SystemController : ControllerBase
                 StoryOfArt =
                     "<h2>Living Monuments: The Olive Guardians</h2><br><br>1. Botanical Elders. Several trees in this grove have been carbon-dated to be over 1,500 years old, making them living links to the Byzantine period when they were first planted.\n\n2. Agricultural Continuity. The same families have harvested olives from these trees for 27 generations, maintaining traditional farming techniques passed down through centuries.\n\n3. Environmental Adaptation. The twisted forms of the trunks represent the trees' response to prevailing winds and periodic drought - a physical record of environmental conditions spanning millennia.\n\n4. Seasonal Selection. The photograph was taken during the two-week period before harvest when the olives have reached full maturity but remain on the branches.\n\n5. Conservation Challenge. This ancient grove now faces threats from a bacterial disease spreading through the region, potentially endangering trees that have survived countless previous challenges throughout history.",
                 PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-            new()
-            {
-                Title = "Ancient Olive Grove",
-                Description =
-                    "Centuries-old olive trees with gnarled trunks stand in formation across a Mediterranean hillside, their silver-green leaves shimmering in the warm light.",
-                Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FChuaBa%2FIMG_2391.jpg&version_id=null",
-                Orientation = OrientationType.Landscape,
-                Tags = new List<string> { "Olives", "Trees", "Mediterranean", "Agriculture", "Ancient" },
-                Location = "Puglia, Italy",
-                Price = 32000,
-                FileName = "ancient_olive_grove.jpg",
-                StoryOfArt =
-                    "<h2>Living Monuments: The Olive Guardians</h2><br><br>1. Botanical Elders. Several trees in this grove have been carbon-dated to be over 1,500 years old, making them living links to the Byzantine period when they were first planted.\n\n2. Agricultural Continuity. The same families have harvested olives from these trees for 27 generations, maintaining traditional farming techniques passed down through centuries.\n\n3. Environmental Adaptation. The twisted forms of the trunks represent the trees' response to prevailing winds and periodic drought - a physical record of environmental conditions spanning millennia.\n\n4. Seasonal Selection. The photograph was taken during the two-week period before harvest when the olives have reached full maturity but remain on the branches.\n\n5. Conservation Challenge. This ancient grove now faces threats from a bacterial disease spreading through the region, potentially endangering trees that have survived countless previous challenges throughout history.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-            new()
-            {
-                Title = "Ancient Olive Grove",
-                Description =
-                    "Centuries-old olive trees with gnarled trunks stand in formation across a Mediterranean hillside, their silver-green leaves shimmering in the warm light.",
-                Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FChuaBa%2FIMG_2463.jpg&version_id=null",
-                Orientation = OrientationType.Landscape,
-                Tags = new List<string> { "Olives", "Trees", "Mediterranean", "Agriculture", "Ancient" },
-                Location = "Puglia, Italy",
-                Price = 32000,
-                FileName = "ancient_olive_grove.jpg",
-                StoryOfArt =
-                    "<h2>Living Monuments: The Olive Guardians</h2><br><br>1. Botanical Elders. Several trees in this grove have been carbon-dated to be over 1,500 years old, making them living links to the Byzantine period when they were first planted.\n\n2. Agricultural Continuity. The same families have harvested olives from these trees for 27 generations, maintaining traditional farming techniques passed down through centuries.\n\n3. Environmental Adaptation. The twisted forms of the trunks represent the trees' response to prevailing winds and periodic drought - a physical record of environmental conditions spanning millennia.\n\n4. Seasonal Selection. The photograph was taken during the two-week period before harvest when the olives have reached full maturity but remain on the branches.\n\n5. Conservation Challenge. This ancient grove now faces threats from a bacterial disease spreading through the region, potentially endangering trees that have survived countless previous challenges throughout history.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
+            }
 
             #endregion
 
@@ -279,7 +247,7 @@ public class SystemController : ControllerBase
                     "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
                 Url =
                     "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FMetro%2FIMG_5722-min.jpg&version_id=null",
-                Orientation = OrientationType.Landscape,
+                Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
                 Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
                 Price = 42000,
@@ -290,6 +258,24 @@ public class SystemController : ControllerBase
             },
 
             //2
+            new()
+            {
+                Title = "Nhịp Sống Metro Sài Gòn",
+                Description =
+                    "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
+                Url =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FMetro%2FIMG_5723-min.jpg&version_id=null",
+                Orientation = OrientationType.Landscape,
+                Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
+                Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
+                Price = 42000,
+                FileName = "saigon_metro_line1.jpg",
+                StoryOfArt =
+                    "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
+                PhotographerId = photographers[random.Next(photographers.Count)]
+            },
+
+
             new()
             {
                 Title = "Nhịp Sống Metro Sài Gòn",
@@ -332,26 +318,8 @@ public class SystemController : ControllerBase
                 Description =
                     "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FMetro%2FIMG_5726-min.jpg&version_id=null",
-                Orientation = OrientationType.Landscape,
-                Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
-                Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
-                Price = 42000,
-                FileName = "saigon_metro_line1.jpg",
-                StoryOfArt =
-                    "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-
-
-            new()
-            {
-                Title = "Nhịp Sống Metro Sài Gòn",
-                Description =
-                    "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
-                Url =
                     "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FMetro%2FIMG_5734-min.jpg&version_id=null",
-                Orientation = OrientationType.Landscape,
+                Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
                 Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
                 Price = 42000,
@@ -387,25 +355,7 @@ public class SystemController : ControllerBase
                     "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
                 Url =
                     "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FMetro%2FIMG_5739-min.jpg&version_id=null",
-                Orientation = OrientationType.Landscape,
-                Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
-                Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
-                Price = 42000,
-                FileName = "saigon_metro_line1.jpg",
-                StoryOfArt =
-                    "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-
-
-            new()
-            {
-                Title = "Nhịp Sống Metro Sài Gòn",
-                Description =
-                    "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
-                Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FMetro%2FIMG_5741-min.png&version_id=null",
-                Orientation = OrientationType.Landscape,
+                Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
                 Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
                 Price = 42000,
@@ -423,79 +373,7 @@ public class SystemController : ControllerBase
                     "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
                 Url =
                     "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FMetro%2FIMG_5764-min.jpg&version_id=null",
-                Orientation = OrientationType.Landscape,
-                Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
-                Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
-                Price = 42000,
-                FileName = "saigon_metro_line1.jpg",
-                StoryOfArt =
-                    "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-
-
-            new()
-            {
-                Title = "Nhịp Sống Metro Sài Gòn",
-                Description =
-                    "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
-                Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FMetro%2FIMG_5765-min.jpg&version_id=null",
-                Orientation = OrientationType.Landscape,
-                Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
-                Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
-                Price = 42000,
-                FileName = "saigon_metro_line1.jpg",
-                StoryOfArt =
-                    "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-
-
-            new()
-            {
-                Title = "Nhịp Sống Metro Sài Gòn",
-                Description =
-                    "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
-                Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FMetro%2FIMG_5767-min.jpg&version_id=null",
-                Orientation = OrientationType.Landscape,
-                Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
-                Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
-                Price = 42000,
-                FileName = "saigon_metro_line1.jpg",
-                StoryOfArt =
-                    "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-
-
-            new()
-            {
-                Title = "Nhịp Sống Metro Sài Gòn",
-                Description =
-                    "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
-                Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2Fmetro%20(23).jpg&version_id=null",
-                Orientation = OrientationType.Landscape,
-                Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
-                Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
-                Price = 42000,
-                FileName = "saigon_metro_line1.jpg",
-                StoryOfArt =
-                    "<h2>Chuyển Mình Đô Thị: Nhịp Đập Mới Của Sài Gòn</h2><br><br>1. Dấu Mốc Lịch Sử. Tuyến Metro số 1 là dự án giao thông công cộng hiện đại đầu tiên của Thành phố Hồ Chí Minh, đánh dấu bước ngoặt quan trọng trong quá trình phát triển hạ tầng đô thị Việt Nam.\n\n2. Công Nghệ Tiên Tiến. Hệ thống tàu điện ngầm này sử dụng công nghệ tự động hóa cao, với khả năng vận hành an toàn ở tốc độ tối đa 110km/h, kết nối các khu vực trọng điểm của thành phố.\n\n3. Thách Thức Kỹ Thuật. Quá trình xây dựng đối mặt với nhiều khó khăn do đặc điểm địa chất phức tạp của khu vực, đòi hỏi kỹ thuật đào hầm tiên tiến và sự hợp tác quốc tế từ nhiều chuyên gia.\n\n4. Tác Động Xã Hội. Bức ảnh ghi lại khoảnh khắc chuyển giao giữa phương thức di chuyển truyền thống và hiện đại, phản ánh sự thay đổi trong lối sống và thói quen đi lại của người dân thành phố.\n\n5. Góc Nhìn Nghệ Thuật. Ánh sáng nhân tạo từ hệ thống chiếu sáng của ga tàu tạo ra một không gian màu sắc tương phản với bầu trời hoàng hôn bên ngoài, tượng trưng cho sự giao thoa giữa tự nhiên và công nghệ trong đô thị hiện đại.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-
-
-            new()
-            {
-                Title = "Nhịp Sống Metro Sài Gòn",
-                Description =
-                    "Tuyến tàu điện ngầm đầu tiên của Sài Gòn hiện lên sống động, biểu tượng cho sự phát triển đô thị hiện đại song hành cùng nhịp sống năng động của thành phố.",
-                Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FMetro%2FIMG_5768-min.jpg&version_id=null",
-                Orientation = OrientationType.Landscape,
+                Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Metro", "Sài Gòn", "Đô thị", "Giao thông", "Hiện đại" },
                 Location = "Tuyến Metro Số 1, TP Hồ Chí Minh, Việt Nam",
                 Price = 42000,
@@ -515,7 +393,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-01-min.png&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-01-min.jpg&version_id=null",
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
                 Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
@@ -532,7 +410,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-02-min.png&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-02-min.jpg&version_id=null",
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
                 Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
@@ -549,7 +427,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-03-min.png&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-03-min.jpg&version_id=null",
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
                 Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
@@ -566,7 +444,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-04-min.png&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-04-min.jpg&version_id=null",
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
                 Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
@@ -583,7 +461,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-05-min.png&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-05-min.jpg&version_id=null",
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
                 Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
@@ -600,7 +478,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-06-min.png&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-06-min.jpg&version_id=null",
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
                 Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
@@ -634,41 +512,7 @@ public class SystemController : ControllerBase
                 Description =
                     "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
                 Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-08-min.png&version_id=null",
-                Orientation = OrientationType.Portrait,
-                Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
-                Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
-                Price = 35000,
-                FileName = "dai_noi_hue_binh_minh.png",
-                StoryOfArt =
-                    "<h2>Dấu Ấn Hoàng Cung: Di Sản Văn Hóa Việt Nam</h2><br><br>1. Lịch Sử Trường Tồn. Đại Nội Huế được xây dựng từ năm 1805 dưới triều Gia Long, là trung tâm chính trị và văn hóa của triều đại nhà Nguyễn trong suốt 143 năm (1802-1945).\n\n2. Kiến Trúc Đặc Biệt. Công trình này là sự kết hợp hoàn hảo giữa nghệ thuật phương Đông truyền thống và các nguyên lý phong thủy, thể hiện qua việc bố trí các tòa nhà theo trục Bắc-Nam và được bao quanh bởi hệ thống sông Hương.\n\n3. Thách Thức Bảo Tồn. Bức ảnh này ghi lại một trong những góc còn nguyên vẹn của di sản, sau khi phần lớn công trình đã bị tàn phá qua hai cuộc chiến tranh và nhiều thập kỷ bị bỏ hoang.\n\n4. Giá Trị Biểu Tượng. Màu vàng hoàng gia trên các chi tiết kiến trúc là màu dành riêng cho hoàng tộc, tượng trưng cho quyền lực tối cao và sự thịnh vượng của triều đại.\n\n5. Góc Nhìn Nghệ Thuật. Bức ảnh được chụp vào thời điểm bình minh, khi ánh sáng đầu ngày tạo ra sự tương phản mạnh mẽ giữa bóng và sáng, làm nổi bật các đường nét kiến trúc tinh xảo - một khoảnh khắc hiếm có khi du khách chưa đến tham quan.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-
-            new()
-            {
-                Title = "Bình Minh Tại Đại Nội Huế",
-                Description =
-                    "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
-                Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-10-min.png&version_id=null",
-                Orientation = OrientationType.Portrait,
-                Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
-                Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",
-                Price = 35000,
-                FileName = "dai_noi_hue_binh_minh.png",
-                StoryOfArt =
-                    "<h2>Dấu Ấn Hoàng Cung: Di Sản Văn Hóa Việt Nam</h2><br><br>1. Lịch Sử Trường Tồn. Đại Nội Huế được xây dựng từ năm 1805 dưới triều Gia Long, là trung tâm chính trị và văn hóa của triều đại nhà Nguyễn trong suốt 143 năm (1802-1945).\n\n2. Kiến Trúc Đặc Biệt. Công trình này là sự kết hợp hoàn hảo giữa nghệ thuật phương Đông truyền thống và các nguyên lý phong thủy, thể hiện qua việc bố trí các tòa nhà theo trục Bắc-Nam và được bao quanh bởi hệ thống sông Hương.\n\n3. Thách Thức Bảo Tồn. Bức ảnh này ghi lại một trong những góc còn nguyên vẹn của di sản, sau khi phần lớn công trình đã bị tàn phá qua hai cuộc chiến tranh và nhiều thập kỷ bị bỏ hoang.\n\n4. Giá Trị Biểu Tượng. Màu vàng hoàng gia trên các chi tiết kiến trúc là màu dành riêng cho hoàng tộc, tượng trưng cho quyền lực tối cao và sự thịnh vượng của triều đại.\n\n5. Góc Nhìn Nghệ Thuật. Bức ảnh được chụp vào thời điểm bình minh, khi ánh sáng đầu ngày tạo ra sự tương phản mạnh mẽ giữa bóng và sáng, làm nổi bật các đường nét kiến trúc tinh xảo - một khoảnh khắc hiếm có khi du khách chưa đến tham quan.",
-                PhotographerId = photographers[random.Next(photographers.Count)]
-            },
-
-            new()
-            {
-                Title = "Bình Minh Tại Đại Nội Huế",
-                Description =
-                    "Ánh bình minh đầu ngày phủ lên các kiến trúc cổ kính của Hoàng thành Huế, tạo nên sự tương phản mạnh mẽ giữa bóng tối và ánh sáng, làm nổi bật vẻ đẹp tinh xảo của kiến trúc hoàng gia.",
-                Url =
-                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-09-min.png&version_id=null",
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=artworks%2FHue%2F%C4%90%E1%BA%A1i%20n%E1%BB%99i-08-min.jpg&version_id=null",
                 Orientation = OrientationType.Portrait,
                 Tags = new List<string> { "Huế", "Di sản", "Kiến trúc", "Hoàng cung", "Văn hóa" },
                 Location = "Đại Nội Huế, Thừa Thiên Huế, Việt Nam",

@@ -10,8 +10,8 @@ namespace ArWoh.API.Controllers;
 [Route("api/deliveries")]
 public class ShippingController : ControllerBase
 {
-    private readonly IShippingService _shippingService;
     private readonly IClaimService _claimService;
+    private readonly IShippingService _shippingService;
 
     public ShippingController(IShippingService shippingService, IClaimService claimService)
     {
@@ -31,10 +31,10 @@ public class ShippingController : ControllerBase
             // Lấy userId từ token JWT hiện tại
             var userId = _claimService.GetCurrentUserId();
             var shippableImages = await _shippingService.GetShippableImagesByUserId(userId);
-        
+
             // Trả về kết quả thành công
             return Ok(ApiResult<IEnumerable<ShippableImageDto>>.Success(
-                shippableImages, 
+                shippableImages,
                 "Shippable images retrieved successfully"));
         }
         catch (Exception ex)

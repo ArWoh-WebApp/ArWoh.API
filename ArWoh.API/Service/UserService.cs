@@ -1,9 +1,7 @@
-﻿using System.Transactions;
-using ArWoh.API.DTOs.PaymentDTOs;
+﻿using ArWoh.API.DTOs.PaymentDTOs;
 using ArWoh.API.DTOs.UserDTOs;
 using ArWoh.API.Enums;
 using ArWoh.API.Interface;
-using Microsoft.EntityFrameworkCore;
 
 namespace ArWoh.API.Service;
 
@@ -34,24 +32,20 @@ public class UserService : IUserService
             var transactions = new List<TransactionDto>();
 
             foreach (var order in orders)
-            {
                 // Với mỗi payment trong order, tạo một transaction dto
-                foreach (var payment in order.Payments)
+            foreach (var payment in order.Payments)
+                transactions.Add(new TransactionDto
                 {
-                    transactions.Add(new TransactionDto
-                    {
-                        TransactionId = payment.Id,
-                        OrderId = order.Id,
-                        Date = payment.CreatedAt,
-                        Amount = payment.Amount,
-                        PaymentGateway = payment.PaymentGateway.ToString(),
-                        PaymentStatus = payment.Status.ToString(),
-                        GatewayTransactionId = payment.GatewayTransactionId ?? string.Empty,
-                        OrderStatus = order.Status.ToString(),
-                        ItemCount = order.OrderDetails.Count
-                    });
-                }
-            }
+                    TransactionId = payment.Id,
+                    OrderId = order.Id,
+                    Date = payment.CreatedAt,
+                    Amount = payment.Amount,
+                    PaymentGateway = payment.PaymentGateway.ToString(),
+                    PaymentStatus = payment.Status.ToString(),
+                    GatewayTransactionId = payment.GatewayTransactionId ?? string.Empty,
+                    OrderStatus = order.Status.ToString(),
+                    ItemCount = order.OrderDetails.Count
+                });
 
             return transactions;
         }

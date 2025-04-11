@@ -1,5 +1,7 @@
 ﻿using ArWoh.API.DTOs.ImageDTOs;
+using ArWoh.API.DTOs.OrderDTOs;
 using ArWoh.API.DTOs.UserDTOs;
+using ArWoh.API.Enums;
 using ArWoh.API.Interface;
 using ArWoh.API.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -66,6 +68,31 @@ public class UserController : ControllerBase
     }
 
     /// <summary>
+    ///     get tất cả payments, có sort, filter.
+    /// </summary>
+    [HttpGet("me/payment")]
+    public async Task<ActionResult<ApiResult<List<PaymentInfoDto>>>> GetAllPayments(
+        [FromQuery] PaymentStatusEnum? status = null,
+        [FromQuery] DateTime? fromDate = null,
+        [FromQuery] DateTime? toDate = null)
+    {
+        try
+        {
+            // Gọi service để lấy dữ liệu
+            var payments = await _paymentService.GetAllPayments(status, fromDate, toDate);
+
+            // Trả về kết quả thành công với dữ liệu
+            return Ok(ApiResult<List<PaymentInfoDto>>.Success(payments, "Payments retrieved successfully."));
+        }
+        catch (Exception ex)
+        {
+            // Trả về kết quả lỗi
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                ApiResult<List<PaymentInfoDto>>.Error($"Error retrieving payments: {ex.Message}"));
+        }
+    }
+
+    /// <summary>
     ///     Lấy tất cả hình sau khi User đã mua
     /// </summary>
     [HttpGet("me/payment/images")]
@@ -86,6 +113,7 @@ public class UserController : ControllerBase
             return StatusCode(500, ApiResult<object>.Error("An error occurred while processing your request."));
         }
     }
+
 
     [HttpGet("me/profile")]
     [Authorize]

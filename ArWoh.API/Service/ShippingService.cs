@@ -1,5 +1,4 @@
-﻿using ArWoh.API.DTOs.ImageDTOs;
-using ArWoh.API.DTOs.ShippingDTOs;
+﻿using ArWoh.API.DTOs.ShippingDTOs;
 using ArWoh.API.Enums;
 using ArWoh.API.Interface;
 
@@ -7,8 +6,8 @@ namespace ArWoh.API.Service;
 
 public class ShippingService : IShippingService
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly ILoggerService _loggerService;
+    private readonly IUnitOfWork _unitOfWork;
 
     public ShippingService(IUnitOfWork unitOfWork, ILoggerService loggerService)
     {
@@ -26,10 +25,7 @@ public class ShippingService : IShippingService
                 o => o.CustomerId == userId && o.Status == OrderStatusEnum.Completed,
                 o => o.OrderDetails);
 
-            if (completedOrders == null || !completedOrders.Any())
-            {
-                return Enumerable.Empty<ShippableImageDto>();
-            }
+            if (completedOrders == null || !completedOrders.Any()) return Enumerable.Empty<ShippableImageDto>();
 
             var result = new List<ShippableImageDto>();
 
@@ -49,36 +45,30 @@ public class ShippingService : IShippingService
 
             // Kiểm tra các hình ảnh từ những đơn hàng đã hoàn thành
             foreach (var order in completedOrders)
+            foreach (var orderDetail in order.OrderDetails)
             {
-                foreach (var orderDetail in order.OrderDetails)
-                {
-                    // Kiểm tra xem image có tồn tại trong dictionary không
-                    if (!imageDict.TryGetValue(orderDetail.ImageId, out var image))
-                    {
-                        continue; // Skip nếu không tìm thấy image
-                    }
+                // Kiểm tra xem image có tồn tại trong dictionary không
+                if (!imageDict.TryGetValue(orderDetail.ImageId,
+                        out var image)) continue; // Skip nếu không tìm thấy image
 
-                    // Kiểm tra xem hình ảnh này đã được đặt ship chưa
-                    var isAlreadyShipped = await _unitOfWork.Orders.ExistsAsync(
-                        o => o.CustomerId == userId
-                             && o.IsPhysicalPrint == true
-                             && o.OrderDetails.Any(od => od.ImageId == orderDetail.ImageId));
+                // Kiểm tra xem hình ảnh này đã được đặt ship chưa
+                var isAlreadyShipped = await _unitOfWork.Orders.ExistsAsync(
+                    o => o.CustomerId == userId
+                         && o.IsPhysicalPrint == true
+                         && o.OrderDetails.Any(od => od.ImageId == orderDetail.ImageId));
 
-                    // Nếu hình ảnh chưa được đặt ship, thêm vào danh sách kết quả
-                    if (!isAlreadyShipped)
+                // Nếu hình ảnh chưa được đặt ship, thêm vào danh sách kết quả
+                if (!isAlreadyShipped)
+                    result.Add(new ShippableImageDto
                     {
-                        result.Add(new ShippableImageDto
-                        {
-                            ImageId = orderDetail.ImageId,
-                            Title = image.Title,
-                            Description = image.Description,
-                            Price = image.Price,
-                            Url = image.Url,
-                            PurchaseDate = order.CreatedAt,
-                            OrderId = order.Id
-                        });
-                    }
-                }
+                        ImageId = orderDetail.ImageId,
+                        Title = image.Title,
+                        Description = image.Description,
+                        Price = image.Price,
+                        Url = image.Url,
+                        PurchaseDate = order.CreatedAt,
+                        OrderId = order.Id
+                    });
             }
 
             return result;

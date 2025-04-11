@@ -88,8 +88,6 @@ public class ImageController : ControllerBase
     }
 
 
-
-
     [HttpGet("{id}")]
     [ProducesResponseType(typeof(ApiResult<ImageDto>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]

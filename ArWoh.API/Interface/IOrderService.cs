@@ -10,7 +10,7 @@ public interface IOrderService
     ///     lấy doanh thu của 1 photographer
     /// </summary>
     Task<RevenueDto> GetPhotographerRevenue(int photographerId);
-    
+
     /// <summary>
     ///     Tạo đơn hàng từ giỏ hàng
     /// </summary>

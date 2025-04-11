@@ -12,10 +12,10 @@ namespace ArWoh.API.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IClaimService _claimService;
+    private readonly IImageService _imageService;
     private readonly ILoggerService _logger;
     private readonly IPaymentService _paymentService;
     private readonly IUserService _userService;
-    private readonly IImageService _imageService;
 
     public UserController(IUserService userService, IClaimService claimService, ILoggerService logger,
         IPaymentService paymentService, IImageService imageService)
@@ -50,24 +50,23 @@ public class UserController : ControllerBase
 
     [HttpGet("me/transactions")]
     [Authorize]
-    [ProducesResponseType(typeof(ApiResult<UserProfileDto>), 200)]
     public async Task<IActionResult> GetMyTransactions()
     {
         try
         {
             var userId = _claimService.GetCurrentUserId();
             var transactions = _userService.GetUserTransactions(userId);
-
             return Ok(ApiResult<object>.Success(transactions, "Transactions retrieved successfully"));
         }
         catch (Exception e)
         {
-            return Ok(ApiResult<object>.Error(e.Message));
+            return StatusCode(500,
+                ApiResult<object>.Error($"An error occurred while retrieving photographers: {e.Message}"));
         }
     }
 
     /// <summary>
-    /// Lấy tất cả hình sau khi User đã mua
+    ///     Lấy tất cả hình sau khi User đã mua
     /// </summary>
     [HttpGet("me/payment/images")]
     [ProducesResponseType(typeof(ApiResult<IEnumerable<ImageDto>>), 200)]

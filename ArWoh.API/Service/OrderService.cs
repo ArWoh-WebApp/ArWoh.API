@@ -31,14 +31,12 @@ public class OrderService : IOrderService
                 img => img.PhotographerId == photographerId && !img.IsDeleted);
 
             if (!photographerImages.Any())
-            {
                 return new RevenueDto
                 {
                     TotalRevenue = 0,
                     TotalImagesSold = 0,
                     ImageSales = new List<ImageSalesDetail>()
                 };
-            }
 
             var imageIds = photographerImages.Select(img => img.Id).ToList();
 
@@ -59,9 +57,7 @@ public class OrderService : IOrderService
                 if (order != null &&
                     order.Status == OrderStatusEnum.Completed &&
                     order.Payments.Any(p => p.Status == PaymentStatusEnum.COMPLETED))
-                {
                     validOrderDetails.Add(detail);
-                }
             }
 
             // PHASE 4: Calculate the total revenue and build the result

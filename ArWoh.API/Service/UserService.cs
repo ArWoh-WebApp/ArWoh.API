@@ -1,7 +1,9 @@
-﻿using ArWoh.API.DTOs.PaymentDTOs;
+﻿using System.Transactions;
+using ArWoh.API.DTOs.PaymentDTOs;
 using ArWoh.API.DTOs.UserDTOs;
 using ArWoh.API.Enums;
 using ArWoh.API.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace ArWoh.API.Service;
 
@@ -22,42 +24,68 @@ public class UserService : IUserService
     {
         try
         {
-            // PHASE 1: Get all orders by user
-            var userOrders = await _unitOfWork.Orders.FindAsync(
-                o => o.CustomerId == userId,
-                o => o.OrderDetails,
-                o => o.Payments);
+            List<TransactionDto> transactions = new List<TransactionDto>();
 
-            if (!userOrders.Any())
+            // Sử dụng khối using để đảm bảo connection được đóng đúng cách
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                return new List<TransactionDto>();
-            }
+                // PHASE 1: Lấy Orders của user
+                var userOrdersQuery = _unitOfWork.Orders.GetQueryable()
+                    .Where(o => o.CustomerId == userId);
 
-            // PHASE 2: Transform to transaction DTOs
-            var transactions = new List<TransactionDto>();
-        
-            foreach (var order in userOrders)
-            {
-                // For each payment in the order, create a transaction record
-                foreach (var payment in order.Payments)
+                var userOrders = await userOrdersQuery.ToListAsync();
+
+                if (!userOrders.Any()) return transactions;
+
+                var orderIds = userOrders.Select(o => o.Id).ToList();
+
+                // PHASE 2: Lấy Payments
+                var paymentsQuery = _unitOfWork.Payments.GetQueryable()
+                    .Where(p => orderIds.Contains(p.OrderId));
+
+                var payments = await paymentsQuery.ToListAsync();
+
+                // PHASE 3: Lấy OrderDetails
+                var orderDetailsQuery = _unitOfWork.OrderDetails.GetQueryable()
+                    .Where(od => orderIds.Contains(od.OrderId));
+
+                var orderDetails = await orderDetailsQuery.ToListAsync();
+
+                // Group order details by OrderId
+                var orderDetailsMap = orderDetails
+                    .GroupBy(od => od.OrderId)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => g.Sum(od => od.Quantity));
+
+                // PHASE 4: Map to DTOs
+                foreach (var payment in payments)
                 {
+                    var itemCount = orderDetailsMap.ContainsKey(payment.OrderId)
+                        ? orderDetailsMap[payment.OrderId]
+                        : 0;
+
+                    var order = userOrders.FirstOrDefault(o => o.Id == payment.OrderId);
+
                     transactions.Add(new TransactionDto
                     {
                         TransactionId = payment.Id,
-                        OrderId = order.Id,
+                        OrderId = payment.OrderId,
                         Date = payment.CreatedAt,
                         Amount = payment.Amount,
                         PaymentGateway = payment.PaymentGateway.ToString(),
                         PaymentStatus = payment.Status.ToString(),
-                        GatewayTransactionId = payment.GatewayTransactionId,
-                        OrderStatus = order.Status.ToString(),
-                        ItemCount = order.OrderDetails.Sum(od => od.Quantity)
+                        GatewayTransactionId = payment.GatewayTransactionId ?? string.Empty,
+                        OrderStatus = order?.Status.ToString() ?? "Unknown",
+                        ItemCount = itemCount
                     });
                 }
+
+                scope.Complete();
             }
 
             // Sort by date, newest first
-            return transactions.OrderByDescending(t => t.Date);
+            return transactions.OrderByDescending(t => t.Date).ToList();
         }
         catch (Exception ex)
         {

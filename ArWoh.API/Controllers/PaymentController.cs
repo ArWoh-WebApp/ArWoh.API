@@ -23,6 +23,31 @@ public class PaymentController : ControllerBase
     }
 
     /// <summary>
+    ///     get tất cả payments, có sort, filter.
+    /// </summary>
+    [HttpGet]
+    public async Task<ActionResult<ApiResult<List<PaymentInfoDto>>>> GetAllPayments(
+        [FromQuery] PaymentStatusEnum? status = null,
+        [FromQuery] DateTime? fromDate = null,
+        [FromQuery] DateTime? toDate = null)
+    {
+        try
+        {
+            // Gọi service để lấy dữ liệu
+            var payments = await _paymentService.GetAllPayments(status, fromDate, toDate);
+
+            // Trả về kết quả thành công với dữ liệu
+            return Ok(ApiResult<List<PaymentInfoDto>>.Success(payments, "Payments retrieved successfully."));
+        }
+        catch (Exception ex)
+        {
+            // Trả về kết quả lỗi
+            return StatusCode(StatusCodes.Status500InternalServerError,
+                ApiResult<List<PaymentInfoDto>>.Error($"Error retrieving payments: {ex.Message}"));
+        }
+    }
+
+    /// <summary>
     ///     Tạo link thanh toán từ giỏ hàng hiện tại của người dùng
     /// </summary>
     [HttpGet("create-link")]

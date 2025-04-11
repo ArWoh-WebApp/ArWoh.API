@@ -3,6 +3,7 @@ using ArWoh.API.DTOs.PaymentDTOs;
 using ArWoh.API.Entities;
 using ArWoh.API.Enums;
 using ArWoh.API.Interface;
+using Microsoft.EntityFrameworkCore;
 using Net.payOS;
 using Net.payOS.Types;
 using Newtonsoft.Json;
@@ -23,6 +24,51 @@ public class PaymentService : IPaymentService
         _payOs = payOs;
         _unitOfWork = unitOfWork;
         _orderService = orderService;
+    }
+
+    // Thêm tham số để lọc hoặc sắp xếp
+    public async Task<List<PaymentInfoDto>> GetAllPayments(PaymentStatusEnum? status = null, DateTime? fromDate = null,
+        DateTime? toDate = null)
+    {
+        try
+        {
+            // Bắt đầu với truy vấn cơ bản
+            IQueryable<Payment> query = _unitOfWork.Payments.GetQueryable();
+
+            // Áp dụng các điều kiện lọc nếu được cung cấp
+            if (status.HasValue) query = query.Where(p => p.Status == status.Value);
+
+            if (fromDate.HasValue) query = query.Where(p => p.CreatedAt >= fromDate.Value);
+
+            if (toDate.HasValue) query = query.Where(p => p.CreatedAt <= toDate.Value);
+
+            // Sắp xếp theo thời gian tạo giảm dần (mới nhất trước)
+            query = query.OrderByDescending(p => p.CreatedAt);
+
+            // Thực thi truy vấn
+            var payments = await query.ToListAsync();
+
+            // Chuyển đổi entities thành DTOs
+            var paymentDtos = payments.Select(p => new PaymentInfoDto
+            {
+                Id = p.Id,
+                OrderId = p.OrderId,
+                Amount = p.Amount,
+                PaymentGateway = p.PaymentGateway.ToString(),
+                Status = p.Status.ToString(),
+                GatewayTransactionId = p.GatewayTransactionId,
+                PaymentUrl = p.PaymentUrl,
+                CreatedAt = p.CreatedAt,
+                UpdatedAt = p.UpdatedAt
+            }).ToList();
+
+            return paymentDtos;
+        }
+        catch (Exception e)
+        {
+            _logger.Error($"Error getting payments: {e.Message}");
+            throw;
+        }
     }
 
     public async Task<string> ProcessPayment(int userId, CreateOrderDto createOrderDto)

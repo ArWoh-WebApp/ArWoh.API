@@ -15,10 +15,10 @@ public class PhotographerController : ControllerBase
     private readonly IClaimService _claimService;
     private readonly IImageService _imageService;
     private readonly ILoggerService _loggerService;
+    private readonly IOrderService _orderService;
     private readonly IPaymentService _paymentService;
     private readonly IUserService _userService;
-    private readonly IOrderService _orderService;
-    
+
     public PhotographerController(IImageService imageService, ILoggerService loggerService, IClaimService claimService,
         IPaymentService paymentService, IUserService userService, IOrderService orderService)
     {

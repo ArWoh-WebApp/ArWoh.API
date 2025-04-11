@@ -1,6 +1,4 @@
-﻿using ArWoh.API.Enums;
-
-namespace ArWoh.API.DTOs.PaymentDTOs;
+﻿namespace ArWoh.API.DTOs.PaymentDTOs;
 
 public class RevenueDto
 {
@@ -17,4 +15,3 @@ public class ImageSalesDetail
     public int SalesCount { get; set; }
     public decimal TotalAmount { get; set; }
 }
-

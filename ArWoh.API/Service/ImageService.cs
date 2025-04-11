@@ -21,6 +21,63 @@ public class ImageService : IImageService
     }
 
     /// <summary>
+    ///     Lấy tất cả hình sau khi User đã mua dựa trên table Order và OrderDetail
+    /// </summary>
+    public async Task<IEnumerable<ImageDto>> GetAllImagesBoughtByUser(int userId)
+    {
+        try
+        {
+            // PHASE 1: Query completed orders
+            // Lấy tất cả đơn hàng đã hoàn thành của người dùng cùng với OrderDetails và Payments
+            var successfulOrders = await _unitOfWork.Orders.FindAsync(
+                o => o.CustomerId == userId && o.Status == OrderStatusEnum.Completed,
+                o => o.OrderDetails,
+                o => o.Payments);
+
+            // PHASE 2: Filter orders with successful payment
+            // Lọc đơn hàng có ít nhất một payment thành công để đảm bảo sản phẩm đã được thanh toán
+            var ordersWithSuccessfulPayment = successfulOrders.Where(o =>
+                o.Payments.Any(p => p.Status == PaymentStatusEnum.COMPLETED));
+
+            // PHASE 3: Extract order details
+            // Lấy tất cả OrderDetail từ các đơn hàng thành công để truy cập thông tin hình ảnh
+            var orderIds = ordersWithSuccessfulPayment.Select(o => o.Id).ToList();
+            var orderDetails = await _unitOfWork.OrderDetails.FindAsync(
+                od => orderIds.Contains(od.OrderId),
+                od => od.Image);
+
+            // PHASE 4: Transform to DTOs
+            // Chuyển đổi thành ImageDto và loại bỏ trùng lặp để trả về cho client
+            var images = orderDetails
+                .Select(od => new ImageDto
+                {
+                    Id = od.Image.Id,
+                    PhotographerId = od.Image.PhotographerId,
+                    Title = od.Image.Title,
+                    Description = od.Image.Description,
+                    Price = od.Image.Price,
+                    StoryOfArt = od.Image.StoryOfArt,
+                    Orientation = od.Image.Orientation,
+                    Tags = od.Image.Tags,
+                    Location = od.Image.Location,
+                    FileName = od.Image.FileName,
+                    Url = od.Image.Url
+                })
+                .DistinctBy(img => img.Id) // Loại bỏ hình ảnh trùng lặp nếu user mua cùng một hình nhiều lần
+                .ToList();
+
+            return images;
+        }
+        catch (Exception ex)
+        {
+            // PHASE 5: Error handling
+            // Ghi log lỗi và ném ngoại lệ để xử lý ở tầng controller
+            _loggerService.Error($"Error fetching images for user {userId}: {ex.Message}");
+            throw;
+        }
+    }
+
+    /// <summary>
     ///     Lấy tất cả ảnh trong hệ thống với thứ tự ngẫu nhiên
     /// </summary>
     /// <returns>Danh sách tất cả ảnh được sắp xếp ngẫu nhiên</returns>
@@ -174,45 +231,6 @@ public class ImageService : IImageService
         }
     }
 
-    // /// <summary>
-    // ///     Lấy tất cả hình sau khi User đã mua dựa trên table PaymentTransaction
-    // /// </summary>
-    // public async Task<IEnumerable<ImageDto>> GetAllImagesBoughtByUser(int userId)
-    // {
-    //     try
-    //     {
-    //         var paymentTransactions = await _unitOfWork.PaymentTransactions
-    //             .GetQueryable()
-    //             .Where(pt => pt.CustomerId == userId)
-    //             .Include(pt => pt.Image)
-    //             .ToListAsync();
-    //
-    //         var images = paymentTransactions
-    //             .Where(pt => pt.Image != null)
-    //             .Select(pt => new ImageDto
-    //             {
-    //                 Id = pt.Image.Id,
-    //                 PhotographerId = pt.Image.PhotographerId,
-    //                 Title = pt.Image.Title,
-    //                 Description = pt.Image.Description,
-    //                 Price = pt.Image.Price,
-    //                 StoryOfArt = pt.Image.StoryOfArt,
-    //                 Orientation = pt.Image.Orientation,
-    //                 Tags = pt.Image.Tags,
-    //                 Location = pt.Image.Location,
-    //                 FileName = pt.Image.FileName,
-    //                 Url = pt.Image.Url
-    //             })
-    //             .ToList();
-    //
-    //         return images;
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         _loggerService.Error($"Error fetching images for user {userId}: {ex.Message}");
-    //         throw;
-    //     }
-    // }
 
     /// <summary>
     ///     Lấy details của 1 tấm hình kèm thông tin photographer

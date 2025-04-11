@@ -1,4 +1,5 @@
-﻿using ArWoh.API.DTOs.UserDTOs;
+﻿using ArWoh.API.DTOs.ImageDTOs;
+using ArWoh.API.DTOs.UserDTOs;
 using ArWoh.API.Interface;
 using ArWoh.API.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -14,14 +15,16 @@ public class UserController : ControllerBase
     private readonly ILoggerService _logger;
     private readonly IPaymentService _paymentService;
     private readonly IUserService _userService;
-
+    private readonly IImageService _imageService;
+    
     public UserController(IUserService userService, IClaimService claimService, ILoggerService logger,
-        IPaymentService paymentService)
+        IPaymentService paymentService, IImageService imageService)
     {
         _userService = userService;
         _claimService = claimService;
         _logger = logger;
         _paymentService = paymentService;
+        _imageService = imageService;
     }
 
     [HttpGet("photographers")]
@@ -62,7 +65,26 @@ public class UserController : ControllerBase
     //         return Ok(ApiResult<object>.Error(e.Message));
     //     }
     // }
-
+    
+    [HttpGet("me/payment/images")]
+    [ProducesResponseType(typeof(ApiResult<IEnumerable<ImageDto>>), 200)]
+    [ProducesResponseType(typeof(ApiResult<object>), 400)]
+    [ProducesResponseType(typeof(ApiResult<object>), 500)]
+    public async Task<IActionResult> GetAllImagesBoughtByUser()
+    {
+        try
+        {
+            var userId = _claimService.GetCurrentUserId();
+            var images = await _imageService.GetAllImagesBoughtByUser(userId);
+    
+            return Ok(ApiResult<IEnumerable<ImageDto>>.Success(images));
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ApiResult<object>.Error("An error occurred while processing your request."));
+        }
+    }
+    
     [HttpGet("me/profile")]
     [Authorize]
     [ProducesResponseType(typeof(ApiResult<UserProfileDto>), 200)]

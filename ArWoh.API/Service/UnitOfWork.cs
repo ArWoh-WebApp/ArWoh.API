@@ -14,6 +14,7 @@ public class UnitOfWork : IUnitOfWork
         Users = new GenericRepository<User>(_context);
         Images = new GenericRepository<Image>(_context);
         Orders = new GenericRepository<Order>(_context);
+        OrderDetails = new GenericRepository<OrderDetail>(_context);
         AdminActions = new GenericRepository<AdminAction>(_context);
         Carts = new GenericRepository<Cart>(_context);
         CartItems = new GenericRepository<CartItem>(_context);
@@ -23,6 +24,7 @@ public class UnitOfWork : IUnitOfWork
     public IGenericRepository<User> Users { get; }
     public IGenericRepository<Image> Images { get; }
     public IGenericRepository<Order> Orders { get; }
+    public IGenericRepository<OrderDetail> OrderDetails { get; }
     public IGenericRepository<AdminAction> AdminActions { get; }
     public IGenericRepository<Cart> Carts { get; }
     public IGenericRepository<CartItem> CartItems { get; }

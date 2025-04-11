@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ArWoh.API.Controllers;
 
 [ApiController]
-[Route("api/deliveries")]
+[Route("api/shipping")]
 public class ShippingController : ControllerBase
 {
     private readonly IClaimService _claimService;
@@ -28,7 +28,6 @@ public class ShippingController : ControllerBase
     {
         try
         {
-            // Lấy userId từ token JWT hiện tại
             var userId = _claimService.GetCurrentUserId();
             var shippableImages = await _shippingService.GetShippableImagesByUserId(userId);
 
@@ -43,4 +42,5 @@ public class ShippingController : ControllerBase
             return StatusCode(500, ApiResult<string>.Error($"An error occurred: {ex.Message}"));
         }
     }
+    
 }

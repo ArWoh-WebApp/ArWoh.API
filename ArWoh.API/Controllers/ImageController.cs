@@ -87,6 +87,7 @@ public class ImageController : ControllerBase
         }
     }
 
+
     // [HttpGet("bought-by-user")]
     // [ProducesResponseType(typeof(ApiResult<IEnumerable<ImageDto>>), 200)]
     // [ProducesResponseType(typeof(ApiResult<object>), 400)]

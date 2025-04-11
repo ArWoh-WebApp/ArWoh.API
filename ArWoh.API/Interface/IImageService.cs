@@ -6,13 +6,14 @@ namespace ArWoh.API.Interface;
 
 public interface IImageService
 {
-    Task<IEnumerable<ImageDto>> GetImagesUploadedByPhotographer(int photographerId);
-
-    Task<IEnumerable<ImageDto>> GetRandomImages();
+    Task<Pagination<ImageDto>> GetImagesUploadedByPhotographer(int photographerId,
+        PaginationParameter paginationParams);
 
     Task<Pagination<ImageDto>>
         GetAllImages(PaginationParameter paginationParams,
-            OrientationType? orientation = null); // Task<IEnumerable<ImageDto>> GetAllImagesBoughtByUser(int userId);
+            OrientationType? orientation = null);
+
+    Task<IEnumerable<ImageDto>> GetRandomImages();
 
     Task<ImageDto> GetImageById(int imageId);
 

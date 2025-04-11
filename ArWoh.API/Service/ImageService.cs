@@ -271,7 +271,8 @@ public class ImageService : IImageService
         }
     }
 
-    public async Task<IEnumerable<ImageDto>> GetImagesUploadedByPhotographer(int photographerId)
+    public async Task<Pagination<ImageDto>> GetImagesUploadedByPhotographer(int photographerId,
+        PaginationParameter paginationParams)
     {
         try
         {
@@ -282,16 +283,30 @@ public class ImageService : IImageService
                 throw new KeyNotFoundException($"Photographer with ID {photographerId} not found.");
             }
 
-            var images =
-                await _unitOfWork.Images.FindAsync(img => img.PhotographerId == photographerId && !img.IsDeleted);
+            // Get queryable to apply pagination
+            var query = _unitOfWork.Images.GetQueryable()
+                .Where(img => img.PhotographerId == photographerId && !img.IsDeleted)
+                .OrderByDescending(img => img.CreatedAt);
 
-            if (images == null || !images.Any())
+            // Get total count for pagination
+            var totalCount = await query.CountAsync();
+
+            // Apply pagination
+            var paginatedItems = await query
+                .Skip((paginationParams.PageIndex - 1) * paginationParams.PageSize)
+                .Take(paginationParams.PageSize)
+                .ToListAsync();
+
+            if (paginatedItems == null || !paginatedItems.Any())
             {
-                _loggerService.Info($"No images found for photographer ID {photographerId}.");
-                return Enumerable.Empty<ImageDto>();
+                _loggerService.Info(
+                    $"No images found for photographer ID {photographerId} on page {paginationParams.PageIndex}.");
+                return new Pagination<ImageDto>(new List<ImageDto>(), totalCount, paginationParams.PageIndex,
+                    paginationParams.PageSize);
             }
 
-            return images.Select(img => new ImageDto
+            // Convert to DTO
+            var imageDtos = paginatedItems.Select(img => new ImageDto
             {
                 Id = img.Id,
                 Title = img.Title,
@@ -301,6 +316,12 @@ public class ImageService : IImageService
                 PhotographerId = img.PhotographerId ?? 0,
                 Tags = img.Tags
             }).ToList();
+
+            return new Pagination<ImageDto>(
+                imageDtos,
+                totalCount,
+                paginationParams.PageIndex,
+                paginationParams.PageSize);
         }
         catch (Exception e)
         {

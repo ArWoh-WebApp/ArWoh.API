@@ -1,3 +1,4 @@
+using ArWoh.API.Commons;
 using ArWoh.API.DTOs.ImageDTOs;
 using ArWoh.API.DTOs.UserDTOs;
 using ArWoh.API.Interface;
@@ -27,17 +28,18 @@ public class PhotographerController : ControllerBase
     }
 
     [HttpGet("me/images")]
-    [ProducesResponseType(typeof(ApiResult<IEnumerable<ImageDto>>), 200)]
-    public async Task<IActionResult> GetImagesByPhotographer()
+    [ProducesResponseType(typeof(ApiResult<Pagination<ImageDto>>), 200)]
+    public async Task<IActionResult> GetImagesByPhotographer([FromQuery] PaginationParameter paginationParams)
     {
         var photographerId = _claimService.GetCurrentUserId();
         try
         {
-            var images = await _imageService.GetImagesUploadedByPhotographer(photographerId);
+            var paginatedImages = await _imageService.GetImagesUploadedByPhotographer(photographerId, paginationParams);
 
-            if (!images.Any()) return NotFound(ApiResult<object>.Error("No images found for this photographer"));
+            if (paginatedImages.Count == 0 && paginationParams.PageIndex == 1)
+                return NotFound(ApiResult<object>.Error("No images found for this photographer"));
 
-            return Ok(ApiResult<IEnumerable<ImageDto>>.Success(images, "Images retrieved successfully"));
+            return Ok(ApiResult<Pagination<ImageDto>>.Success(paginatedImages, "Images retrieved successfully"));
         }
         catch (KeyNotFoundException e)
         {
@@ -46,22 +48,25 @@ public class PhotographerController : ControllerBase
         }
         catch (Exception e)
         {
+            _loggerService.Error($"Error retrieving images: {e.Message}");
             return StatusCode(500, ApiResult<object>.Error("An error occurred while retrieving images"));
         }
     }
 
     [HttpGet("{photographerId}/images")]
-    [ProducesResponseType(typeof(ApiResult<IEnumerable<ImageDto>>), 200)]
-    public async Task<IActionResult> GetImagesByPhotographer(int photographerId)
+    [ProducesResponseType(typeof(ApiResult<Pagination<ImageDto>>), 200)]
+    public async Task<IActionResult> GetImagesByPhotographer(int photographerId,
+        [FromQuery] PaginationParameter paginationParams)
     {
         if (photographerId <= 0) return BadRequest(ApiResult<object>.Error("Invalid photographer ID"));
         try
         {
-            var images = await _imageService.GetImagesUploadedByPhotographer(photographerId);
+            var paginatedImages = await _imageService.GetImagesUploadedByPhotographer(photographerId, paginationParams);
 
-            if (!images.Any()) return NotFound(ApiResult<object>.Error("No images found for this photographer"));
+            if (paginatedImages.Count == 0 && paginationParams.PageIndex == 1)
+                return NotFound(ApiResult<object>.Error("No images found for this photographer"));
 
-            return Ok(ApiResult<IEnumerable<ImageDto>>.Success(images, "Images retrieved successfully"));
+            return Ok(ApiResult<Pagination<ImageDto>>.Success(paginatedImages, "Images retrieved successfully"));
         }
         catch (KeyNotFoundException e)
         {
@@ -70,6 +75,7 @@ public class PhotographerController : ControllerBase
         }
         catch (Exception e)
         {
+            _loggerService.Error($"Error retrieving images: {e.Message}");
             return StatusCode(500, ApiResult<object>.Error("An error occurred while retrieving images"));
         }
     }

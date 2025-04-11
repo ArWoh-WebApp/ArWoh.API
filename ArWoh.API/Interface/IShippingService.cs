@@ -6,7 +6,7 @@ namespace ArWoh.API.Interface;
 public interface IShippingService
 {
     /// <summary>
-    /// Tạo đơn hàng ship mới cho các hình ảnh đã mua
+    ///     Tạo đơn hàng ship mới cho các hình ảnh đã mua
     /// </summary>
     /// <param name="orderDto">Thông tin tạo đơn hàng ship</param>
     /// <param name="userId">ID của người dùng</param>
@@ -14,21 +14,21 @@ public interface IShippingService
     Task<ShippingOrderDto> CreateShippingOrder(ShippingOrderCreateDto orderDto, int userId);
 
     /// <summary>
-    /// Lấy danh sách tất cả đơn hàng ship của người dùng
+    ///     Lấy danh sách tất cả đơn hàng ship của người dùng
     /// </summary>
     /// <param name="userId">ID của người dùng</param>
     /// <returns>Danh sách đơn hàng ship</returns>
     Task<IEnumerable<ShippingOrderDto>> GetUserShippingOrders(int userId);
 
     /// <summary>
-    /// Lấy danh sách hình ảnh có thể ship của người dùng
+    ///     Lấy danh sách hình ảnh có thể ship của người dùng
     /// </summary>
     /// <param name="userId">ID của người dùng</param>
     /// <returns>Danh sách hình ảnh có thể ship</returns>
     Task<IEnumerable<ShippableImageDto>> GetShippableImagesByUserId(int userId);
 
     /// <summary>
-    /// Lấy chi tiết một đơn hàng ship cụ thể của người dùng
+    ///     Lấy chi tiết một đơn hàng ship cụ thể của người dùng
     /// </summary>
     /// <param name="orderId">ID của đơn hàng</param>
     /// <param name="userId">ID của người dùng</param>
@@ -36,13 +36,13 @@ public interface IShippingService
     Task<ShippingOrderDto> GetShippingOrderById(int orderId, int userId);
 
     /// <summary>
-    /// Lấy danh sách tất cả đơn hàng ship trong hệ thống (dành cho Admin)
+    ///     Lấy danh sách tất cả đơn hàng ship trong hệ thống (dành cho Admin)
     /// </summary>
     /// <returns>Danh sách tất cả đơn hàng ship</returns>
     Task<IEnumerable<ShippingOrderDto>> GetAllShippingOrders();
 
     /// <summary>
-    /// Cập nhật trạng thái của đơn hàng ship (dành cho Admin)
+    ///     Cập nhật trạng thái của đơn hàng ship (dành cho Admin)
     /// </summary>
     /// <param name="orderId">ID của đơn hàng</param>
     /// <param name="newStatus">Trạng thái mới</param>
@@ -52,7 +52,7 @@ public interface IShippingService
         string note);
 
     /// <summary>
-    /// Upload hình ảnh chứng minh giao hàng (dành cho Admin)
+    ///     Upload hình ảnh chứng minh giao hàng (dành cho Admin)
     /// </summary>
     /// <param name="orderId">ID của đơn hàng</param>
     /// <param name="image">File hình ảnh</param>

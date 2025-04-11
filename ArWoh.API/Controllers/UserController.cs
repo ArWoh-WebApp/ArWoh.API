@@ -16,7 +16,7 @@ public class UserController : ControllerBase
     private readonly IPaymentService _paymentService;
     private readonly IUserService _userService;
     private readonly IImageService _imageService;
-    
+
     public UserController(IUserService userService, IClaimService claimService, ILoggerService logger,
         IPaymentService paymentService, IImageService imageService)
     {
@@ -48,24 +48,24 @@ public class UserController : ControllerBase
         }
     }
 
-    // [HttpGet("me/transactions")]
-    // [Authorize]
-    // [ProducesResponseType(typeof(ApiResult<UserProfileDto>), 200)]
-    // public async Task<IActionResult> GetMyTransactions()
-    // {
-    //     try
-    //     {
-    //         var userId = _claimService.GetCurrentUserId();
-    //         var transactions = _userService.GetUserTransactions(userId);
-    //
-    //         return Ok(ApiResult<object>.Success(transactions, "Transactions retrieved successfully"));
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         return Ok(ApiResult<object>.Error(e.Message));
-    //     }
-    // }
-    
+    [HttpGet("me/transactions")]
+    [Authorize]
+    [ProducesResponseType(typeof(ApiResult<UserProfileDto>), 200)]
+    public async Task<IActionResult> GetMyTransactions()
+    {
+        try
+        {
+            var userId = _claimService.GetCurrentUserId();
+            var transactions = _userService.GetUserTransactions(userId);
+
+            return Ok(ApiResult<object>.Success(transactions, "Transactions retrieved successfully"));
+        }
+        catch (Exception e)
+        {
+            return Ok(ApiResult<object>.Error(e.Message));
+        }
+    }
+
     /// <summary>
     /// Lấy tất cả hình sau khi User đã mua
     /// </summary>
@@ -79,7 +79,7 @@ public class UserController : ControllerBase
         {
             var userId = _claimService.GetCurrentUserId();
             var images = await _imageService.GetAllImagesBoughtByUser(userId);
-    
+
             return Ok(ApiResult<IEnumerable<ImageDto>>.Success(images));
         }
         catch (Exception ex)
@@ -87,7 +87,7 @@ public class UserController : ControllerBase
             return StatusCode(500, ApiResult<object>.Error("An error occurred while processing your request."));
         }
     }
-    
+
     [HttpGet("me/profile")]
     [Authorize]
     [ProducesResponseType(typeof(ApiResult<UserProfileDto>), 200)]

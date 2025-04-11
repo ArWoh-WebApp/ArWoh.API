@@ -1,4 +1,5 @@
-﻿using ArWoh.API.DTOs.UserDTOs;
+﻿using ArWoh.API.DTOs.PaymentDTOs;
+using ArWoh.API.DTOs.UserDTOs;
 using ArWoh.API.Enums;
 using ArWoh.API.Interface;
 
@@ -17,11 +18,53 @@ public class UserService : IUserService
         _blobService = blobService;
     }
 
+    public async Task<IEnumerable<TransactionDto>> GetUserTransactions(int userId)
+    {
+        try
+        {
+            // PHASE 1: Get all orders by user
+            var userOrders = await _unitOfWork.Orders.FindAsync(
+                o => o.CustomerId == userId,
+                o => o.OrderDetails,
+                o => o.Payments);
 
-    //public async Task<RevenueDto> GetPhotographerRevenue(int photographerId)
+            if (!userOrders.Any())
+            {
+                return new List<TransactionDto>();
+            }
 
-    // public async Task<IEnumerable<PaymentTransaction>> GetUserTransactions(int userId)
+            // PHASE 2: Transform to transaction DTOs
+            var transactions = new List<TransactionDto>();
+        
+            foreach (var order in userOrders)
+            {
+                // For each payment in the order, create a transaction record
+                foreach (var payment in order.Payments)
+                {
+                    transactions.Add(new TransactionDto
+                    {
+                        TransactionId = payment.Id,
+                        OrderId = order.Id,
+                        Date = payment.CreatedAt,
+                        Amount = payment.Amount,
+                        PaymentGateway = payment.PaymentGateway.ToString(),
+                        PaymentStatus = payment.Status.ToString(),
+                        GatewayTransactionId = payment.GatewayTransactionId,
+                        OrderStatus = order.Status.ToString(),
+                        ItemCount = order.OrderDetails.Sum(od => od.Quantity)
+                    });
+                }
+            }
 
+            // Sort by date, newest first
+            return transactions.OrderByDescending(t => t.Date);
+        }
+        catch (Exception ex)
+        {
+            _logger.Error($"Error fetching transactions for user {userId}: {ex.Message}");
+            throw;
+        }
+    }
 
     public async Task<UserProfileDto> UserUpdateAvatar(int userId, IFormFile file)
     {

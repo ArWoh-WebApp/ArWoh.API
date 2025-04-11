@@ -1,10 +1,12 @@
-﻿using ArWoh.API.DTOs.UserDTOs;
+﻿using ArWoh.API.DTOs.PaymentDTOs;
+using ArWoh.API.DTOs.UserDTOs;
 
 namespace ArWoh.API.Interface;
 
 public interface IUserService
 {
     Task<UserProfileDto> GetUserDetailsById(int userId);
+    Task<IEnumerable<TransactionDto>> GetUserTransactions(int userId);
 
     Task<UserProfileDto> GetPhotographerProfile(int photographerId);
     // Task<IEnumerable<PaymentTransaction>> GetUserTransactions(int userId);

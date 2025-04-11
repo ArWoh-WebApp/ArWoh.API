@@ -63,7 +63,7 @@ public class PaymentService : IPaymentService
                 (int)order.TotalAmount,
                 $"Thanh toán đơn hàng #{order.Id}",
                 itemList,
-                "http://localhost:9090/payment/cancel",
+                "https://arwoh.vercel.app/payment-success",
                 payment.RedirectUrl
             );
 

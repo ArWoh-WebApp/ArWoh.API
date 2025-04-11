@@ -47,6 +47,9 @@ public class ShippingOrderDto
     public string PackagingNote { get; set; }
     public string ShippingNote { get; set; }
     public string DeliveryNote { get; set; }
+    public string CustomerName { get; set; }
+    public string CustomerEmail { get; set; }
+    public int CustomerId { get; set; }
 
     public string DeliveryProofImageUrl { get; set; } // URL hình ảnh chứng minh giao hàng
     public List<ShippingOrderDetailDto> OrderDetails { get; set; } // Chi tiết đơn hàng

@@ -66,6 +66,9 @@ public class UserController : ControllerBase
     //     }
     // }
     
+    /// <summary>
+    /// Lấy tất cả hình sau khi User đã mua
+    /// </summary>
     [HttpGet("me/payment/images")]
     [ProducesResponseType(typeof(ApiResult<IEnumerable<ImageDto>>), 200)]
     [ProducesResponseType(typeof(ApiResult<object>), 400)]

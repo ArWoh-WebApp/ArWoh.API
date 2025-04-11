@@ -1,4 +1,5 @@
 ﻿using ArWoh.API.DTOs.OrderDTOs;
+using ArWoh.API.DTOs.PaymentDTOs;
 using ArWoh.API.Entities;
 using ArWoh.API.Enums;
 using ArWoh.API.Interface;
@@ -21,6 +22,83 @@ public class OrderService : IOrderService
         _cartService = cartService;
     }
 
+    public async Task<RevenueDto> GetPhotographerRevenue(int photographerId)
+    {
+        try
+        {
+            // PHASE 1: Get all images by the photographer
+            var photographerImages = await _unitOfWork.Images.FindAsync(
+                img => img.PhotographerId == photographerId && !img.IsDeleted);
+
+            if (!photographerImages.Any())
+            {
+                return new RevenueDto
+                {
+                    TotalRevenue = 0,
+                    TotalImagesSold = 0,
+                    ImageSales = new List<ImageSalesDetail>()
+                };
+            }
+
+            var imageIds = photographerImages.Select(img => img.Id).ToList();
+
+            // PHASE 2: Get all order details containing these images
+            var allOrderDetails = await _unitOfWork.OrderDetails.FindAsync(
+                od => imageIds.Contains(od.ImageId),
+                od => od.Order,
+                od => od.Image);
+
+            // PHASE 3: Filter to only include completed orders with successful payments
+            var validOrderDetails = new List<OrderDetail>();
+            foreach (var detail in allOrderDetails)
+            {
+                // Get the order with payments
+                var order = await _unitOfWork.Orders.GetByIdAsync(detail.OrderId, o => o.Payments);
+
+                // Check if order is completed and has successful payment
+                if (order != null &&
+                    order.Status == OrderStatusEnum.Completed &&
+                    order.Payments.Any(p => p.Status == PaymentStatusEnum.COMPLETED))
+                {
+                    validOrderDetails.Add(detail);
+                }
+            }
+
+            // PHASE 4: Calculate the total revenue and build the result
+            var result = new RevenueDto
+            {
+                TotalRevenue = validOrderDetails.Sum(od => od.Price * od.Quantity),
+                TotalImagesSold = validOrderDetails.Sum(od => od.Quantity)
+            };
+
+            // PHASE 5: Group by image to get per-image statistics
+            var imageSalesDetails = validOrderDetails
+                .GroupBy(od => od.ImageId)
+                .Select(group =>
+                {
+                    var image = group.First().Image;
+                    return new ImageSalesDetail
+                    {
+                        ImageId = image.Id,
+                        ImageTitle = image.Title ?? "Untitled",
+                        ImageUrl = image.Url ?? "",
+                        SalesCount = group.Sum(od => od.Quantity),
+                        TotalAmount = group.Sum(od => od.Price * od.Quantity)
+                    };
+                })
+                .OrderByDescending(i => i.TotalAmount)
+                .ToList();
+
+            result.ImageSales = imageSalesDetails;
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _loggerService.Error($"Error getting revenue for photographer {photographerId}: {ex.Message}");
+            throw;
+        }
+    }
 
     /// <summary>
     ///     Lấy thông tin đơn hàng

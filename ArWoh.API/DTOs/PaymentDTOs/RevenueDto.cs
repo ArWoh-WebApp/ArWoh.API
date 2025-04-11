@@ -18,11 +18,3 @@ public class ImageSalesDetail
     public decimal TotalAmount { get; set; }
 }
 
-public class TransactionDetail
-{
-    public int TransactionId { get; set; }
-    public DateTime PurchaseDate { get; set; }
-    public decimal Amount { get; set; }
-    public bool IsPhysicalPrint { get; set; }
-    public PaymentTransactionStatusEnum Status { get; set; }
-}

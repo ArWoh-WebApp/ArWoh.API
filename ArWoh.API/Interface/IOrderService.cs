@@ -1,10 +1,16 @@
 ﻿using ArWoh.API.DTOs.OrderDTOs;
+using ArWoh.API.DTOs.PaymentDTOs;
 using ArWoh.API.Enums;
 
 namespace ArWoh.API.Interface;
 
 public interface IOrderService
 {
+    /// <summary>
+    ///     lấy doanh thu của 1 photographer
+    /// </summary>
+    Task<RevenueDto> GetPhotographerRevenue(int photographerId);
+    
     /// <summary>
     ///     Tạo đơn hàng từ giỏ hàng
     /// </summary>

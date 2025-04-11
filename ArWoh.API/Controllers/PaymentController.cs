@@ -10,7 +10,7 @@ using Net.payOS.Types;
 namespace ArWoh.API.Controllers;
 
 [ApiController]
-[Route("api/payment")]
+[Route("api/payments")]
 public class PaymentController : ControllerBase
 {
     private readonly IClaimService _claimService;
@@ -25,7 +25,7 @@ public class PaymentController : ControllerBase
     /// <summary>
     ///     get tất cả payments, có sort, filter.
     /// </summary>
-    [HttpGet]
+    [HttpGet("me")]
     public async Task<ActionResult<ApiResult<List<PaymentInfoDto>>>> GetAllPayments(
         [FromQuery] PaymentStatusEnum? status = null,
         [FromQuery] DateTime? fromDate = null,

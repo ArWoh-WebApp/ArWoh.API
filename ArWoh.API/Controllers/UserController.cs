@@ -55,13 +55,13 @@ public class UserController : ControllerBase
         try
         {
             var userId = _claimService.GetCurrentUserId();
-            var transactions = _userService.GetUserTransactions(userId);
+            var transactions = await _userService.GetUserTransactions(userId);
             return Ok(ApiResult<object>.Success(transactions, "Transactions retrieved successfully"));
         }
         catch (Exception e)
         {
             return StatusCode(500,
-                ApiResult<object>.Error($"An error occurred while retrieving photographers: {e.Message}"));
+                ApiResult<object>.Error($"An error occurred while retrieving transactions: {e.Message}"));
         }
     }
 

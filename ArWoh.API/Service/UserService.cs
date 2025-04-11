@@ -24,68 +24,36 @@ public class UserService : IUserService
     {
         try
         {
-            List<TransactionDto> transactions = new List<TransactionDto>();
+            // Lấy tất cả đơn hàng của user dựa trên CustomerId
+            var orders = await _unitOfWork.Orders
+                .FindAsync(o => o.CustomerId == userId,
+                    o => o.OrderDetails,
+                    o => o.Payments);
 
-            // Sử dụng khối using để đảm bảo connection được đóng đúng cách
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            // Danh sách chứa kết quả trả về
+            var transactions = new List<TransactionDto>();
+
+            foreach (var order in orders)
             {
-                // PHASE 1: Lấy Orders của user
-                var userOrdersQuery = _unitOfWork.Orders.GetQueryable()
-                    .Where(o => o.CustomerId == userId);
-
-                var userOrders = await userOrdersQuery.ToListAsync();
-
-                if (!userOrders.Any()) return transactions;
-
-                var orderIds = userOrders.Select(o => o.Id).ToList();
-
-                // PHASE 2: Lấy Payments
-                var paymentsQuery = _unitOfWork.Payments.GetQueryable()
-                    .Where(p => orderIds.Contains(p.OrderId));
-
-                var payments = await paymentsQuery.ToListAsync();
-
-                // PHASE 3: Lấy OrderDetails
-                var orderDetailsQuery = _unitOfWork.OrderDetails.GetQueryable()
-                    .Where(od => orderIds.Contains(od.OrderId));
-
-                var orderDetails = await orderDetailsQuery.ToListAsync();
-
-                // Group order details by OrderId
-                var orderDetailsMap = orderDetails
-                    .GroupBy(od => od.OrderId)
-                    .ToDictionary(
-                        g => g.Key,
-                        g => g.Sum(od => od.Quantity));
-
-                // PHASE 4: Map to DTOs
-                foreach (var payment in payments)
+                // Với mỗi payment trong order, tạo một transaction dto
+                foreach (var payment in order.Payments)
                 {
-                    var itemCount = orderDetailsMap.ContainsKey(payment.OrderId)
-                        ? orderDetailsMap[payment.OrderId]
-                        : 0;
-
-                    var order = userOrders.FirstOrDefault(o => o.Id == payment.OrderId);
-
                     transactions.Add(new TransactionDto
                     {
                         TransactionId = payment.Id,
-                        OrderId = payment.OrderId,
+                        OrderId = order.Id,
                         Date = payment.CreatedAt,
                         Amount = payment.Amount,
                         PaymentGateway = payment.PaymentGateway.ToString(),
                         PaymentStatus = payment.Status.ToString(),
                         GatewayTransactionId = payment.GatewayTransactionId ?? string.Empty,
-                        OrderStatus = order?.Status.ToString() ?? "Unknown",
-                        ItemCount = itemCount
+                        OrderStatus = order.Status.ToString(),
+                        ItemCount = order.OrderDetails.Count
                     });
                 }
-
-                scope.Complete();
             }
 
-            // Sort by date, newest first
-            return transactions.OrderByDescending(t => t.Date).ToList();
+            return transactions;
         }
         catch (Exception ex)
         {

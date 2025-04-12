@@ -85,7 +85,7 @@ public class PaymentService : IPaymentService
                 Amount = order.TotalAmount,
                 PaymentGateway = PaymentGatewayEnum.PAYOS,
                 Status = PaymentStatusEnum.PENDING,
-                RedirectUrl = "https://vaccina-care-fe.vercel.app/payment-success"
+                RedirectUrl = "https://arwoh.vercel.app/payment-success"
             };
 
             await _unitOfWork.Payments.AddAsync(payment);

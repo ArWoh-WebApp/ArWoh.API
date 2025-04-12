@@ -37,7 +37,7 @@ public class PaymentController : ControllerBase
             {
                 IsPhysicalPrint = false,
                 PaymentGateway = PaymentGatewayEnum.PAYOS,
-                RedirectUrl = "https://vaccina-care-fe.vercel.app/payment-success"
+                RedirectUrl = "https://arwoh.vercel.app/payment-success"
             };
 
             var paymentUrl = await _paymentService.ProcessPayment(userId, createOrderDto);

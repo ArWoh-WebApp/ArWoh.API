@@ -10,12 +10,155 @@ public class ShippingService : IShippingService
     private readonly IBlobService _blobService;
     private readonly ILoggerService _loggerService;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IImageService _imageService;
 
-    public ShippingService(IUnitOfWork unitOfWork, ILoggerService loggerService, IBlobService blobService)
+    public ShippingService(IUnitOfWork unitOfWork, ILoggerService loggerService, IBlobService blobService,
+        IImageService imageService)
     {
         _unitOfWork = unitOfWork;
         _loggerService = loggerService;
         _blobService = blobService;
+        _imageService = imageService;
+    }
+
+    public async Task<IEnumerable<ShippableImageDto>> GetShippableImagesByUserId(int userId)
+    {
+        try
+        {
+            _loggerService.Info($"Getting shippable images for user {userId}");
+
+            // Lấy tất cả các đơn hàng đã hoàn thành của user này
+            var completedOrders = await _unitOfWork.Orders.FindAsync(
+                o => o.CustomerId == userId && o.Status == OrderStatusEnum.Completed,
+                o => o.OrderDetails);
+
+            _loggerService.Info($"Found {completedOrders?.Count() ?? 0} completed orders for user {userId}");
+
+            if (completedOrders == null || !completedOrders.Any())
+            {
+                _loggerService.Warn($"No completed orders found for user {userId}");
+                return Enumerable.Empty<ShippableImageDto>();
+            }
+
+            // Log chi tiết số lượng order details
+            var orderDetailsCount = completedOrders.Sum(o => o.OrderDetails?.Count() ?? 0);
+            _loggerService.Info($"Found {orderDetailsCount} order details in completed orders for user {userId}");
+
+            // Kiểm tra payment status
+            foreach (var order in completedOrders)
+            {
+                var payments = await _unitOfWork.Payments.FindAsync(p => p.OrderId == order.Id);
+                var hasSuccessfulPayment = payments.Any(p => p.Status == PaymentStatusEnum.COMPLETED);
+                _loggerService.Info(
+                    $"Order {order.Id}: Found {payments.Count()} payments, HasSuccessfulPayment: {hasSuccessfulPayment}");
+            }
+
+            // Danh sách ID các hình ảnh cần lấy thông tin
+            var imageIds = completedOrders
+                .SelectMany(o => o.OrderDetails)
+                .Select(od => od.ImageId)
+                .Distinct()
+                .ToList();
+
+            _loggerService.Info($"Found {imageIds.Count} unique image IDs from order details");
+
+            // Lấy thông tin chi tiết của các hình ảnh
+            var images = await _unitOfWork.Images.FindAsync(
+                img => imageIds.Contains(img.Id));
+
+            _loggerService.Info($"Retrieved {images?.Count() ?? 0} images from database");
+
+            // Log thông báo nếu số lượng images lấy được khác với số lượng imageIds
+            if (images.Count() != imageIds.Count)
+            {
+                _loggerService.Warn(
+                    $"Mismatch between image IDs count ({imageIds.Count}) and retrieved images count ({images.Count()})");
+
+                // Tìm những image ID không tồn tại trong database
+                var missingImageIds = imageIds.Where(id => !images.Any(img => img.Id == id)).ToList();
+                if (missingImageIds.Any())
+                {
+                    _loggerService.Warn($"Missing images with IDs: {string.Join(", ", missingImageIds)}");
+                }
+            }
+
+            var result = new List<ShippableImageDto>();
+
+            // Lấy danh sách đơn hàng ship hiện có của user (CHỈ lấy các đơn hàng in ấn vật lý)
+            var userShippingOrders = await _unitOfWork.Orders.FindAsync(
+                o => o.CustomerId == userId && o.IsPhysicalPrint, // Fix: chỉ lấy đơn hàng in ấn vật lý
+                o => o.OrderDetails);
+
+            _loggerService.Info($"Found {userShippingOrders?.Count() ?? 0} physical print orders for user {userId}");
+
+            // Tạo danh sách các imageId đã được ship
+            var shippedImageIds = userShippingOrders
+                .SelectMany(o => o.OrderDetails)
+                .Select(od => od.ImageId)
+                .Distinct()
+                .ToList();
+
+            _loggerService.Info($"Found {shippedImageIds.Count} already shipped image IDs");
+
+            // Kiểm tra các hình ảnh từ những đơn hàng đã hoàn thành
+            foreach (var order in completedOrders)
+            {
+                _loggerService.Warn($"Processing order {order.Id} with {order.OrderDetails?.Count() ?? 0} details");
+
+                foreach (var orderDetail in order.OrderDetails)
+                {
+                    // Tìm thông tin hình ảnh
+                    var image = images.FirstOrDefault(img => img.Id == orderDetail.ImageId);
+
+                    if (image == null)
+                    {
+                        _loggerService.Warn(
+                            $"Image with ID {orderDetail.ImageId} from order detail {orderDetail.Id} not found in database");
+                        continue; // Skip nếu không tìm thấy image
+                    }
+
+                    // Kiểm tra xem hình ảnh này đã được đặt ship chưa
+                    var isAlreadyShipped = shippedImageIds.Contains(orderDetail.ImageId);
+
+                    _loggerService.Warn(
+                        $"Image {image.Id} ({image.Title ?? "unnamed"}): Already shipped = {isAlreadyShipped}");
+
+                    // Nếu hình ảnh chưa được đặt ship, thêm vào danh sách kết quả
+                    if (!isAlreadyShipped)
+                    {
+                        result.Add(new ShippableImageDto
+                        {
+                            ImageId = orderDetail.ImageId,
+                            Title = image.Title,
+                            Description = image.Description,
+                            Price = image.Price,
+                            Url = image.Url,
+                            PurchaseDate = order.CreatedAt,
+                            OrderId = order.Id
+                        });
+
+                        _loggerService.Warn($"Added image {image.Id} to shippable images result");
+                    }
+                }
+            }
+
+            _loggerService.Info($"Returning {result.Count} shippable images for user {userId}");
+
+            // Kiểm tra và log nếu kết quả trống
+            if (result.Count == 0 && orderDetailsCount > 0)
+            {
+                _loggerService.Warn(
+                    $"Found {orderDetailsCount} order details but no shippable images for user {userId}. All images may have been shipped already.");
+            }
+
+            return result;
+        }
+        catch (Exception e)
+        {
+            _loggerService.Error($"Error in GetShippableImagesByUserId for user {userId}: {e.Message}");
+            _loggerService.Error($"Stack trace: {e.StackTrace}");
+            throw;
+        }
     }
 
     public async Task<ShippingOrderDto> CreateShippingOrder(ShippingOrderCreateDto orderDto, int userId)
@@ -143,70 +286,6 @@ public class ShippingService : IShippingService
         }
     }
 
-    public async Task<IEnumerable<ShippableImageDto>> GetShippableImagesByUserId(int userId)
-    {
-        try
-        {
-            // Lấy tất cả các đơn hàng đã hoàn thành của user này
-            // Sửa lại cách include để tránh lỗi
-            var completedOrders = await _unitOfWork.Orders.FindAsync(
-                o => o.CustomerId == userId && o.Status == OrderStatusEnum.Completed,
-                o => o.OrderDetails);
-
-            if (completedOrders == null || !completedOrders.Any()) return Enumerable.Empty<ShippableImageDto>();
-
-            var result = new List<ShippableImageDto>();
-
-            // Danh sách ID các hình ảnh cần lấy thông tin
-            var imageIds = completedOrders
-                .SelectMany(o => o.OrderDetails)
-                .Select(od => od.ImageId)
-                .Distinct()
-                .ToList();
-
-            // Lấy thông tin chi tiết của các hình ảnh
-            var images = await _unitOfWork.Images.FindAsync(
-                img => imageIds.Contains(img.Id));
-
-            // Dictionary để map image ID -> Image object cho truy cập nhanh
-            var imageDict = images.ToDictionary(img => img.Id);
-
-            // Kiểm tra các hình ảnh từ những đơn hàng đã hoàn thành
-            foreach (var order in completedOrders)
-            foreach (var orderDetail in order.OrderDetails)
-            {
-                // Kiểm tra xem image có tồn tại trong dictionary không
-                if (!imageDict.TryGetValue(orderDetail.ImageId,
-                        out var image)) continue; // Skip nếu không tìm thấy image
-
-                // Kiểm tra xem hình ảnh này đã được đặt ship chưa
-                var isAlreadyShipped = await _unitOfWork.Orders.ExistsAsync(
-                    o => o.CustomerId == userId
-                         && o.IsPhysicalPrint == true
-                         && o.OrderDetails.Any(od => od.ImageId == orderDetail.ImageId));
-
-                // Nếu hình ảnh chưa được đặt ship, thêm vào danh sách kết quả
-                if (!isAlreadyShipped)
-                    result.Add(new ShippableImageDto
-                    {
-                        ImageId = orderDetail.ImageId,
-                        Title = image.Title,
-                        Description = image.Description,
-                        Price = image.Price,
-                        Url = image.Url,
-                        PurchaseDate = order.CreatedAt,
-                        OrderId = order.Id
-                    });
-            }
-
-            return result;
-        }
-        catch (Exception e)
-        {
-            _loggerService.Error($"Error in GetShippableImagesByUserId: {e.Message}");
-            throw;
-        }
-    }
 
     /// <summary>
     ///     Lấy danh sách đơn hàng ship của user

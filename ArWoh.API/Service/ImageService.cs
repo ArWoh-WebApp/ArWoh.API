@@ -59,7 +59,6 @@ public class ImageService : IImageService
                     StoryOfArt = od.Image.StoryOfArt,
                     Orientation = od.Image.Orientation,
                     Tags = od.Image.Tags,
-                    PhotographerName = od.Image.Photographer.Username,
                     Location = od.Image.Location,
                     FileName = od.Image.FileName,
                     Url = od.Image.Url

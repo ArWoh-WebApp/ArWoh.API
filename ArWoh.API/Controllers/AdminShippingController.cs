@@ -50,7 +50,7 @@ public class AdminShippingController : ControllerBase
     [ProducesResponseType(typeof(ApiResult<string>), 404)]
     [ProducesResponseType(typeof(ApiResult<string>), 500)]
     public async Task<IActionResult> UpdateShippingOrderStatus(int id,
-        [FromBody] ShippingStatusUpdateDto statusUpdateDto)
+        [FromForm] ShippingStatusUpdateDto statusUpdateDto)
     {
         try
         {

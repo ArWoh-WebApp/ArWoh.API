@@ -26,7 +26,6 @@ public class ShippingOrderCreateDto
 
     [Required] public string ShippingAddress { get; set; } // Địa chỉ giao hàng
 
-    public string CustomerNote { get; set; } // Ghi chú từ khách hàng (nếu có)
 }
 
 /// <summary>

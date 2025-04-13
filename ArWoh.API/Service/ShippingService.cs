@@ -84,22 +84,6 @@ public class ShippingService : IShippingService
 
             var result = new List<ShippableImageDto>();
 
-            // Lấy danh sách đơn hàng ship hiện có của user (CHỈ lấy các đơn hàng in ấn vật lý)
-            var userShippingOrders = await _unitOfWork.Orders.FindAsync(
-                o => o.CustomerId == userId && o.IsPhysicalPrint, // Fix: chỉ lấy đơn hàng in ấn vật lý
-                o => o.OrderDetails);
-
-            _loggerService.Info($"Found {userShippingOrders?.Count() ?? 0} physical print orders for user {userId}");
-
-            // Tạo danh sách các imageId đã được ship
-            var shippedImageIds = userShippingOrders
-                .SelectMany(o => o.OrderDetails)
-                .Select(od => od.ImageId)
-                .Distinct()
-                .ToList();
-
-            _loggerService.Info($"Found {shippedImageIds.Count} already shipped image IDs");
-
             // Kiểm tra các hình ảnh từ những đơn hàng đã hoàn thành
             foreach (var order in completedOrders)
             {
@@ -117,41 +101,30 @@ public class ShippingService : IShippingService
                         continue; // Skip nếu không tìm thấy image
                     }
 
-                    // Kiểm tra xem hình ảnh này đã được đặt ship chưa
-                    var isAlreadyShipped = shippedImageIds.Contains(orderDetail.ImageId);
-
-                    _loggerService.Warn(
-                        $"Image {image.Id} ({image.Title ?? "unnamed"}): Already shipped = {isAlreadyShipped}");
-
-                    // Nếu hình ảnh chưa được đặt ship, thêm vào danh sách kết quả
-                    if (!isAlreadyShipped)
+                    // Thêm trực tiếp vào danh sách kết quả
+                    result.Add(new ShippableImageDto
                     {
-                        result.Add(new ShippableImageDto
-                        {
-                            ImageId = orderDetail.ImageId,
-                            Title = image.Title,
-                            Description = image.Description,
-                            Price = image.Price,
-                            Url = image.Url,
-                            PurchaseDate = order.CreatedAt,
-                            OrderId = order.Id
-                        });
+                        ImageId = orderDetail.ImageId,
+                        Title = image.Title,
+                        Description = image.Description,
+                        Price = image.Price,
+                        Url = image.Url,
+                        PurchaseDate = order.CreatedAt,
+                        OrderId = order.Id
+                    });
 
-                        _loggerService.Warn($"Added image {image.Id} to shippable images result");
-                    }
+                    _loggerService.Warn($"Added image {image.Id} to shippable images result");
                 }
             }
 
-            _loggerService.Info($"Returning {result.Count} shippable images for user {userId}");
+            // Thêm Distinct() để loại bỏ các hình ảnh trùng lặp
+            var distinctResult = result
+                .DistinctBy(img => img.ImageId)
+                .ToList();
 
-            // Kiểm tra và log nếu kết quả trống
-            if (result.Count == 0 && orderDetailsCount > 0)
-            {
-                _loggerService.Warn(
-                    $"Found {orderDetailsCount} order details but no shippable images for user {userId}. All images may have been shipped already.");
-            }
+            _loggerService.Info($"Total images found: {result.Count}, Distinct images: {distinctResult.Count}");
 
-            return result;
+            return distinctResult;
         }
         catch (Exception e)
         {
@@ -165,23 +138,37 @@ public class ShippingService : IShippingService
     {
         try
         {
+            _loggerService.Info(
+                $"Creating shipping order for user {userId} with {orderDto?.ImageIds?.Count ?? 0} images");
+
             // Kiểm tra dữ liệu đầu vào
             if (orderDto == null || orderDto.ImageIds == null || !orderDto.ImageIds.Any())
+            {
+                _loggerService.Warn("No images selected for shipping order");
                 throw new ArgumentException("No images selected for shipping order");
+            }
 
             if (string.IsNullOrWhiteSpace(orderDto.ShippingAddress))
+            {
+                _loggerService.Warn("Shipping address is required");
                 throw new ArgumentException("Shipping address is required");
+            }
 
             // Lấy thông tin chi tiết của các hình ảnh được chọn
             var selectedImages = await _unitOfWork.Images.FindAsync(
                 img => orderDto.ImageIds.Contains(img.Id));
 
+            _loggerService.Info($"Found {selectedImages.Count()} images from {orderDto.ImageIds.Count} requested IDs");
+
             // Kiểm tra xem tất cả các hình ảnh có tồn tại không
             if (selectedImages.Count() != orderDto.ImageIds.Count)
+            {
+                var missingImageIds = orderDto.ImageIds.Where(id => !selectedImages.Any(img => img.Id == id));
+                _loggerService.Warn($"Missing images with IDs: {string.Join(", ", missingImageIds)}");
                 throw new ArgumentException("One or more images do not exist");
+            }
 
-            // Kiểm tra xem user có quyền đặt ship các hình ảnh này không
-            // (đã mua và chưa đặt ship trước đó)
+            // Kiểm tra xem user có quyền đặt ship các hình ảnh này không (đã mua)
             foreach (var imageId in orderDto.ImageIds)
             {
                 // Kiểm tra xem user đã mua ảnh này chưa
@@ -190,24 +177,24 @@ public class ShippingService : IShippingService
                          && o.Status == OrderStatusEnum.Completed
                          && o.OrderDetails.Any(od => od.ImageId == imageId));
 
+                _loggerService.Info($"Image {imageId}: User has purchased = {hasPurchased}");
+
                 if (!hasPurchased)
+                {
+                    _loggerService.Warn($"User {userId} has not purchased image with ID {imageId}");
                     throw new UnauthorizedAccessException($"You have not purchased image with ID {imageId}");
+                }
 
-                // Kiểm tra xem ảnh đã được đặt ship trước đó chưa
-                var isAlreadyShipped = await _unitOfWork.Orders.ExistsAsync(
-                    o => o.CustomerId == userId
-                         && o.IsPhysicalPrint == true
-                         && o.OrderDetails.Any(od => od.ImageId == imageId));
-
-                if (isAlreadyShipped)
-                    throw new InvalidOperationException(
-                        $"Image with ID {imageId} has already been shipped or is in a shipping order");
+                // Đã loại bỏ việc kiểm tra xem ảnh đã được đặt ship trước đó chưa
             }
 
             // Tính toán giá trị đơn hàng
             var originalPrice = selectedImages.Sum(img => img.Price);
             var shippingFee = Math.Round(originalPrice * 0.2m, 2); // Phí ship = 20% giá gốc
             var totalAmount = originalPrice + shippingFee;
+
+            _loggerService.Info(
+                $"Order calculation: Original price = {originalPrice}, Shipping fee = {shippingFee}, Total = {totalAmount}");
 
             // Tạo đơn hàng mới
             var newOrder = new Order
@@ -227,6 +214,8 @@ public class ShippingService : IShippingService
             await _unitOfWork.Orders.AddAsync(newOrder);
             await _unitOfWork.CompleteAsync();
 
+            _loggerService.Info($"Created new shipping order with ID {newOrder.Id}");
+
             // Tạo chi tiết đơn hàng cho từng hình ảnh
             var orderDetails = new List<OrderDetail>();
             foreach (var image in selectedImages)
@@ -243,11 +232,14 @@ public class ShippingService : IShippingService
                 };
 
                 orderDetails.Add(orderDetail);
+                _loggerService.Warn($"Added order detail for image {image.Id} ({image.Title ?? "unnamed"})");
             }
 
             // Thêm chi tiết đơn hàng vào database
             await _unitOfWork.OrderDetails.AddRangeAsync(orderDetails);
             await _unitOfWork.CompleteAsync();
+
+            _loggerService.Info($"Added {orderDetails.Count} order details to order {newOrder.Id}");
 
             // Chuẩn bị dữ liệu trả về
             var orderDetailsDto = orderDetails.Select(od =>
@@ -277,11 +269,15 @@ public class ShippingService : IShippingService
                 OrderDetails = orderDetailsDto
             };
 
+            _loggerService.Info(
+                $"Successfully created shipping order {newOrder.Id} with {orderDetailsDto.Count} items");
+
             return result;
         }
         catch (Exception e)
         {
             _loggerService.Error($"Error in CreateShippingOrder: {e.Message}");
+            _loggerService.Error($"Stack trace: {e.StackTrace}");
             throw;
         }
     }
@@ -620,7 +616,7 @@ public class ShippingService : IShippingService
             if (order.ShippingStatus != ShippingStatusEnum.Delivered &&
                 order.ShippingStatus != ShippingStatusEnum.Shipping)
                 throw new InvalidOperationException(
-                    "Delivery proof image can only be uploaded for orders in Shipping or Delivered status");
+                    "Delivery proof image can only be uploaded for orders in Shipping or Delivered or SuperSAyan 3 status");
 
             // Tạo tên file duy nhất
             var fileName = $"delivery_proof_{orderId}_{DateTime.UtcNow.Ticks}{fileExtension}";

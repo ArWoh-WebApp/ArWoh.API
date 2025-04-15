@@ -1,4 +1,5 @@
-﻿using ArWoh.API.DTOs.ShippingDTOs;
+﻿using ArWoh.API.Commons;
+using ArWoh.API.DTOs.ShippingDTOs;
 using ArWoh.API.Interface;
 using ArWoh.API.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -82,20 +83,20 @@ public class ShippingController : ControllerBase
     }
 
     /// <summary>
-    ///     Lấy danh sách đơn hàng ship của user hiện tại
+    ///     Lấy danh sách đơn hàng ship của user hiện tại với phân trang và lọc
     /// </summary>
     [HttpGet("orders")]
     [Authorize]
-    [ProducesResponseType(typeof(ApiResult<IEnumerable<ShippingOrderDto>>), 200)]
+    [ProducesResponseType(typeof(ApiResult<Pagination<ShippingOrderDto>>), 200)]
     [ProducesResponseType(typeof(ApiResult<string>), 500)]
-    public async Task<IActionResult> GetUserShippingOrders()
+    public async Task<IActionResult> GetUserShippingOrders([FromQuery] PaginationParameter paginationParams, [FromQuery] ShippingOrderFilterDto filter)
     {
         try
         {
             var userId = _claimService.GetCurrentUserId();
-            var shippingOrders = await _shippingService.GetUserShippingOrders(userId);
+            var shippingOrders = await _shippingService.GetUserShippingOrders(userId, paginationParams, filter);
 
-            return Ok(ApiResult<IEnumerable<ShippingOrderDto>>.Success(
+            return Ok(ApiResult<Pagination<ShippingOrderDto>>.Success(
                 shippingOrders,
                 "Shipping orders retrieved successfully"));
         }

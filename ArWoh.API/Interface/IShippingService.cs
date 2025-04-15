@@ -1,4 +1,5 @@
-﻿using ArWoh.API.DTOs.ShippingDTOs;
+﻿using ArWoh.API.Commons;
+using ArWoh.API.DTOs.ShippingDTOs;
 using ArWoh.API.Enums;
 
 namespace ArWoh.API.Interface;
@@ -18,8 +19,10 @@ public interface IShippingService
     /// </summary>
     /// <param name="userId">ID của người dùng</param>
     /// <returns>Danh sách đơn hàng ship</returns>
-    Task<IEnumerable<ShippingOrderDto>> GetUserShippingOrders(int userId);
-
+    Task<Pagination<ShippingOrderDto>> GetUserShippingOrders(
+        int userId,
+        PaginationParameter paginationParams,
+        ShippingOrderFilterDto filter);
     /// <summary>
     ///     Lấy danh sách hình ảnh có thể ship của người dùng
     /// </summary>

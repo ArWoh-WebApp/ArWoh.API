@@ -1,7 +1,9 @@
-﻿using ArWoh.API.DTOs.ShippingDTOs;
+﻿using ArWoh.API.Commons;
+using ArWoh.API.DTOs.ShippingDTOs;
 using ArWoh.API.Entities;
 using ArWoh.API.Enums;
 using ArWoh.API.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace ArWoh.API.Service;
 
@@ -284,18 +286,66 @@ public class ShippingService : IShippingService
 
 
     /// <summary>
-    ///     Lấy danh sách đơn hàng ship của user
+    ///     Lấy danh sách đơn hàng ship của user có phân trang và lọc
     /// </summary>
-    public async Task<IEnumerable<ShippingOrderDto>> GetUserShippingOrders(int userId)
+    public async Task<Pagination<ShippingOrderDto>> GetUserShippingOrders(
+        int userId,
+        PaginationParameter paginationParams,
+        ShippingOrderFilterDto filter)
     {
         try
         {
-            // Lấy tất cả đơn hàng ship của user này
-            var orders = await _unitOfWork.Orders.FindAsync(
-                o => o.CustomerId == userId && o.IsPhysicalPrint == true,
-                o => o.OrderDetails);
+            // Bắt đầu với truy vấn cơ bản cho đơn hàng ship của user
+            var query = _unitOfWork.Orders.GetQueryable(o => o.OrderDetails)
+                .Where(o => o.CustomerId == userId && o.IsPhysicalPrint == true);
 
-            if (orders == null || !orders.Any()) return Enumerable.Empty<ShippingOrderDto>();
+            // Áp dụng các bộ lọc nếu có
+            if (filter != null)
+            {
+                // Lọc theo trạng thái vận chuyển
+                if (filter.ShippingStatus.HasValue)
+                {
+                    query = query.Where(o => o.ShippingStatus == filter.ShippingStatus.Value);
+                }
+
+                // Lọc theo khoảng thời gian
+                if (filter.StartDate.HasValue)
+                {
+                    query = query.Where(o => o.CreatedAt >= filter.StartDate.Value);
+                }
+
+                if (filter.EndDate.HasValue)
+                {
+                    // Thêm 1 ngày để bao gồm cả ngày kết thúc
+                    var endDatePlusOne = filter.EndDate.Value.AddDays(1);
+                    query = query.Where(o => o.CreatedAt < endDatePlusOne);
+                }
+
+                // Lọc theo giá trị đơn hàng
+                if (filter.MinAmount.HasValue)
+                {
+                    query = query.Where(o => o.TotalAmount >= filter.MinAmount.Value);
+                }
+
+                if (filter.MaxAmount.HasValue)
+                {
+                    query = query.Where(o => o.TotalAmount <= filter.MaxAmount.Value);
+                }
+            }
+
+            // Lấy tổng số lượng đơn hàng phù hợp với điều kiện lọc
+            var totalCount = await query.CountAsync();
+
+            // Phân trang
+            var orders = await query
+                .OrderByDescending(o => o.CreatedAt) // Sắp xếp mới nhất lên đầu
+                .Skip((paginationParams.PageIndex - 1) * paginationParams.PageSize)
+                .Take(paginationParams.PageSize)
+                .ToListAsync();
+
+            if (orders == null || !orders.Any())
+                return new Pagination<ShippingOrderDto>(new List<ShippingOrderDto>(), 0,
+                    paginationParams.PageIndex, paginationParams.PageSize);
 
             // Lấy danh sách ID của tất cả hình ảnh
             var imageIds = orders
@@ -354,8 +404,9 @@ public class ShippingService : IShippingService
                 });
             }
 
-            // Sắp xếp theo thời gian tạo giảm dần (mới nhất lên đầu)
-            return result.OrderByDescending(o => o.CreatedAt);
+            // Trả về kết quả có phân trang
+            return new Pagination<ShippingOrderDto>(result, totalCount,
+                paginationParams.PageIndex, paginationParams.PageSize);
         }
         catch (Exception e)
         {

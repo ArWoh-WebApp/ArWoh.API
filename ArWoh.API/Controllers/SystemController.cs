@@ -95,7 +95,7 @@ public class SystemController : ControllerBase
             new()
             {
                 Username = "Nguyễn Á",
-                Email = "a@gmail.com",
+                Email = "nguyena@gmail.com",
                 PasswordHash = passwordHasher.HashPassword("a"),
                 Role = UserRole.Photographer,
                 Bio = "Chụp hình và chụp hình",

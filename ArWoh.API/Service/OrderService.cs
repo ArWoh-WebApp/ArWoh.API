@@ -27,8 +27,8 @@ public class OrderService : IOrderService
         try
         {
             // PHASE 1: Get all images by the photographer
-            var photographerImages = await _unitOfWork.Images.FindAsync(
-                img => img.PhotographerId == photographerId && !img.IsDeleted);
+            var photographerImages =
+                await _unitOfWork.Images.FindAsync(img => img.PhotographerId == photographerId && !img.IsDeleted);
 
             if (!photographerImages.Any())
                 return new RevenueDto

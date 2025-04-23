@@ -25,7 +25,6 @@ public class ShippingOrderCreateDto
     [Required] public List<int> ImageIds { get; set; } // Danh sách ID của các hình ảnh cần đặt in và ship
 
     [Required] public string ShippingAddress { get; set; } // Địa chỉ giao hàng
-
 }
 
 /// <summary>

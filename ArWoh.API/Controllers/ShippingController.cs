@@ -89,7 +89,8 @@ public class ShippingController : ControllerBase
     [Authorize]
     [ProducesResponseType(typeof(ApiResult<Pagination<ShippingOrderDto>>), 200)]
     [ProducesResponseType(typeof(ApiResult<string>), 500)]
-    public async Task<IActionResult> GetUserShippingOrders([FromQuery] PaginationParameter paginationParams, [FromQuery] ShippingOrderFilterDto filter)
+    public async Task<IActionResult> GetUserShippingOrders([FromQuery] PaginationParameter paginationParams,
+        [FromQuery] ShippingOrderFilterDto filter)
     {
         try
         {

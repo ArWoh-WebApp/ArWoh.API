@@ -4,28 +4,28 @@ namespace ArWoh.API.Service;
 
 public class LoggerService : ILoggerService
 {
-    public void Success(string msg)
+    public override void Success(string msg)
     {
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine($"[Logger Success] - {DateTime.UtcNow.AddHours(7)} - " + msg);
         Console.ResetColor();
     }
 
-    public void Error(string msg)
+    public override void Error(string msg)
     {
         Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine($"[Logger Error] - {DateTime.UtcNow.AddHours(7)} - " + msg);
         Console.ResetColor();
     }
 
-    public void Warn(string msg)
+    public override void Warn(string msg)
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine($"[Logger Warn] - {DateTime.UtcNow.AddHours(7)} - " + msg);
         Console.ResetColor();
     }
 
-    public void Info(string msg)
+    public override void Info(string msg)
     {
         Console.ForegroundColor = ConsoleColor.Blue;
         Console.WriteLine($"[Logger Info] - {DateTime.UtcNow.AddHours(7)} - " + msg);

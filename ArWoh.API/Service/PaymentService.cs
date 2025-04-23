@@ -14,16 +14,17 @@ public class PaymentService : IPaymentService
 {
     private readonly ILoggerService _logger;
     private readonly IOrderService _orderService;
+    private readonly IEmailService _emailService;
     private readonly PayOS _payOs;
     private readonly IUnitOfWork _unitOfWork;
 
-    public PaymentService(ILoggerService logger, PayOS payOs, IUnitOfWork unitOfWork, IOrderService orderService
-    )
+    public PaymentService(ILoggerService logger, PayOS payOs, IUnitOfWork unitOfWork, IOrderService orderService, IEmailService emailService)
     {
         _logger = logger;
         _payOs = payOs;
         _unitOfWork = unitOfWork;
         _orderService = orderService;
+        _emailService = emailService;
     }
 
     // Thêm tham số để lọc hoặc sắp xếp
@@ -157,6 +158,9 @@ public class PaymentService : IPaymentService
 
             // Cập nhật trạng thái order
             await _orderService.UpdateOrderStatus(payment.OrderId, OrderStatusEnum.Completed);
+            
+            //gui mail cho customer
+            await _emailService.SendPurchasedImagesEmailAsync(payment.OrderId);
 
             _logger.Info($"Payment successful for order {payment.OrderId}");
         }
@@ -185,6 +189,7 @@ public class PaymentService : IPaymentService
                     _unitOfWork.Payments.Update(payment);
 
                     await _orderService.UpdateOrderStatus(payment.OrderId, OrderStatusEnum.Completed);
+                    await _emailService.SendPurchasedImagesEmailAsync(payment.OrderId);
                     await _unitOfWork.CompleteAsync();
                 }
                 else if (paymentInfo.status == "CANCELLED" && payment.Status != PaymentStatusEnum.CANCELLED)

@@ -20,9 +20,9 @@ services:
       - "Payment__PayOS__ClientId=c45d1aed-9fdb-46f5-aea2-dad5107b5abd"
       - "Payment__PayOS__ApiKey=d1809534-a218-42a7-a4d9-922e474a0b38"
       - "Payment__PayOS__ChecksumKey=9a291b87a0921d424054082fc4174eb79dbc80926dc03080266f65592b12f382"
-      - EMAIL_USERNAME=trangiaphuc362003181@gmail.com
-      - EMAIL_PASSWORD=hygd bzzo brzp knfm
-      - EMAIL_HOST=smtp.gmail.com
+      - "EMAIL_USERNAME=trangiaphuc362003181@gmail.com"
+      - "EMAIL_PASSWORD=awas qvea rbmq avyc"
+      - "EMAIL_HOST=smtp.gmail.com"
 
 
     depends_on:

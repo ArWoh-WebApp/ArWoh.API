@@ -109,7 +109,8 @@ public class SystemController : ControllerBase
                 PasswordHash = passwordHasher.HashPassword("1@"),
                 Role = UserRole.Admin,
                 Bio = "Administrator of the platform.",
-                ProfilePictureUrl = "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=user-avatars%2F8_2ccb8671-267a-4f7c-baf9-031bb58f339b.png&version_id=null"
+                ProfilePictureUrl =
+                    "https://minio.ae-tao-fullstack-api.site/api/v1/buckets/arwoh-bucket/objects/download?preview=true&prefix=user-avatars%2F8_2ccb8671-267a-4f7c-baf9-031bb58f339b.png&version_id=null"
             }
         };
 

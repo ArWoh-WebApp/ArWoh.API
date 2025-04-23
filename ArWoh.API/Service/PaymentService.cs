@@ -1,4 +1,5 @@
-﻿using ArWoh.API.DTOs.OrderDTOs;
+﻿using ArWoh.API.DTOs.EmailDTOs;
+using ArWoh.API.DTOs.OrderDTOs;
 using ArWoh.API.DTOs.PaymentDTOs;
 using ArWoh.API.Entities;
 using ArWoh.API.Enums;
@@ -12,13 +13,14 @@ namespace ArWoh.API.Service;
 
 public class PaymentService : IPaymentService
 {
+    private readonly IEmailService _emailService;
     private readonly ILoggerService _logger;
     private readonly IOrderService _orderService;
-    private readonly IEmailService _emailService;
     private readonly PayOS _payOs;
     private readonly IUnitOfWork _unitOfWork;
 
-    public PaymentService(ILoggerService logger, PayOS payOs, IUnitOfWork unitOfWork, IOrderService orderService, IEmailService emailService)
+    public PaymentService(ILoggerService logger, PayOS payOs, IUnitOfWork unitOfWork, IOrderService orderService,
+        IEmailService emailService)
     {
         _logger = logger;
         _payOs = payOs;
@@ -34,7 +36,7 @@ public class PaymentService : IPaymentService
         try
         {
             // Bắt đầu với truy vấn cơ bản
-            IQueryable<Payment> query = _unitOfWork.Payments.GetQueryable();
+            var query = _unitOfWork.Payments.GetQueryable();
 
             // Áp dụng các điều kiện lọc nếu được cung cấp
             if (status.HasValue) query = query.Where(p => p.Status == status.Value);
@@ -158,9 +160,29 @@ public class PaymentService : IPaymentService
 
             // Cập nhật trạng thái order
             await _orderService.UpdateOrderStatus(payment.OrderId, OrderStatusEnum.Completed);
-            
-            //gui mail cho customer
-            await _emailService.SendPurchasedImagesEmailAsync(payment.OrderId);
+
+            // Get order with customer details for email
+            var order = await _unitOfWork.Orders.GetByIdAsync(
+                payment.OrderId,
+                o => o.Customer
+            );
+
+            if (order != null && order.Customer != null)
+            {
+                // Create email request with customer info
+                var emailRequest = new EmailRequestDTO
+                {
+                    UserEmail = order.Customer.Email,
+                    UserName = order.Customer.Username ?? "Valued Customer"
+                };
+
+                // Send email with purchased images
+                await _emailService.SendPurchasedImagesEmailAsync(emailRequest, payment.OrderId);
+            }
+            else
+            {
+                _logger.Error($"Could not send email for order {payment.OrderId} - missing customer data");
+            }
 
             _logger.Info($"Payment successful for order {payment.OrderId}");
         }
@@ -189,7 +211,30 @@ public class PaymentService : IPaymentService
                     _unitOfWork.Payments.Update(payment);
 
                     await _orderService.UpdateOrderStatus(payment.OrderId, OrderStatusEnum.Completed);
-                    await _emailService.SendPurchasedImagesEmailAsync(payment.OrderId);
+
+                    // Get order with customer details for email
+                    var order = await _unitOfWork.Orders.GetByIdAsync(
+                        payment.OrderId,
+                        o => o.Customer
+                    );
+
+                    if (order != null && order.Customer != null)
+                    {
+                        // Create email request with customer info
+                        var emailRequest = new EmailRequestDTO
+                        {
+                            UserEmail = order.Customer.Email,
+                            UserName = order.Customer.Username ?? "Valued Customer"
+                        };
+
+                        // Send email with purchased images
+                        await _emailService.SendPurchasedImagesEmailAsync(emailRequest, payment.OrderId);
+                    }
+                    else
+                    {
+                        _logger.Error($"Could not send email for order {payment.OrderId} - missing customer data");
+                    }
+
                     await _unitOfWork.CompleteAsync();
                 }
                 else if (paymentInfo.status == "CANCELLED" && payment.Status != PaymentStatusEnum.CANCELLED)

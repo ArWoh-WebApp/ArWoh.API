@@ -10,9 +10,9 @@ namespace ArWoh.API.Service;
 public class ShippingService : IShippingService
 {
     private readonly IBlobService _blobService;
+    private readonly IImageService _imageService;
     private readonly ILoggerService _loggerService;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IImageService _imageService;
 
     public ShippingService(IUnitOfWork unitOfWork, ILoggerService loggerService, IBlobService blobService,
         IImageService imageService)
@@ -65,8 +65,7 @@ public class ShippingService : IShippingService
             _loggerService.Info($"Found {imageIds.Count} unique image IDs from order details");
 
             // Lấy thông tin chi tiết của các hình ảnh
-            var images = await _unitOfWork.Images.FindAsync(
-                img => imageIds.Contains(img.Id));
+            var images = await _unitOfWork.Images.FindAsync(img => imageIds.Contains(img.Id));
 
             _loggerService.Info($"Retrieved {images?.Count() ?? 0} images from database");
 
@@ -79,9 +78,7 @@ public class ShippingService : IShippingService
                 // Tìm những image ID không tồn tại trong database
                 var missingImageIds = imageIds.Where(id => !images.Any(img => img.Id == id)).ToList();
                 if (missingImageIds.Any())
-                {
                     _loggerService.Warn($"Missing images with IDs: {string.Join(", ", missingImageIds)}");
-                }
             }
 
             var result = new List<ShippableImageDto>();
@@ -157,8 +154,7 @@ public class ShippingService : IShippingService
             }
 
             // Lấy thông tin chi tiết của các hình ảnh được chọn
-            var selectedImages = await _unitOfWork.Images.FindAsync(
-                img => orderDto.ImageIds.Contains(img.Id));
+            var selectedImages = await _unitOfWork.Images.FindAsync(img => orderDto.ImageIds.Contains(img.Id));
 
             _loggerService.Info($"Found {selectedImages.Count()} images from {orderDto.ImageIds.Count} requested IDs");
 
@@ -174,10 +170,10 @@ public class ShippingService : IShippingService
             foreach (var imageId in orderDto.ImageIds)
             {
                 // Kiểm tra xem user đã mua ảnh này chưa
-                var hasPurchased = await _unitOfWork.Orders.ExistsAsync(
-                    o => o.CustomerId == userId
-                         && o.Status == OrderStatusEnum.Completed
-                         && o.OrderDetails.Any(od => od.ImageId == imageId));
+                var hasPurchased = await _unitOfWork.Orders.ExistsAsync(o => o.CustomerId == userId
+                                                                             && o.Status == OrderStatusEnum.Completed
+                                                                             && o.OrderDetails.Any(od =>
+                                                                                 od.ImageId == imageId));
 
                 _loggerService.Info($"Image {imageId}: User has purchased = {hasPurchased}");
 
@@ -304,15 +300,10 @@ public class ShippingService : IShippingService
             {
                 // Lọc theo trạng thái vận chuyển
                 if (filter.ShippingStatus.HasValue)
-                {
                     query = query.Where(o => o.ShippingStatus == filter.ShippingStatus.Value);
-                }
 
                 // Lọc theo khoảng thời gian
-                if (filter.StartDate.HasValue)
-                {
-                    query = query.Where(o => o.CreatedAt >= filter.StartDate.Value);
-                }
+                if (filter.StartDate.HasValue) query = query.Where(o => o.CreatedAt >= filter.StartDate.Value);
 
                 if (filter.EndDate.HasValue)
                 {
@@ -322,15 +313,9 @@ public class ShippingService : IShippingService
                 }
 
                 // Lọc theo giá trị đơn hàng
-                if (filter.MinAmount.HasValue)
-                {
-                    query = query.Where(o => o.TotalAmount >= filter.MinAmount.Value);
-                }
+                if (filter.MinAmount.HasValue) query = query.Where(o => o.TotalAmount >= filter.MinAmount.Value);
 
-                if (filter.MaxAmount.HasValue)
-                {
-                    query = query.Where(o => o.TotalAmount <= filter.MaxAmount.Value);
-                }
+                if (filter.MaxAmount.HasValue) query = query.Where(o => o.TotalAmount <= filter.MaxAmount.Value);
             }
 
             // Lấy tổng số lượng đơn hàng phù hợp với điều kiện lọc
@@ -355,8 +340,7 @@ public class ShippingService : IShippingService
                 .ToList();
 
             // Lấy thông tin chi tiết của các hình ảnh
-            var images = await _unitOfWork.Images.FindAsync(
-                img => imageIds.Contains(img.Id));
+            var images = await _unitOfWork.Images.FindAsync(img => imageIds.Contains(img.Id));
 
             // Dictionary để map image ID -> Image object cho truy cập nhanh
             var imageDict = images.ToDictionary(img => img.Id);
@@ -437,8 +421,7 @@ public class ShippingService : IShippingService
                 .ToList();
 
             // Lấy thông tin chi tiết của các hình ảnh
-            var images = await _unitOfWork.Images.FindAsync(
-                img => imageIds.Contains(img.Id));
+            var images = await _unitOfWork.Images.FindAsync(img => imageIds.Contains(img.Id));
 
             // Dictionary để map image ID -> Image object cho truy cập nhanh
             var imageDict = images.ToDictionary(img => img.Id);
@@ -517,8 +500,7 @@ public class ShippingService : IShippingService
                 .ToList();
 
             // Lấy thông tin chi tiết của các hình ảnh
-            var images = await _unitOfWork.Images.FindAsync(
-                img => imageIds.Contains(img.Id));
+            var images = await _unitOfWork.Images.FindAsync(img => imageIds.Contains(img.Id));
 
             // Dictionary để map image ID -> Image object cho truy cập nhanh
             var imageDict = images.ToDictionary(img => img.Id);
@@ -746,8 +728,7 @@ public class ShippingService : IShippingService
             .ToList();
 
         // Lấy thông tin chi tiết của các hình ảnh
-        var images = await _unitOfWork.Images.FindAsync(
-            img => imageIds.Contains(img.Id));
+        var images = await _unitOfWork.Images.FindAsync(img => imageIds.Contains(img.Id));
 
         // Dictionary để map image ID -> Image object cho truy cập nhanh
         var imageDict = images.ToDictionary(img => img.Id);

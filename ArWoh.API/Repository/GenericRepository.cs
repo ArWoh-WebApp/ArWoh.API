@@ -18,7 +18,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public async Task<T> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes)
     {
-        IQueryable<T> query = _dbSet.Where(entity => entity.Id == id && !entity.IsDeleted);
+        var query = _dbSet.Where(entity => entity.Id == id && !entity.IsDeleted);
 
         if (includes != null) query = includes.Aggregate(query, (current, include) => current.Include(include));
 
@@ -27,7 +27,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public async Task<IEnumerable<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
     {
-        IQueryable<T> query = _dbSet.Where(entity => !entity.IsDeleted);
+        var query = _dbSet.Where(entity => !entity.IsDeleted);
 
         if (includes != null) query = includes.Aggregate(query, (current, include) => current.Include(include));
 
@@ -37,7 +37,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate,
         params Expression<Func<T, object>>[] includes)
     {
-        IQueryable<T> query = _dbSet.Where(predicate);
+        var query = _dbSet.Where(predicate);
 
         if (includes != null) query = includes.Aggregate(query, (current, include) => current.Include(include));
 
@@ -47,7 +47,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate,
         params Expression<Func<T, object>>[] includes)
     {
-        IQueryable<T> query = _dbSet.Where(predicate);
+        var query = _dbSet.Where(predicate);
 
         if (includes != null) query = includes.Aggregate(query, (current, include) => current.Include(include));
 
@@ -118,7 +118,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public IQueryable<T> GetQueryable(params Expression<Func<T, object>>[] includes)
     {
-        IQueryable<T> query = _dbSet.Where(entity => !entity.IsDeleted);
+        var query = _dbSet.Where(entity => !entity.IsDeleted);
 
         if (includes != null) query = includes.Aggregate(query, (current, include) => current.Include(include));
 

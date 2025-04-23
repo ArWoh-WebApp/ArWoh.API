@@ -63,6 +63,7 @@ public static class IOCContainer
         // Add application services
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IBlobService, BlobService>();
         services.AddScoped<IImageService, ImageService>();
         services.AddScoped<IUserService, UserService>();

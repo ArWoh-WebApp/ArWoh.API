@@ -27,7 +27,6 @@ public static class IOCContainer
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         //Add business services
         services.SetupBusinessServicesLayer();
-
         services.SetupJWT();
 
         services.SetupThirdParty();

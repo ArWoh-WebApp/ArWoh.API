@@ -1,12 +1,9 @@
 namespace ArWoh.API.Interface;
 
-public interface ILoggerService
+public abstract class ILoggerService
 {
-    void Success(string msg);
-
-    void Error(string msg);
-
-    void Warn(string msg);
-
-    void Info(string msg);
+    public abstract void Success(string msg);
+    public abstract void Error(string msg);
+    public abstract void Warn(string msg);
+    public abstract void Info(string msg);
 }

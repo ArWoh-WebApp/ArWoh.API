@@ -18,15 +18,17 @@ public class PaymentService : IPaymentService
     private readonly IOrderService _orderService;
     private readonly PayOS _payOs;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IClaimService _claimService;
 
     public PaymentService(ILoggerService logger, PayOS payOs, IUnitOfWork unitOfWork, IOrderService orderService,
-        IEmailService emailService)
+        IEmailService emailService, IClaimService claimService)
     {
         _logger = logger;
         _payOs = payOs;
         _unitOfWork = unitOfWork;
         _orderService = orderService;
         _emailService = emailService;
+        _claimService = claimService;
     }
 
     // Thêm tham số để lọc hoặc sắp xếp
@@ -195,6 +197,10 @@ public class PaymentService : IPaymentService
     public async Task<PaymentStatusDto> GetPaymentStatus(int paymentId)
     {
         var payment = await _unitOfWork.Payments.GetByIdAsync(paymentId);
+        var userId = _claimService.GetCurrentUserId(); 
+        
+        
+        
         if (payment == null)
             throw new Exception("Payment not found");
 
@@ -212,27 +218,20 @@ public class PaymentService : IPaymentService
 
                     await _orderService.UpdateOrderStatus(payment.OrderId, OrderStatusEnum.Completed);
 
-                    // Get order with customer details for email
-                    var order = await _unitOfWork.Orders.GetByIdAsync(
-                        payment.OrderId,
-                        o => o.Customer
-                    );
-
-                    if (order != null && order.Customer != null)
+                    if (userId > 0)
                     {
-                        // Create email request with customer info
-                        var emailRequest = new EmailRequestDTO
+                        var user = await _unitOfWork.Users.GetByIdAsync(userId);
+                        if (user != null)
                         {
-                            UserEmail = order.Customer.Email,
-                            UserName = order.Customer.Username ?? "Valued Customer"
-                        };
-
-                        // Send email with purchased images
-                        await _emailService.SendPurchasedImagesEmailAsync(emailRequest, payment.OrderId);
-                    }
-                    else
-                    {
-                        _logger.Error($"Could not send email for order {payment.OrderId} - missing customer data");
+                            var emailRequest = new EmailRequestDTO
+                            {
+                                UserEmail = user.Email,
+                                UserName = user.Username 
+                            };
+        
+                            // Send email with purchased images
+                            await _emailService.SendPurchasedImagesEmailAsync(emailRequest, payment.OrderId);
+                        }
                     }
 
                     await _unitOfWork.CompleteAsync();

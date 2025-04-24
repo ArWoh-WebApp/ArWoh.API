@@ -46,102 +46,87 @@ public class EmailService : IEmailService
         await SendEmailAsync(welcomeEmail);
     }
 
-    public async Task SendPurchasedImagesEmailAsync(EmailRequestDTO request, int orderId)
+    public async Task SendPurchasedImagesEmailAsync(EmailRequestDTO emailRequest, int orderId)
     {
         try
         {
-            _logger.Info($"Preparing to send purchased images email for order {orderId} to {request.UserEmail}");
-
-            // Get order with details
+            // Lấy thông tin đơn hàng và chi tiết đơn hàng
             var order = await _unitOfWork.Orders.GetByIdAsync(
                 orderId,
-                o => o.OrderDetails.Where(od => !od.IsDeleted)
+                o => o.OrderDetails
             );
 
             if (order == null)
             {
-                _logger.Error($"Failed to send images email: Order {orderId} not found");
+                _logger.Error($"Cannot send purchased images email: Order {orderId} not found");
                 return;
             }
 
-            // Retrieve order details with images
-            var orderDetails = await _unitOfWork.OrderDetails.FindAsync(
-                od => od.OrderId == orderId && !od.IsDeleted,
-                od => od.Image
-            );
-
-            if (!orderDetails.Any())
+            // Tạo danh sách các hình ảnh đã mua
+            StringBuilder imageList = new StringBuilder();
+            foreach (var detail in order.OrderDetails)
             {
-                _logger.Error($"Failed to send images email: No order details found for order {orderId}");
-                return;
+                imageList.AppendLine($@"
+                <div style='margin-bottom: 20px; border: 1px solid #ddd; padding: 15px; border-radius: 8px;'>
+                    <div style='font-weight: bold; color: #333; font-size: 16px;'>{detail.ImageTitle ?? "Untitled Image"}</div>
+                    <div style='margin-top: 5px; color: #555;'>Số lượng: {detail.Quantity}</div>
+                    <div style='margin-top: 5px; color: #555;'>Giá: {detail.Price:N0} VND</div>
+                </div>
+            ");
             }
 
-            // Build the image rows HTML for the email
-            var imageRowsHtml = new StringBuilder();
-            foreach (var detail in orderDetails)
+            // Tạo email nội dung
+            var purchasedImagesEmail = new EmailDTO
             {
-                if (detail.Image == null) continue;
-
-                var downloadUrl = detail.Image.Url;
-                var thumbnailUrl = detail.Image.Url;
-
-                imageRowsHtml.AppendLine($@"
-                <tr>
-                    <td style='padding: 10px; border-bottom: 1px solid #ddd;'><img src='{thumbnailUrl}' alt='{detail.ImageTitle}' style='max-width: 100px; max-height: 100px;' /></td>
-                    <td style='padding: 10px; border-bottom: 1px solid #ddd;'>{detail.ImageTitle}</td>
-                    <td style='padding: 10px; text-align: center; border-bottom: 1px solid #ddd;'><a href='{downloadUrl}' style='background-color: #4CAF50; color: white; padding: 8px 12px; text-decoration: none; border-radius: 4px;'>Download</a></td>
-                </tr>");
-            }
-
-            // Create physical print info HTML if applicable
-            var physicalPrintHtml = "";
-            if (order.IsPhysicalPrint)
-            {
-                physicalPrintHtml = $@"
-                <div style='margin-top: 20px; padding: 15px; background-color: #f9f9f9; border-left: 4px solid #2196F3;'>
-                    <h3>Physical Print Information</h3>
-                    <p>Your physical prints will be prepared and shipped to the following address:</p>
-                    <p><strong>Shipping Address:</strong> {order.ShippingAddress}</p>
-                    <p>You will receive a separate notification when your order has been shipped.</p>
-                </div>";
-            }
-
-            // Create the email
-            var purchaseEmail = new EmailDTO
-            {
-                To = request.UserEmail,
-                Subject = $"Your ArWoh Order #{orderId} - Image Downloads",
+                To = emailRequest.UserEmail,
+                Subject = $"Cảm ơn bạn đã mua hàng tại ArWoh - Đơn hàng #{orderId}",
                 Body = $@"
-            <div style='font-family: Arial, sans-serif; line-height: 1.6; color: #333;'>
-                <h2 style='color: #2196F3; text-align: center;'>Thank you for your purchase, {request.UserName}!</h2>
-                <p style='font-size: 16px;'>Your payment has been successfully processed. Below are the links to download your purchased images:</p>
+            <div style='font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto;'>
+                <div style='background-color: #1e1b4b; padding: 20px; text-align: center;'>
+                    <h1 style='color: #ffffff; margin: 0;'>Đơn hàng của bạn đã được xác nhận</h1>
+                </div>
                 
-                <table style='width: 100%; border-collapse: collapse;'>
-                    <tr style='background-color: #f2f2f2;'>
-                        <th style='padding: 10px; text-align: left; border-bottom: 1px solid #ddd;'>Image</th>
-                        <th style='padding: 10px; text-align: left; border-bottom: 1px solid #ddd;'>Title</th>
-                        <th style='padding: 10px; text-align: center; border-bottom: 1px solid #ddd;'>Download</th>
-                    </tr>
-                    {imageRowsHtml}
-                </table>
+                <div style='padding: 20px;'>
+                    <p style='font-size: 16px;'>Xin chào {emailRequest.UserName},</p>
+                    
+                    <p style='font-size: 16px;'>Cảm ơn bạn đã mua hàng tại ArWoh. Đơn hàng #{orderId} của bạn đã được thanh toán thành công!</p>
+                    
+                    <div style='background-color: #f7f7f7; padding: 15px; border-radius: 8px; margin: 20px 0;'>
+                        <h2 style='color: #1e1b4b; margin-top: 0;'>Chi tiết đơn hàng</h2>
+                        <p><strong>Mã đơn hàng:</strong> #{orderId}</p>
+                        <p><strong>Ngày đặt hàng:</strong> {order.CreatedAt:dd/MM/yyyy HH:mm}</p>
+                        <p><strong>Tổng tiền:</strong> {order.TotalAmount:N0} VND</p>
+                    </div>
+                    
+                    <h2 style='color: #1e1b4b;'>Ảnh đã mua</h2>
+                    {imageList}
+                    
+                    <p style='font-size: 16px;'>Bạn có thể tải xuống các hình ảnh đã mua bằng cách đăng nhập vào tài khoản của mình trên website của chúng tôi.</p>
+                    
+                    <div style='background-color: #f7f7f7; padding: 15px; border-radius: 8px; margin: 20px 0;'>
+                        <h2 style='color: #1e1b4b; margin-top: 0;'>Cần hỗ trợ?</h2>
+                        <p>Nếu bạn có bất kỳ câu hỏi nào về đơn hàng hoặc cần hỗ trợ, vui lòng liên hệ với chúng tôi qua email: <a href='mailto:support@arwoh.com' style='color: #1e1b4b;'>support@arwoh.com</a></p>
+                    </div>
+                    
+                    <p style='font-size: 16px;'>Trân trọng,<br>
+                    <span style='font-weight: bold; color: #1e1b4b;'>Đội ngũ ArWoh</span></p>
+                </div>
                 
-                {physicalPrintHtml}
-                
-                <p style='margin-top: 20px; font-size: 16px;'>These download links will be active for 30 days. Please save your images in a secure location.</p>
-                <p style='font-size: 16px;'>If you have any questions or need assistance, feel free to contact our customer support at <a href='mailto:support@arwoh.com' style='color: #2196F3;'>support@arwoh.com</a>.</p>
-                <p style='font-size: 16px;'>Thank you for choosing ArWoh for your art needs!</p>
-                <p style='font-size: 16px;'>Regards,<br>
-                <span style='color: #2196F3; font-weight: bold;'>The ArWoh Team</span></p>
-            </div>"
+                <div style='background-color: #f2f2f2; padding: 20px; text-align: center; font-size: 14px; color: #777;'>
+                    <p>© 2024 ArWoh. Tất cả các quyền được bảo lưu.</p>
+                </div>
+            </div>
+            "
             };
 
-            // Send the email
-            await SendEmailAsync(purchaseEmail);
-            _logger.Success($"Successfully sent purchased images email for order {orderId} to {request.UserEmail}");
+            // Gửi email 
+            await SendEmailAsync(purchasedImagesEmail);
+            _logger.Success(
+                $"Purchased images email sent successfully to {emailRequest.UserEmail} for order {orderId}");
         }
         catch (Exception ex)
         {
-            _logger.Error($"Error sending purchased images email for order {orderId}: {ex.Message}");
+            _logger.Error($"Error sending purchased images email: {ex.Message}");
             throw;
         }
     }
